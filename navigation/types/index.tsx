@@ -81,6 +81,7 @@ export type BottomNavigatorProps<T extends keyof BottomTabParamsList> = {
 };
 
 export type DrawerParamsList = {
+  BottomTab: undefined;
   InfoUser: undefined;
   Setting: undefined;
 };

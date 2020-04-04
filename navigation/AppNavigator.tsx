@@ -9,21 +9,12 @@ import DrawerNavigator from './DrawerNavigator/DrawerNavigator';
 
 const RootStackNavigator = createStackNavigator<RootParamsList>();
 
-const IsAuthNavigator = () => {
-  return (
-    <RootStackNavigator.Navigator>
-      <RootStackNavigator.Screen name="DrawerNavigator" component={DrawerNavigator} />
-      <RootStackNavigator.Screen name="BottomNavigator" component={BottomNavigator} />
-    </RootStackNavigator.Navigator>
-  );
-};
-
 const AppNavigator = () => {
   const isAuth = true;
   return (
     <NavigationContainer>
       {!isAuth && <AuthNavigator />}
-      {isAuth && <IsAuthNavigator />}
+      {isAuth && <DrawerNavigator />}
     </NavigationContainer>
   );
 };
