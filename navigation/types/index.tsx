@@ -90,13 +90,3 @@ export type DrawerNavigatorProps<T extends keyof DrawerParamsList> = {
   navigation: StackNavigationProp<DrawerParamsList, T>;
   route: RouteProp<DrawerParamsList, T>;
 };
-
-export type RootParamsList = {
-  BottomNavigator: undefined;
-  DrawerNavigator: undefined;
-};
-
-export type RootNavigatorProps<T extends keyof RootParamsList> = {
-  navigation: StackNavigationProp<RootParamsList, T>;
-  route: RouteProp<RootParamsList, T>;
-};

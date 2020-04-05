@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet } from 'react-native';
+import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import AppNavigator from './navigation/AppNavigator';
 
 const styles = StyleSheet.create({
@@ -12,6 +12,19 @@ const styles = StyleSheet.create({
   },
 });
 
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#07ef16',
+    accent: '#ffffff',
+  },
+};
+
 export default function App() {
-  return <AppNavigator />;
+  return (
+    <PaperProvider theme={theme}>
+      <AppNavigator />
+    </PaperProvider>
+  );
 }
