@@ -13,34 +13,41 @@ const BottomTabNavigator = createBottomTabNavigator<BottomTabParamsList>();
 
 const BottomNavigator = () => {
   return (
-    <BottomTabNavigator.Navigator screenOptions={{ tabBarLabel: () => null }}>
+    <BottomTabNavigator.Navigator
+      screenOptions={{ tabBarLabel: () => null }}
+      tabBarOptions={{ inactiveTintColor: 'black' }}
+    >
       <BottomTabNavigator.Screen
         name="HomeNavigator"
         component={HomeNavigator}
-        options={{ tabBarIcon: () => <MaterialCommunityIcons name="home" size={32} /> }}
+        options={{
+          tabBarIcon: ({ color }) => {
+            return <MaterialCommunityIcons name="home" size={32} color={color} />;
+          },
+        }}
       />
       <BottomTabNavigator.Screen
         name="NotificationNavigator"
         component={NotificationNavigator}
-        options={{ tabBarIcon: () => <MaterialCommunityIcons name="earth" size={32} /> }}
+        options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="earth" size={32} color={color} /> }}
       />
       <BottomTabNavigator.Screen
         name="GroupNavigator"
         component={GroupNavigator}
-        options={{ tabBarIcon: () => <MaterialIcons name="group" size={32} /> }}
+        options={{ tabBarIcon: ({ color }) => <MaterialIcons name="group" size={32} color={color} /> }}
       />
       <BottomTabNavigator.Screen
         name="MessageNavigator"
         component={MessageNavigator}
         options={{
-          tabBarIcon: () => <MaterialIcons name="message" size={32} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="message" size={32} color={color} />,
         }}
       />
       <BottomTabNavigator.Screen
         name="DocumentationNavigator"
         component={DocumentationNavigator}
         options={{
-          tabBarIcon: () => <MaterialCommunityIcons name="file-document" size={32} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="file-document" size={32} color={color} />,
         }}
       />
     </BottomTabNavigator.Navigator>
