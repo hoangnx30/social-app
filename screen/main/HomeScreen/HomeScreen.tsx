@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 
-import Post from '../../../components/Post';
+import Post from '../../../components/PostAndComment';
+import ButtonCircle from '../../../components/ButtonCircle';
 
 type Item = {
   key: string;
@@ -57,14 +58,17 @@ const HomeScreen = ({ navigation }: any) => {
   };
 
   return (
-    <FlatList
-      style={styles.listPost}
-      data={mockdata}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => {
-        return item.key;
-      }}
-    />
+    <React.Fragment>
+      <FlatList
+        style={styles.listPost}
+        data={mockdata}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => {
+          return item.key;
+        }}
+      />
+      <ButtonCircle iconName="edit" typeIcon="MI" navigation={navigation} />
+    </React.Fragment>
   );
 };
 
