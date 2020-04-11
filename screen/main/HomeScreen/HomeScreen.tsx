@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-nativ
 import { useSelector, useDispatch } from 'react-redux';
 
 import { TypeOfPost } from '../../../types/postType';
-import Post from '../../../components/PostAndComment';
+import Post from '../../../components/Post';
 import ButtonCircle from '../../../components/ButtonCircle';
 import { rootReducerType } from '../../../store/reducer/';
 import { postData } from '../../../constants/mock-data';
@@ -34,8 +34,6 @@ const HomeScreen = ({ navigation }: any) => {
   };
 
   const postDataFetch: any = useSelector<rootReducerType>((state) => state.postState.postData);
-  console.log(postDataFetch.length);
-  console.log(postDataFetch.length == 0);
 
   return (
     <React.Fragment>
