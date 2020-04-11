@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, TextInput} from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, TextInput } from 'react-native';
 import { useState } from 'react';
 import { AuthNavigatorProps } from '../../navigation/types';
 
@@ -10,47 +10,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submit: {
-    marginTop: 30,
-    marginBottom:20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 25,
-    paddingRight: 25,
-    backgroundColor: '#000',
-    borderRadius: 15,
+    marginVertical: 20,
+    paddingVertical: 10,
+    backgroundColor: '#1DA1F2',
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: '#1DA1F2',
+    width: '70%',
   },
   submitText: {
     color: '#fff',
     textAlign: 'center',
+    fontSize: 18,
   },
-  inputmail:{
-    borderWidth:1,
+  inputmail: {
+    borderWidth: 1,
     paddingBottom: 7,
     paddingTop: 7,
     paddingLeft: 15,
-    width:"70%"
+    width: '70%',
   },
-  textmain:{
-    marginBottom:30,
-    paddingLeft:20, 
-    paddingRight:20
-  }
+  textmain: {
+    marginBottom: 30,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
 });
 
-const ForgotPasswordScreen =  ({ navigation }: AuthNavigatorProps<'ForgotPassword'>)=> {
+const ForgotPasswordScreen = ({ navigation }: AuthNavigatorProps<'ForgotPassword'>) => {
   const [email, setEmail] = useState('');
   return (
     <View style={styles.screen}>
-      <Text style={styles.textmain}>Bạn quên mật khẩu đăng nhập? Xin hãy nhập địa chỉ UETMail ở đây. Chúng tôi sẽ gửi mật khẩu mới cho bạn qua UETMail.</Text>
-      <TextInput style={styles.inputmail}
-        onChangeText={(email) => setEmail(email)}
-        placeholder="Nhập UETMail"/>
+      <Text style={styles.textmain}>
+        You forgot your password? Please enter your email here. We will sent new password to you.
+      </Text>
+      <TextInput style={styles.inputmail} onChangeText={(email) => setEmail(email)} placeholder="Email" />
       <TouchableHighlight style={styles.submit} underlayColor="#fff">
-        <Text style={styles.submitText}>Gửi yêu cầu</Text>
+        <Text style={styles.submitText}>Sent Request</Text>
       </TouchableHighlight>
-      <Text>Nhấn <Text style={{fontWeight:"bold"}}  onPress={() => navigation.navigate('SignIn')}>VÀO ĐÂY</Text> để quay lại trang Đăng nhập</Text>
+      <Text style={{ fontSize: 14 }}>
+        Tap{' '}
+        <Text style={{ fontWeight: 'bold', fontSize: 14 }} onPress={() => navigation.navigate('SignIn')}>
+          HERE
+        </Text>{' '}
+        to come back log in screen
+      </Text>
     </View>
   );
 };

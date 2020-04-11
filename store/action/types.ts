@@ -1,3 +1,5 @@
+import { NumericDictionary } from 'lodash';
+
 export interface PostItem {
   id: string;
   content: string;
@@ -5,6 +7,13 @@ export interface PostItem {
   listComment: Array<string>;
   listLike: Array<string>;
   username: string;
+}
+
+export interface UserInfo {
+  uid: string | any;
+  accessToken: string | undefined;
+  refreshToken: string;
+  expirationTime: number;
 }
 
 export interface ListPostData {

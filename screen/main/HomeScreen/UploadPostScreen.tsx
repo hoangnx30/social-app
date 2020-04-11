@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import * as firebase from 'firebase';
 import { View, Text, StyleSheet, Button, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { PostItem } from '../../../types/postType';
@@ -22,9 +22,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const uploadPost = () => {};
+const UploadPostScreen = ({ navigation }: any) => {
+  const [content, setContent] = useState<string>('');
 
-const UploadPostScreen = () => {
+  const handleUploadStatus = useCallback(() => {}, []);
+
   return (
     <View style={styles.screen}>
       <View style={styles.avatar}>
@@ -39,6 +41,9 @@ const UploadPostScreen = () => {
           underlineColorAndroid={'transparent'}
           autoFocus={true}
           autoCapitalize="sentences"
+          autoCorrect={false}
+          value={content}
+          onChangeText={(value) => setContent(value)}
         />
       </View>
     </View>
