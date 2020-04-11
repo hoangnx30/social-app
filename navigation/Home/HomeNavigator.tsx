@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -31,7 +32,16 @@ const HomeNavigator = () => {
         }}
       />
       <HomeStackNavigator.Screen name="Post" component={PostScreen} options={{ headerTitle: 'Post' }} />
-      <HomeStackNavigator.Screen name="UpLoadPost" component={UploadPostScreen} />
+      <HomeStackNavigator.Screen
+        name="UpLoadPost"
+        component={UploadPostScreen}
+        options={{
+          headerTitle: 'Update Status',
+          headerRight: ({ tintColor }) => {
+            return <Button title="Upload" onPress={() => {}} />;
+          },
+        }}
+      />
     </HomeStackNavigator.Navigator>
   );
 };

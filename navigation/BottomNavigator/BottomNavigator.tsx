@@ -20,10 +20,18 @@ const BottomNavigator = () => {
       <BottomTabNavigator.Screen
         name="HomeNavigator"
         component={HomeNavigator}
-        options={{
-          tabBarIcon: ({ color }) => {
-            return <MaterialCommunityIcons name="home" size={32} color={color} />;
-          },
+        options={({ navigation, route }) => {
+          let tabBarVisible = true;
+          if (route.state) {
+            const routes = route.state.routes;
+            tabBarVisible = routes[routes.length - 1].name === 'UpLoadPost' ? false : true;
+          }
+          return {
+            tabBarIcon: ({ color }) => {
+              return <MaterialCommunityIcons name="home" size={32} color={color} />;
+            },
+            tabBarVisible,
+          };
         }}
       />
       <BottomTabNavigator.Screen
