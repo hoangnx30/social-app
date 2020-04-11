@@ -1,9 +1,13 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useMemo, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { TypeOfPost } from '../../../types/postType';
 import Post from '../../../components/PostAndComment';
 import ButtonCircle from '../../../components/ButtonCircle';
-
+import { rootReducerType } from '../../../store/reducer/';
+import { postData } from '../../../constants/mock-data';
+import { setPostDataAsync } from '../../../store/action/post.action';
 type Item = {
   key: string;
   username: string;
@@ -13,61 +17,38 @@ type Item = {
   numberOfComment: number;
 };
 
-const mockdata = [
-  {
-    key: 'key1',
-    username: 'username1',
-    date: Date.now(),
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    numberOfHeart: 32,
-    numberOfComment: 37,
-  },
-  {
-    key: 'key2',
-    username: 'username1',
-    date: Date.now(),
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    numberOfHeart: 32,
-    numberOfComment: 37,
-  },
-  {
-    key: 'key3',
-    username: 'username1',
-    date: Date.now(),
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    numberOfHeart: 32,
-    numberOfComment: 37,
-  },
-];
-
 const HomeScreen = ({ navigation }: any) => {
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(setPostDataAsync()), []);
   const renderItem = ({ item }: any) => {
     return (
       <Post
         username={item.username}
-        date={item.date}
-        numberOfComment={item.numberOfComment}
-        numberOfHeart={item.numberOfHeart}
+        date={item.timeUpload}
+        numberOfComment={item.listComment.length}
+        numberOfHeart={item.listLike.length}
         content={item.content}
         navigation={navigation}
       />
     );
   };
 
+  const postDataFetch: any = useSelector<rootReducerType>((state) => state.postState.postData);
+  console.log(postDataFetch.length);
+  console.log(postDataFetch.length == 0);
+
   return (
     <React.Fragment>
-      <FlatList
-        style={styles.listPost}
-        data={mockdata}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => {
-          return item.key;
-        }}
-      />
-      <ButtonCircle iconName="edit" typeIcon="MI" navigation={navigation} />
+      {postDataFetch.length == 0 ? (
+        <View style={styles.screen}>
+          <ActivityIndicator size="large" color="#aec65a" />
+        </View>
+      ) : (
+        <View>
+          <FlatList style={styles.listPost} data={postDataFetch} renderItem={renderItem} />
+          <ButtonCircle iconName="edit" typeIcon="MI" navigation={navigation} />
+        </View>
+      )}
     </React.Fragment>
   );
 };
@@ -78,6 +59,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
+    zIndex: 1000,
     alignItems: 'center',
   },
   listPost: {

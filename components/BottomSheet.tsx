@@ -1,19 +1,40 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import DialogBottomSheet from 'reanimated-bottom-sheet';
-const styles = StyleSheet.create({
-  screen: {},
-});
+import RBSheet from 'react-native-raw-bottom-sheet';
 
-const BottomSheet = () => {
-  const renderContent = {};
+interface Props {
+  children?: ReactNode;
+  buttonRef: any;
+}
 
-  const renderHeader = {};
+const BottomSheet: React.FC<Props> = ({ buttonRef, children }) => {
   return (
     <View style={styles.screen}>
-      <DialogBottomSheet snapPoints={[450, 300, 0]} />
+      <RBSheet
+        ref={buttonRef}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'transparent',
+          },
+          draggableIcon: {
+            backgroundColor: '#000',
+          },
+        }}
+      >
+        {children}
+      </RBSheet>
     </View>
   );
 };
 
 export default BottomSheet;
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

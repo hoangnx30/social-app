@@ -1,16 +1,17 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import thunk from 'redux-thunk';
+import * as firebase from 'firebase';
+import _ from 'lodash';
+import { YellowBox } from 'react-native';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
-import AppNavigator from './navigation/AppNavigator';
+import { createStore, compose, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+import AppNavigator from './navigation/AppNavigator';
+import rootReducer from './store/reducer/';
+import { firebaseConfig } from './config/firebase.config';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const theme = {
   ...DefaultTheme,
@@ -21,10 +22,25 @@ const theme = {
   },
 };
 
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = (message: any) => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
+
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+
 export default function App() {
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
   return (
-    <PaperProvider theme={theme}>
-      <AppNavigator />
-    </PaperProvider>
+    <Provider store={store}>
+      <PaperProvider theme={theme}>
+        <AppNavigator />
+      </PaperProvider>
+    </Provider>
   );
 }
