@@ -9,7 +9,7 @@ const initialState = {
   },
 };
 
-export default authReducer = (state = initialState, action: AuthActionType) => {
+export default (state = initialState, action: AuthActionType) => {
   switch (action.type) {
     case LOG_IN:
       return {

@@ -12,8 +12,8 @@ export interface PostItem {
 export interface UserInfo {
   uid: string | any;
   accessToken: string | undefined;
-  refreshToken: string;
-  expirationTime: number;
+  refreshToken: string | undefined;
+  expirationTime: string | undefined;
 }
 
 export interface ListPostData {

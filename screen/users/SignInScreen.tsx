@@ -10,7 +10,6 @@ import { UserInfo } from '../../store/action/types';
 const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  console.log(email, password);
   const dispatch = useDispatch();
   const handleLogIn = useCallback(() => {
     dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));

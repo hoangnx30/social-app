@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useCallback, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -18,8 +18,20 @@ type Item = {
 };
 
 const HomeScreen = ({ navigation }: any) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  useEffect(() => dispatch(setPostDataAsync()), []);
+
+  const loadHomePage = useCallback(async () => {
+    setIsRefreshing(true);
+    await dispatch(setPostDataAsync());
+    setIsRefreshing(false);
+  }, [dispatch, setIsLoading, setIsRefreshing]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadHomePage().then(setIsLoading(false));
+  }, [dispatch, loadHomePage]);
   const renderItem = ({ item }: any) => {
     return (
       <Post
