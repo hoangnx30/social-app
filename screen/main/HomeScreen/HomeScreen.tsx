@@ -1,21 +1,11 @@
-import React, { useMemo, useEffect, useCallback, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import React, { useEffect, useCallback, useState } from 'react';
+import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { TypeOfPost } from '../../../types/postType';
 import Post from '../../../components/Post';
 import ButtonCircle from '../../../components/ButtonCircle';
 import { rootReducerType } from '../../../store/reducer/';
-import { postData } from '../../../constants/mock-data';
 import { setPostDataAsync } from '../../../store/action/post.action';
-type Item = {
-  key: string;
-  username: string;
-  date: string;
-  content: string;
-  numberOfHeart: number;
-  numberOfComment: number;
-};
 
 const HomeScreen = ({ navigation }: any) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -41,6 +31,7 @@ const HomeScreen = ({ navigation }: any) => {
         numberOfHeart={item.listLike.length}
         content={item.content}
         navigation={navigation}
+        owner={item.owner}
       />
     );
   };

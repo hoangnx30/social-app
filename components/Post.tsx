@@ -8,6 +8,8 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { CustomHeaderButtonMCI } from './HeaderButton';
 import { HomeParamsList } from '../navigation/types';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
+import { rootReducerType } from '../store/reducer';
 
 interface Props {
   username?: string;
@@ -17,14 +19,25 @@ interface Props {
   numberOfComment?: number;
   navigation: StackNavigationProp<HomeParamsList, 'Home'>;
   isComment?: boolean;
+  owner?: string;
 }
 
-const Post: React.FC<Props> = ({ username, date, content, numberOfHeart, numberOfComment, navigation, isComment }) => {
+const Post: React.FC<Props> = ({
+  username,
+  date,
+  content,
+  numberOfHeart,
+  numberOfComment,
+  navigation,
+  isComment,
+  owner,
+}) => {
   const [onFocus, setOnFocus] = useState(false);
   let timeOfPost;
   if (isComment) {
     timeOfPost = moment.duration(Date.now() - date)._data.minutes;
   }
+  const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -48,9 +61,11 @@ const Post: React.FC<Props> = ({ username, date, content, numberOfHeart, numberO
               </View>
               {!isComment && <Text>{moment(date).calendar()}</Text>}
             </View>
-            <View>
-              <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
-            </View>
+            {owner === userUid ? (
+              <View>
+                <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
+              </View>
+            ) : null}
           </View>
 
           <View>

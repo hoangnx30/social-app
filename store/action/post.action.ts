@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import axios from '../../config/axios-instance';
 import { PostActionType, SET_POST_DATA } from './actionTypes';
 import { PostItem } from '../../types/postType';
 
@@ -12,32 +12,25 @@ const setPostData = (listPostData: Array<PostItem>) => {
 };
 
 export const setPostDataAsync = () => {
-  return (dispatch: any) => {
-    firebase
-      .database()
-      .ref('postData')
-      .once('value')
-      .then((response) => {
-        const listPostData: Array<PostItem> = [];
-        const data = response.val();
-        for (let key in data) {
-          const postItem: PostItem = {
-            id: '',
-            content: '',
-            listComment: [],
-            listLike: [],
-            timeUpload: '',
-            username: '',
-          };
-          postItem.id = key;
-          postItem.content = data[key].content;
-          postItem.listComment = data[key].listComment;
-          postItem.listLike = data[key].listLike;
-          postItem.timeUpload = data[key].timeUpload;
-          postItem.username = data[key].fullName;
-          listPostData.push(postItem);
-        }
-        dispatch(setPostData(listPostData));
-      });
+  return async (dispatch: any) => {
+    const postRes = await axios.get('postData.json');
+    const postData = postRes.data;
+    const listPostData: Array<PostItem> = [];
+
+    for (let key in postData) {
+      let postItem: PostItem = {
+        id: key,
+        content: postData[key].content,
+        listComment: postData[key].listComment,
+        listLike: postData[key].listLike,
+        timeUpload: postData[key].timeUpload,
+        owner: postData[key].owner,
+      };
+
+      const resUser = await axios.get(`users/${postData[key].owner}.json`);
+      postItem.username = resUser.data.fullName;
+      listPostData.push(postItem);
+    }
+    dispatch(setPostData(listPostData));
   };
 };
