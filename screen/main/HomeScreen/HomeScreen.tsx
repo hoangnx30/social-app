@@ -6,8 +6,9 @@ import Post from '../../../components/Post';
 import ButtonCircle from '../../../components/ButtonCircle';
 import { rootReducerType } from '../../../store/reducer/';
 import { setPostDataAsync } from '../../../store/action/post.action';
+import { HomeNavigatorProps } from '../../../navigation/types';
 
-const HomeScreen = ({ navigation }: any) => {
+const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -25,10 +26,11 @@ const HomeScreen = ({ navigation }: any) => {
   const renderItem = ({ item }: any) => {
     return (
       <Post
+        uidPost={item.id}
         username={item.username}
         date={item.timeUpload}
-        numberOfComment={item.listComment.length}
-        numberOfHeart={item.listLike.length}
+        listLike={item.listLike}
+        listComment={item.listComment}
         content={item.content}
         navigation={navigation}
         owner={item.owner}
@@ -45,8 +47,14 @@ const HomeScreen = ({ navigation }: any) => {
           <ActivityIndicator size="large" color="#aec65a" />
         </View>
       ) : (
-        <View>
-          <FlatList style={styles.listPost} data={postDataFetch} renderItem={renderItem} />
+        <View style={styles.screen}>
+          <FlatList
+            style={styles.listPost}
+            data={postDataFetch}
+            renderItem={renderItem}
+            refreshing={isRefreshing}
+            onRefresh={loadHomePage}
+          />
           <ButtonCircle iconName="edit" typeIcon="MI" navigation={navigation} />
         </View>
       )}

@@ -1,5 +1,3 @@
-import { NumericDictionary } from 'lodash';
-
 export interface PostItem {
   id?: string;
   content?: string;
@@ -7,6 +5,15 @@ export interface PostItem {
   listComment?: Array<string>;
   listLike?: Array<string>;
   username?: string;
+  owner?: string;
+}
+
+export interface CommentItem {
+  id?: string;
+  content?: string;
+  timeUpload?: string;
+  listLike?: Array<string>;
+  fullname?: string;
   owner?: string;
 }
 
@@ -19,4 +26,8 @@ export interface UserInfo {
 
 export interface ListPostData {
   listPostData?: Array<PostItem>;
+}
+
+export interface ListCommentData {
+  listCommentData?: Array<CommentItem>;
 }

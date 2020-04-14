@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
 
 import Comment from '../../../components/Comment';
 import PostWithComment from '../../../components/PostWithComment';
+import { useDispatch } from 'react-redux';
+import { setListCommentDataAsync } from '../../../store/action/comment.action';
 
 const mockdata = [
   {
@@ -40,17 +42,26 @@ const styles = StyleSheet.create({
   },
 });
 
-const PostScreen = ({ navigation }: any) => {
+const PostScreen = ({ route, navigation }: any) => {
+  const dispatch = useDispatch();
+  const [isLike, setIsLike] = useState(false);
+  const { content, date, listComment, listLike, username } = route.params;
   return (
     <View style={styles.screen}>
       <ScrollView>
-        <PostWithComment />
+        <PostWithComment
+          content={content}
+          timeUpload={date}
+          listComment={listComment}
+          listLike={listLike}
+          username={username}
+        />
         {mockdata.map((item, _) => {
           return (
             <Comment
               key={item.key}
               username={item.username}
-              date={item.date.toString()}
+              timeUpload={item.date.toString()}
               numberOfComment={item.numberOfComment}
               numberOfHeart={item.numberOfHeart}
               content={item.content}

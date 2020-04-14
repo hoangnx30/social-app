@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, Button, TextInput, CheckBox, TouchableHighlight } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'react-native-paper';
 
 import { AuthNavigatorProps } from '../../navigation/types';
 import { LoginAsync } from '../../store/action/auth.action';
@@ -8,6 +9,52 @@ import { rootReducerType } from '../../store/reducer';
 import { UserInfo } from '../../store/action/types';
 
 const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
+  const theme = useTheme();
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        screen: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.colors.background,
+        },
+        title: {
+          fontSize: 30,
+          fontWeight: 'bold',
+          marginBottom: 30,
+          color: theme.colors.primary,
+        },
+        input: {
+          width: '70%',
+          borderBottomWidth: 1,
+          borderBottomColor: theme.colors.primary,
+          marginBottom: 30,
+        },
+        forgotpass: {
+          color: '#000',
+          fontSize: 14,
+        },
+
+        submit: {
+          marginTop: 30,
+          marginBottom: 20,
+          paddingVertical: 10,
+          backgroundColor: theme.colors.primary,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: theme.colors.primary,
+          width: '70%',
+        },
+        submitText: {
+          color: '#FFFFFF',
+          textAlign: 'center',
+          fontSize: 18,
+        },
+      }),
+    []
+  );
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const dispatch = useDispatch();
@@ -37,43 +84,3 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
 };
 
 export default SignInScreen;
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#1DA1F2',
-  },
-  input: {
-    width: '70%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#1DA1F2',
-    marginBottom: 30,
-  },
-  forgotpass: {
-    color: '#000',
-    fontSize: 14,
-  },
-
-  submit: {
-    marginTop: 30,
-    marginBottom: 20,
-    paddingVertical: 10,
-    backgroundColor: '#1DA1F2',
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#1DA1F2',
-    width: '70%',
-  },
-  submitText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-    fontSize: 18,
-  },
-});

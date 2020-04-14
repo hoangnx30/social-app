@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import moment from 'moment';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Avatar, IconButton } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useTheme } from 'react-native-paper';
 
 import { CustomHeaderButtonMCI } from './HeaderButton';
 import { HomeParamsList } from '../navigation/types';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Props {
   username?: string;
-  date?: string;
+  timeUpload?: string;
   content?: string;
   numberOfHeart?: number;
   numberOfComment?: number;
@@ -21,7 +22,7 @@ interface Props {
 
 const Comment: React.FC<Props> = ({
   username,
-  date,
+  timeUpload,
   content,
   numberOfHeart,
   numberOfComment,
@@ -29,9 +30,10 @@ const Comment: React.FC<Props> = ({
   isComment,
 }) => {
   const [onFocus, setOnFocus] = useState(false);
+  const theme = useTheme();
   let timeOfPost;
   if (isComment) {
-    timeOfPost = moment.duration(Date.now() - date)._data.minutes;
+    timeOfPost = moment.duration(Date.now() - timeUpload)._data.minutes;
   }
   return (
     <TouchableOpacity
@@ -67,14 +69,19 @@ const Comment: React.FC<Props> = ({
             <View style={styles.bottomContent}>
               <View style={styles.action}>
                 <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-                  <Item title="heart" iconName="heart" onPress={() => {}}></Item>
+                  <Item title="heart" iconName="heart" color={theme.colors.primary} onPress={() => {}}></Item>
                 </HeaderButtons>
                 <Text style={styles.numberOfAction}>{numberOfHeart}</Text>
               </View>
 
               <View style={styles.action}>
                 <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-                  <Item title="comment" iconName="comment" onPress={() => {}}></Item>
+                  <Item
+                    title="comment"
+                    iconName="comment-outline"
+                    color={theme.colors.primary}
+                    onPress={() => {}}
+                  ></Item>
                 </HeaderButtons>
                 <Text style={styles.numberOfAction}>{numberOfComment}</Text>
               </View>

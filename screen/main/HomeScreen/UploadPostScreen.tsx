@@ -1,8 +1,10 @@
-import React, { useState, useCallback } from 'react';
-import * as firebase from 'firebase';
-import { View, Text, StyleSheet, Button, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { PostItem } from '../../../types/postType';
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { Avatar } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { rootReducerType } from '../../../store/reducer';
+import { uploadPostAsync } from '../../../store/action/post.action';
+import { HomeNavigatorProps } from '../../../navigation/types';
 
 const styles = StyleSheet.create({
   screen: {
@@ -22,11 +24,24 @@ const styles = StyleSheet.create({
   },
 });
 
-const UploadPostScreen = ({ navigation }: any) => {
+const UploadPostScreen = ({ navigation }: HomeNavigatorProps<'UpLoadPost'>) => {
   const [content, setContent] = useState<string>('');
-
-  const handleUploadStatus = useCallback(() => {}, []);
-
+  const dispatch = useDispatch();
+  const uid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
+  const handleUploadStatus = useCallback(() => {
+    const postData = {
+      content: content,
+      owner: uid,
+      likeLike: [],
+      listComment: [],
+      timeUpload: Date.now(),
+    };
+    dispatch(uploadPostAsync(postData));
+    navigation.navigate('Home');
+  }, [dispatch, content]);
+  useEffect(() => {
+    navigation.setParams({ handleUpload: handleUploadStatus });
+  }, [handleUploadStatus]);
   return (
     <View style={styles.screen}>
       <View style={styles.avatar}>

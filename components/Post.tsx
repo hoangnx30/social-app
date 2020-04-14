@@ -4,47 +4,60 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Avatar, IconButton } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useTheme } from '@react-navigation/native';
 
 import { CustomHeaderButtonMCI } from './HeaderButton';
 import { HomeParamsList } from '../navigation/types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { rootReducerType } from '../store/reducer';
-
+import { updateListLikeAsync } from '../store/action/post.action';
 interface Props {
+  uidPost: string;
   username?: string;
   date?: string;
   content?: string;
-  numberOfHeart?: number;
-  numberOfComment?: number;
+  listLike?: Array<string>;
+  listComment?: Array<string>;
   navigation: StackNavigationProp<HomeParamsList, 'Home'>;
   isComment?: boolean;
   owner?: string;
 }
 
 const Post: React.FC<Props> = ({
+  uidPost,
   username,
   date,
   content,
-  numberOfHeart,
-  numberOfComment,
+  listLike,
+  listComment,
   navigation,
   isComment,
   owner,
 }) => {
-  const [onFocus, setOnFocus] = useState(false);
+  const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
+  const [onFocus, setOnFocus] = useState<boolean>(false);
+  const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
+  const theme = useTheme();
+  debugger;
+  const dispatch = useDispatch();
   let timeOfPost;
   if (isComment) {
     timeOfPost = moment.duration(Date.now() - date)._data.minutes;
   }
-  const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   return (
     <TouchableOpacity
       activeOpacity={1}
       onPressIn={() => setOnFocus(!onFocus)}
       onPressOut={() => setOnFocus(!onFocus)}
       onPress={() => {
-        navigation.navigate('Post');
+        navigation.navigate('Post', {
+          listComment: listComment,
+          username: username,
+          date: date,
+          listLike: listLike,
+          content: content,
+        });
       }}
       style={{ backgroundColor: onFocus ? '#F5F5F5' : 'white' }}
     >
@@ -78,16 +91,52 @@ const Post: React.FC<Props> = ({
             <View style={styles.bottomContent}>
               <View style={styles.action}>
                 <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-                  <Item title="heart" iconName="heart" onPress={() => {}}></Item>
+                  <Item
+                    title="heart"
+                    color={theme.colors.primary}
+                    iconName={isLike ? 'heart' : 'heart-outline'}
+                    onPress={() => {
+                      if (isLike) {
+                        const index = listLike?.indexOf(userUid);
+                        listLike?.splice(index, 1);
+                        const updateListLike = listLike?.filter((item) => item !== userUid);
+                        setIsLike(!isLike);
+                        dispatch(updateListLikeAsync(uidPost, updateListLike));
+                      } else {
+                        listLike?.push(userUid);
+                        setIsLike(!isLike);
+                        if (listLike?.indexOf(userUid) >= 0) {
+                          const updateListLike = listLike;
+                          dispatch(updateListLikeAsync(uidPost, updateListLike));
+                          return;
+                        }
+                        const updateListLike = listLike?.concat(userUid);
+                        dispatch(updateListLikeAsync(uidPost, updateListLike));
+                      }
+                    }}
+                  ></Item>
                 </HeaderButtons>
-                <Text style={styles.numberOfAction}>{numberOfHeart}</Text>
+                <Text style={styles.numberOfAction}>{listLike?.length}</Text>
               </View>
 
               <View style={styles.action}>
                 <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-                  <Item title="comment" iconName="comment" onPress={() => {}}></Item>
+                  <Item
+                    title="comment"
+                    iconName="comment-outline"
+                    color={theme.colors.primary}
+                    onPress={() => {
+                      navigation.navigate('Post', {
+                        listComment: listComment,
+                        username: username,
+                        date: date,
+                        listLike: listLike,
+                        content: content,
+                      });
+                    }}
+                  ></Item>
                 </HeaderButtons>
-                <Text style={styles.numberOfAction}>{numberOfComment}</Text>
+                <Text style={styles.numberOfAction}>{listComment?.length}</Text>
               </View>
             </View>
           </View>

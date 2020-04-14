@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#ccc',
+    backgroundColor: '#ddd',
     position: 'absolute',
     bottom: 10,
     right: 10,
@@ -31,6 +31,7 @@ const ButtonCircle: React.FC<Props> = ({ iconName, typeIcon, navigation }) => {
       <HeaderButtons HeaderButtonComponent={typeIcon === 'MCI' ? CustomHeaderButtonMCI : CustomHeaderButtonMI}>
         <Item
           title="comment"
+          color="#1DA1F2"
           iconName={iconName}
           onPress={() => {
             navigation.navigate('UpLoadPost');

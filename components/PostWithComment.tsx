@@ -3,10 +3,19 @@ import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import moment from 'moment';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useTheme } from 'react-native-paper';
 
 import { CustomHeaderButtonMCI } from './HeaderButton';
 
-const PostWithComment = () => {
+interface Props {
+  username?: string;
+  timeUpload?: string;
+  content?: string;
+  listLike?: Array<string> | [];
+  listComment?: Array<string> | [];
+}
+
+const PostWithComment: React.FC<Props> = ({ username, timeUpload, content, listComment, listLike }) => {
   return (
     <View style={styles.screen}>
       <View>
@@ -15,32 +24,25 @@ const PostWithComment = () => {
           <View>
             <TouchableNativeFeedback>
               <View>
-                <Text style={styles.username}>username</Text>
+                <Text style={styles.username}>{username}</Text>
               </View>
             </TouchableNativeFeedback>
-            <Text>{moment(Date.now()).calendar()}</Text>
+            <Text>{moment(timeUpload).calendar()}</Text>
           </View>
         </View>
         <View style={styles.content}>
-          <Text>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
-            Aldus PageMaker including versions of Lorem Ipsum
-          </Text>
+          <Text>{content}</Text>
         </View>
         <View style={styles.slash}></View>
         <View style={styles.infoStatus}>
           <View style={styles.infoStatusItem}>
-            <Text style={styles.infoStatusContent}>2</Text>
-            <Text>Comment</Text>
+            <Text style={styles.infoStatusContent}>{listLike?.length}</Text>
+            <Text>{listLike?.length > 1 ? 'Likes' : 'Like'} </Text>
           </View>
 
           <View style={styles.infoStatusItem}>
-            <Text style={styles.infoStatusContent}>30</Text>
-            <Text>Likes</Text>
+            <Text style={styles.infoStatusContent}>{listComment?.length}</Text>
+            <Text>{listComment?.length > 1 ? 'Likes' : 'Like'}</Text>
           </View>
         </View>
         <View style={styles.slash}></View>
