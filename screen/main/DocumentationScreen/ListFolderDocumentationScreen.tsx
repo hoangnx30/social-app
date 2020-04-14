@@ -1,19 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+import Folder from '../../../components/Folder'
+import { DocumentationNavigatorProps } from '../../../navigation/types';
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  
 });
 
-const ListFolderDocumentationScreen = () => {
+const ListFolderDocumentationScreen = ({ navigation }: DocumentationNavigatorProps<'ListFolderDocumentation'>) => {
   return (
-    <View style={styles.screen}>
-      <Text>ListFolderDocumentationScreen</Text>
-    </View>
+    <Folder navigation={navigation}></Folder>
   );
 };
 
