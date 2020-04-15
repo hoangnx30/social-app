@@ -9,28 +9,24 @@ import { useTheme } from 'react-native-paper';
 
 import { CustomHeaderButtonMCI } from './HeaderButton';
 import { HomeParamsList } from '../navigation/types';
+import { useSelector } from 'react-redux';
+import { rootReducerType } from '../store/reducer';
 
 interface Props {
   username?: string;
   timeUpload?: string;
   content?: string;
-  numberOfHeart?: number;
-  numberOfComment?: number;
+  listLike?: number;
+  numberOfComment?: Array<string> | [];
   navigation: StackNavigationProp<HomeParamsList, 'Home'>;
   isComment?: boolean;
+  owner?: string;
 }
 
-const Comment: React.FC<Props> = ({
-  username,
-  timeUpload,
-  content,
-  numberOfHeart,
-  numberOfComment,
-  navigation,
-  isComment,
-}) => {
+const Comment: React.FC<Props> = ({ username, timeUpload, content, listLike, navigation, isComment, owner }) => {
   const [onFocus, setOnFocus] = useState(false);
   const theme = useTheme();
+  const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   let timeOfPost;
   if (isComment) {
     timeOfPost = moment.duration(Date.now() - timeUpload)._data.minutes;
@@ -54,9 +50,11 @@ const Comment: React.FC<Props> = ({
                 <Text style={{ marginRight: 3 }}>{timeOfPost === 0 ? '1' : timeOfPost} minutes ago</Text>
               </View>
             </View>
-            <View>
-              <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
-            </View>
+            {userUid === owner ? (
+              <View>
+                <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
+              </View>
+            ) : null}
           </View>
 
           <View>
@@ -71,19 +69,7 @@ const Comment: React.FC<Props> = ({
                 <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
                   <Item title="heart" iconName="heart" color={theme.colors.primary} onPress={() => {}}></Item>
                 </HeaderButtons>
-                <Text style={styles.numberOfAction}>{numberOfHeart}</Text>
-              </View>
-
-              <View style={styles.action}>
-                <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-                  <Item
-                    title="comment"
-                    iconName="comment-outline"
-                    color={theme.colors.primary}
-                    onPress={() => {}}
-                  ></Item>
-                </HeaderButtons>
-                <Text style={styles.numberOfAction}>{numberOfComment}</Text>
+                <Text style={styles.numberOfAction}>{listLike.length}</Text>
               </View>
             </View>
           </View>

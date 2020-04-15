@@ -2,7 +2,7 @@ import axios from '../../config/axios-instance';
 import { SET_COMMENT_DATA } from './actionTypes';
 import { ListCommentData, CommentItem } from './types';
 
-const setListCommentData = (listCommentData: ListCommentData) => {
+const setListCommentData = (listCommentData: Array<CommentItem>) => {
   return {
     type: SET_COMMENT_DATA,
     payload: {
@@ -22,12 +22,13 @@ export const setListCommentDataAsync = (listComment: Array<string>) => {
         content: dataComment.content,
         timeUpload: dataComment.timeUpload,
         listLike: dataComment.listlike || [],
+        owner: dataComment.owner,
       };
       const resUser = await axios.get(`users/${dataComment.owner}.json`);
       const dataUser = resUser.data;
-      dataCommentItem.fullname = dataUser.fullname;
+      dataCommentItem.fullname = dataUser.fullName;
       listDataComment.push(dataCommentItem);
     }
-    dispatch(setListCommentData);
+    dispatch(setListCommentData(listDataComment));
   };
 };

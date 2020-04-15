@@ -57,6 +57,7 @@ const Post: React.FC<Props> = ({
           date: date,
           listLike: listLike,
           content: content,
+          uidPost: uidPost,
         });
       }}
       style={{ backgroundColor: onFocus ? '#F5F5F5' : 'white' }}
@@ -132,6 +133,7 @@ const Post: React.FC<Props> = ({
                         date: date,
                         listLike: listLike,
                         content: content,
+                        uidPost: uidPost,
                       });
                     }}
                   ></Item>
