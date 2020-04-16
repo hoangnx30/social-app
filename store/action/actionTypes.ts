@@ -10,6 +10,7 @@ export const UPDATE_LISTLIKE = 'UPDATE_LISTLIKE';
 export const LOG_IN = 'LOG_IN';
 
 export const SET_COMMENT_DATA = 'SET_COMMENT_DATA';
+export const UPDATE_LISTLIKE_COMMENT = 'UPDATE_LISTLIKE_COMMENT';
 
 interface PostStatusAction {
   type: typeof POST_STATUS;
@@ -54,6 +55,14 @@ interface SetCommentData {
     listCommentData: ListCommentData;
   };
 }
+
+interface UpdateListLikeComment {
+  type: typeof UPDATE_LISTLIKE_COMMENT;
+  payload: {
+    listLikeComment: Array<string>;
+    uid: string;
+  };
+}
 export type PostActionType = PostStatusAction | EditStatusAction | DeleteStatusAction | SetPostData | UpdateListLike;
 export type AuthActionType = Login;
-export type CommentActionType = SetCommentData;
+export type CommentActionType = SetCommentData | UpdateListLikeComment;

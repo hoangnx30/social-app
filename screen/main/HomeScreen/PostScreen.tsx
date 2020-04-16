@@ -56,6 +56,7 @@ const PostScreen = ({ route, navigation }: any) => {
           {listCommentData.map((item, _) => {
             return (
               <Comment
+                uidComment={item.id}
                 key={item.id}
                 username={item.fullname}
                 timeUpload={item.timeUpload.toString()}

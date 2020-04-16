@@ -1,5 +1,5 @@
 import axios from '../../config/axios-instance';
-import { SET_COMMENT_DATA } from './actionTypes';
+import { SET_COMMENT_DATA, UPDATE_LISTLIKE_COMMENT } from './actionTypes';
 import { ListCommentData, CommentItem } from './types';
 
 const setListCommentData = (listCommentData: Array<CommentItem>) => {
@@ -30,5 +30,28 @@ export const setListCommentDataAsync = (listComment: Array<string>) => {
       listDataComment.push(dataCommentItem);
     }
     dispatch(setListCommentData(listDataComment));
+  };
+};
+
+export const updateListLikeCommentAsync = (uidComment: string, listLike: Array<string> | undefined) => {
+  return async (dispatch: any) => {
+    const response = await axios.patch(
+      `listCommentData/${uidComment}.json`,
+      {
+        listLike: listLike,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    dispatch({
+      type: UPDATE_LISTLIKE_COMMENT,
+      payload: {
+        uid: uidComment,
+        listLike: listLike,
+      },
+    });
   };
 };

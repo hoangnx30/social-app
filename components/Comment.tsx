@@ -9,23 +9,37 @@ import { useTheme } from 'react-native-paper';
 
 import { CustomHeaderButtonMCI } from './HeaderButton';
 import { HomeParamsList } from '../navigation/types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { rootReducerType } from '../store/reducer';
+import { updateListLikeCommentAsync } from '../store/action/comment.action';
 
 interface Props {
   username?: string;
   timeUpload?: string;
   content?: string;
-  listLike?: number;
+  listLike?: Array<string> | [];
   numberOfComment?: Array<string> | [];
   navigation: StackNavigationProp<HomeParamsList, 'Home'>;
   isComment?: boolean;
   owner?: string;
+  uidComment?: string;
 }
 
-const Comment: React.FC<Props> = ({ username, timeUpload, content, listLike, navigation, isComment, owner }) => {
+const Comment: React.FC<Props> = ({
+  username,
+  timeUpload,
+  uidComment,
+  content,
+  listLike,
+  navigation,
+  isComment,
+  owner,
+}) => {
   const [onFocus, setOnFocus] = useState(false);
+  const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
+
   const theme = useTheme();
+  const dispatch = useDispatch();
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   let timeOfPost;
   if (isComment) {
@@ -67,7 +81,30 @@ const Comment: React.FC<Props> = ({ username, timeUpload, content, listLike, nav
             <View style={styles.bottomContent}>
               <View style={styles.action}>
                 <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-                  <Item title="heart" iconName="heart" color={theme.colors.primary} onPress={() => {}}></Item>
+                  <Item
+                    title="heart"
+                    iconName={isLike ? 'heart' : 'heart-outline'}
+                    color={theme.colors.primary}
+                    onPress={() => {
+                      if (isLike) {
+                        const index = listLike?.indexOf(userUid);
+                        listLike?.splice(index, 1);
+                        const updateListLike = listLike?.filter((item) => item !== userUid);
+                        setIsLike(!isLike);
+                        dispatch(updateListLikeCommentAsync(uidComment, updateListLike));
+                      } else {
+                        listLike?.push(userUid);
+                        setIsLike(!isLike);
+                        if (listLike?.indexOf(userUid) >= 0) {
+                          const updateListLike = listLike;
+                          dispatch(updateListLikeCommentAsync(uidComment, updateListLike));
+                          return;
+                        }
+                        const updateListLike = listLike?.concat(userUid);
+                        dispatch(updateListLikeCommentAsync(uidComment, updateListLike));
+                      }
+                    }}
+                  ></Item>
                 </HeaderButtons>
                 <Text style={styles.numberOfAction}>{listLike.length}</Text>
               </View>
