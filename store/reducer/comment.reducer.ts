@@ -1,4 +1,4 @@
-import { CommentActionType, SET_COMMENT_DATA, UPDATE_LISTLIKE_COMMENT } from '../action/actionTypes';
+import { CommentActionType, SET_COMMENT_DATA, UPDATE_LISTLIKE_COMMENT, UPDATE_LIST_COMMENT } from '../action/actionTypes';
 
 const initialState = {
   listDataComment: [],
@@ -22,6 +22,14 @@ export default (state = initialState, action: CommentActionType) => {
         ...state,
         listDataComment: listDataComment,
       };
+    case UPDATE_LIST_COMMENT: {
+      return {
+        listDataComment: [
+          ...state.listDataComment,
+          action.payload.newComment
+        ]
+      }
+    }
     default:
       return state;
   }

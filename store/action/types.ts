@@ -31,3 +31,11 @@ export interface ListPostData {
 export interface ListCommentData {
   listCommentData?: Array<CommentItem>;
 }
+
+export interface Comment {
+  id: string;
+  content: string;
+  owner: string;
+  listLike: Array<string> | [];
+  timeUpload: string;
+}

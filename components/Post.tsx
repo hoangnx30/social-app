@@ -39,7 +39,6 @@ const Post: React.FC<Props> = ({
   const [onFocus, setOnFocus] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
   const theme = useTheme();
-  debugger;
   const dispatch = useDispatch();
   let timeOfPost;
   if (isComment) {

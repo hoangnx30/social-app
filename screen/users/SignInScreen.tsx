@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, CheckBox, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'react-native-paper';
 
@@ -72,9 +72,9 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
         style={styles.input}
         placeholder="Password"
       />
-      <TouchableHighlight style={styles.submit} onPress={handleLogIn}>
+      <TouchableOpacity style={styles.submit} onPress={handleLogIn} activeOpacity={0.8}>
         <Text style={styles.submitText}>Login</Text>
-      </TouchableHighlight>
+      </TouchableOpacity>
 
       <Text style={styles.forgotpass} onPress={() => navigation.navigate('ForgotPassword')}>
         Forgot Password?

@@ -5,8 +5,9 @@ import { useTheme } from 'react-native-paper';
 import Comment from '../../../components/Comment';
 import PostWithComment from '../../../components/PostWithComment';
 import { useDispatch, useSelector } from 'react-redux';
-import { setListCommentDataAsync } from '../../../store/action/comment.action';
+import { setListCommentDataAsync, updateNewComment } from '../../../store/action/comment.action';
 import { rootReducerType } from '../../../store/reducer';
+import CustomTextInput from '../../../components/CustomTextInput';
 
 const styles = StyleSheet.create({
   screen: {
@@ -20,8 +21,9 @@ const styles = StyleSheet.create({
 const PostScreen = ({ route, navigation }: any) => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLike, setIsLike] = useState(false);
+  const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [commentValue, setCommentValue] = useState<string>('');
   const { content, date, listComment, listLike, username, uidPost } = route.params;
 
   const loadPostPage = useCallback(async () => {
@@ -43,7 +45,7 @@ const PostScreen = ({ route, navigation }: any) => {
   }
   return (
     <View style={styles.screen}>
-      <View style={{ flexShrink: 1 }}>
+      <View style={{ flexShrink: 1, marginBottom: 52 }}>
         <ScrollView>
           <PostWithComment
             content={content}
@@ -70,6 +72,11 @@ const PostScreen = ({ route, navigation }: any) => {
           })}
         </ScrollView>
       </View>
+      <CustomTextInput
+        value={commentValue}
+        onHandleChangeText={(value) => setCommentValue(value)}
+        onHandleSubmit={() => dispatch(updateNewComment(userUid, commentValue, uidPost))}
+      />
     </View>
   );
 };

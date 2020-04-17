@@ -55,3 +55,45 @@ export const updateListLikeCommentAsync = (uidComment: string, listLike: Array<s
     });
   };
 };
+
+export const updateNewComment = (userUid: string, content: string, postUid: string) => {
+  return async (dispatch: any, getState: any) => {
+    const rootState = getState();
+    const timeUpload = Date.now();
+    const newCommentRes = await axios.post('listCommentData.json', {
+      owner: userUid,
+      content: content,
+      timeUpload: timeUpload,
+    });
+
+    let thisPost;
+    for (let index = 0; index < rootState.postState.postData.length; index++) {
+      if (rootState.postState.postData[index].id === postUid) thisPost = rootState.postState.postData[index];
+    }
+    const newListComment = [...thisPost.listComment, newCommentRes.data.name];
+
+    await axios.patch(
+      `postData/${postUid}.json`,
+      { listComment: newListComment },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    console.log(newListComment);
+    dispatch({
+      type: 'UPDATE_LIST_COMMENT',
+      payload: {
+        newComment: {
+          id: newCommentRes.data,
+          owner: userUid,
+          content: content,
+          listLike: [],
+          timeUpload: timeUpload,
+        },
+      },
+    });
+  };
+};

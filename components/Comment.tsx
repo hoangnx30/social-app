@@ -41,9 +41,15 @@ const Comment: React.FC<Props> = ({
   const theme = useTheme();
   const dispatch = useDispatch();
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
-  let timeOfPost;
+  let timeOfPost = [
+    new Date(+timeUpload).getFullYear(),
+    new Date(+timeUpload).getMonth() + 1 < 10
+      ? '0' + (new Date(+timeUpload).getMonth() + 1)
+      : new Date(+timeUpload).getMonth() + 1,
+    new Date(+timeUpload).getDate(),
+  ].join('');
   if (isComment) {
-    timeOfPost = moment.duration(Date.now() - timeUpload)._data.minutes;
+    timeOfPost = moment(timeOfPost, 'YYYYMMDD').fromNow();
   }
   return (
     <TouchableOpacity
@@ -58,10 +64,10 @@ const Comment: React.FC<Props> = ({
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.topContent}>
-            <View style={{ flexShrink: 1, width: '100%' }}>
+            <View style={{ flexShrink: 1 }}>
               <View style={styles.topLeftContainer}>
                 <Text style={styles.username}>{username}</Text>
-                <Text style={{ marginRight: 3 }}>{timeOfPost === 0 ? '1' : timeOfPost} minutes ago</Text>
+                <Text style={{ marginLeft: 10 }}>{timeOfPost}</Text>
               </View>
             </View>
             {userUid === owner ? (

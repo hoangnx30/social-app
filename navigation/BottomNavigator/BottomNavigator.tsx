@@ -26,6 +26,10 @@ const BottomNavigator = () => {
             const routes = route.state.routes;
             tabBarVisible = routes[routes.length - 1].name === 'UpLoadPost' ? false : true;
           }
+          if (route.state) {
+            const routes = route.state.routes;
+            tabBarVisible = routes[routes.length - 1].name === 'Post' ? false : true;
+          }
           return {
             tabBarIcon: ({ color }) => {
               return <MaterialCommunityIcons name="home" size={32} color={color} />;

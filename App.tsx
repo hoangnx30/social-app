@@ -11,7 +11,7 @@ import AppNavigator from './navigation/AppNavigator';
 import rootReducer from './store/reducer/';
 import { firebaseConfig } from './config/firebase.config';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = compose;
 
 const theme = {
   ...DefaultTheme,
