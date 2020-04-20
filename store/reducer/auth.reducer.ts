@@ -7,6 +7,7 @@ const initialState = {
     expirationTime: '',
     uid: '',
   },
+  user: {},
 };
 
 export default (state = initialState, action: AuthActionType) => {
@@ -15,6 +16,7 @@ export default (state = initialState, action: AuthActionType) => {
       return {
         ...state,
         userInfo: action.payload.userInfo,
+        user: action.payload.user,
       };
     default:
       return state;

@@ -20,16 +20,19 @@ export const LoginAsync = (email: string, password: string) => {
     })
       .then((response) => {
         const data = response.data;
-        dispatch({
-          type: LOG_IN,
-          payload: {
-            userInfo: {
-              accessToken: data.idToken,
-              refreshToken: data.refreshToken,
-              expirationTime: data.expiresIn,
-              uid: data.localId,
+        axios.get(`https://sguet-9a1c4.firebaseio.com/users/${data.localId}.json`).then((res) => {
+          dispatch({
+            type: LOG_IN,
+            payload: {
+              userInfo: {
+                accessToken: data.idToken,
+                refreshToken: data.refreshToken,
+                expirationTime: data.expiresIn,
+                uid: data.localId,
+              },
+              user: res.data,
             },
-          },
+          });
         });
       })
       .catch((error) => console.log(error));

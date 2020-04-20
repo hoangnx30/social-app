@@ -12,6 +12,7 @@ import { HomeParamsList } from '../navigation/types';
 import { useSelector, useDispatch } from 'react-redux';
 import { rootReducerType } from '../store/reducer';
 import { updateListLikeCommentAsync } from '../store/action/comment.action';
+import { likeComment } from '../services/service';
 
 interface Props {
   username?: string;
@@ -23,6 +24,7 @@ interface Props {
   isComment?: boolean;
   owner?: string;
   uidComment?: string;
+  uidPost?: string;
 }
 
 const Comment: React.FC<Props> = ({
@@ -34,10 +36,10 @@ const Comment: React.FC<Props> = ({
   navigation,
   isComment,
   owner,
+  uidPost,
 }) => {
   const [onFocus, setOnFocus] = useState(false);
   const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
-
   const theme = useTheme();
   const dispatch = useDispatch();
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
@@ -67,16 +69,17 @@ const Comment: React.FC<Props> = ({
             <View style={{ flexShrink: 1 }}>
               <View style={styles.topLeftContainer}>
                 <Text style={styles.username}>{username}</Text>
-                <Text style={{ marginLeft: 10 }}>{timeOfPost}</Text>
               </View>
             </View>
             {userUid === owner ? (
-              <View>
+              <View style={{ justifyContent: 'flex-end' }}>
                 <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
               </View>
             ) : null}
           </View>
-
+          <View>
+            <Text style={{ marginTop: -10, marginBottom: 10, color: '#ccc' }}>{timeOfPost}</Text>
+          </View>
           <View>
             <View>
               <Text style={{ flexWrap: 'wrap' }}>{content}</Text>
@@ -97,22 +100,22 @@ const Comment: React.FC<Props> = ({
                         listLike?.splice(index, 1);
                         const updateListLike = listLike?.filter((item) => item !== userUid);
                         setIsLike(!isLike);
-                        dispatch(updateListLikeCommentAsync(uidComment, updateListLike));
+                        likeComment(uidPost, uidComment, updateListLike);
                       } else {
                         listLike?.push(userUid);
                         setIsLike(!isLike);
                         if (listLike?.indexOf(userUid) >= 0) {
                           const updateListLike = listLike;
-                          dispatch(updateListLikeCommentAsync(uidComment, updateListLike));
+                          likeComment(uidPost, uidComment, updateListLike);
                           return;
                         }
                         const updateListLike = listLike?.concat(userUid);
-                        dispatch(updateListLikeCommentAsync(uidComment, updateListLike));
+                        likeComment(uidPost, uidComment, updateListLike);
                       }
                     }}
                   ></Item>
                 </HeaderButtons>
-                <Text style={styles.numberOfAction}>{listLike.length}</Text>
+                <Text style={styles.numberOfAction}>{listLike ? listLike.length : 0}</Text>
               </View>
             </View>
           </View>
@@ -131,11 +134,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-  topContent: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  topContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   bottomContent: { flexDirection: 'row' },
   leftContainer: { paddingHorizontal: 5, paddingVertical: 10 },
-  rightContainer: { flexShrink: 1, padding: 5 },
-  action: { flexDirection: 'row', alignItems: 'center', marginRight: 20 },
+  rightContainer: { flexShrink: 0, padding: 5, flex: 1 },
+  action: { flexDirection: 'row', alignItems: 'center', marginRight: 20, marginTop: 10 },
   numberOfAction: { fontSize: 18, marginLeft: 4 },
   username: { fontSize: 18, fontWeight: 'bold', overflow: 'hidden' },
   topLeftContainer: {

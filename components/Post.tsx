@@ -12,6 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { rootReducerType } from '../store/reducer';
 import { updateListLikeAsync } from '../store/action/post.action';
+import { likePost } from '../services/service';
 interface Props {
   uidPost: string;
   username?: string;
@@ -101,17 +102,17 @@ const Post: React.FC<Props> = ({
                         listLike?.splice(index, 1);
                         const updateListLike = listLike?.filter((item) => item !== userUid);
                         setIsLike(!isLike);
-                        dispatch(updateListLikeAsync(uidPost, updateListLike));
+                        likePost(uidPost, updateListLike);
                       } else {
                         listLike?.push(userUid);
                         setIsLike(!isLike);
                         if (listLike?.indexOf(userUid) >= 0) {
                           const updateListLike = listLike;
-                          dispatch(updateListLikeAsync(uidPost, updateListLike));
+                          likePost(uidPost, updateListLike);
                           return;
                         }
                         const updateListLike = listLike?.concat(userUid);
-                        dispatch(updateListLikeAsync(uidPost, updateListLike));
+                        likePost(uidPost, updateListLike);
                       }
                     }}
                   ></Item>
@@ -137,7 +138,7 @@ const Post: React.FC<Props> = ({
                     }}
                   ></Item>
                 </HeaderButtons>
-                <Text style={styles.numberOfAction}>{listComment?.length}</Text>
+                <Text style={styles.numberOfAction}>{Object.keys(listComment)?.length}</Text>
               </View>
             </View>
           </View>

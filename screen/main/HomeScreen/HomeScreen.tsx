@@ -7,6 +7,7 @@ import ButtonCircle from '../../../components/ButtonCircle';
 import { rootReducerType } from '../../../store/reducer/';
 import { setPostDataAsync } from '../../../store/action/post.action';
 import { HomeNavigatorProps } from '../../../navigation/types';
+import { List } from 'react-native-paper';
 
 const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -29,7 +30,7 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
         uidPost={item.id}
         username={item.username}
         date={item.timeUpload}
-        listLike={item.listLike}
+        listLike={item.listLike ? item.listLike : []}
         listComment={item.listComment}
         content={item.content}
         navigation={navigation}

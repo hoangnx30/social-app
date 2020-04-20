@@ -47,6 +47,7 @@ interface Login {
   type: typeof LOG_IN;
   payload: {
     userInfo: UserInfo;
+    user: Object;
   };
 }
 
