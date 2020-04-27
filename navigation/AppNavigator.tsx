@@ -15,6 +15,7 @@ const AppNavigator = () => {
   if (userInfo.accessToken) {
     isAuthentication = true;
   }
+
   return (
     <NavigationContainer>
       {!isAuthentication && <AuthNavigator />}

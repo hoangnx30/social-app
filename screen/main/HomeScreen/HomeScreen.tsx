@@ -7,7 +7,6 @@ import ButtonCircle from '../../../components/ButtonCircle';
 import { rootReducerType } from '../../../store/reducer/';
 import { setPostDataAsync } from '../../../store/action/post.action';
 import { HomeNavigatorProps } from '../../../navigation/types';
-import { List } from 'react-native-paper';
 
 const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -56,7 +55,7 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
             refreshing={isRefreshing}
             onRefresh={loadHomePage}
           />
-          <ButtonCircle iconName="edit" typeIcon="MI" navigation={navigation} />
+          <ButtonCircle iconName="edit" typeIcon="MI" navigate={() => navigation.navigate('UpLoadPost')} />
         </View>
       )}
     </React.Fragment>

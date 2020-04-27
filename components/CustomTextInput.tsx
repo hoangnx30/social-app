@@ -40,7 +40,7 @@ const CustomTextInput: React.FC<Props> = ({ value, onHandleChangeText, onHandleS
         multiline={true}
         autoCapitalize="sentences"
         autoCorrect={false}
-        placeholder="Relpy"
+        placeholder="reply"
         value={value}
         onChangeText={onHandleChangeText}
       />

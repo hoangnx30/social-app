@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const GroupHomeScreen = () => {
+const GroupHomeScreen = (props: any) => {
   return (
     <View style={styles.screen}>
-      <Text>GroupHomeScreen</Text>
+
     </View>
   );
 };

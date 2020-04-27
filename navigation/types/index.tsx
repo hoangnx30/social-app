@@ -34,10 +34,10 @@ export type NotificationNavigatorProps<T extends keyof NotificationParamsList> =
 
 export type GroupParamsList = {
   Group: undefined;
-  CreateNewGroup: undefined;
   GroupHome: undefined;
   Post: undefined;
   UpLoadPost: undefined;
+  CreateGroup: undefined;
 };
 
 export type GroupNavigatorProps<T extends keyof GroupParamsList> = {

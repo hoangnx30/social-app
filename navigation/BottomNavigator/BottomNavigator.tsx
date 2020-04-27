@@ -46,7 +46,14 @@ const BottomNavigator = () => {
       <BottomTabNavigator.Screen
         name="GroupNavigator"
         component={GroupNavigator}
-        options={{ tabBarIcon: ({ color }) => <MaterialIcons name="group" size={32} color={color} /> }}
+        options={({ route, navigation }) => {
+          let tabBarVisible = true;
+          if (route.state) {
+            const routes = route.state.routes;
+            tabBarVisible = routes[routes.length - 1].name === 'CreateGroup' ? false : true;
+          }
+          return { tabBarIcon: ({ color }) => <MaterialIcons name="group" size={32} color={color} />, tabBarVisible };
+        }}
       />
       <BottomTabNavigator.Screen
         name="MessageNavigator"
