@@ -6,7 +6,7 @@ import AvatarGroup from './AvatarGroup';
 
 const GroupItem = (props: any) => {
   return (
-    <TouchableNativeFeedback onPress={() => {}}>
+    <TouchableNativeFeedback onPress={() => {props.navigation.navigate('GroupHome')}}>
       <View style={styles.groupItem}>
         <View style={{ width: '95%', flexDirection: 'row', alignSelf: 'center' }}>
           <View style={styles.avatar}>

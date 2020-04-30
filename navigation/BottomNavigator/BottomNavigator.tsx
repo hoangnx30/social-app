@@ -52,7 +52,10 @@ const BottomNavigator = () => {
             const routes = route.state.routes;
             tabBarVisible = routes[routes.length - 1].name === 'CreateGroup' ? false : true;
           }
-          return { tabBarIcon: ({ color }) => <MaterialIcons name="group" size={32} color={color} />, tabBarVisible };
+          return {
+            tabBarIcon: ({ color }) => <MaterialIcons name="group" size={32} color={color} />,
+            tabBarVisible,
+          };
         }}
       />
       <BottomTabNavigator.Screen
