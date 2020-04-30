@@ -15,6 +15,7 @@ const HeaderGroup = ({ name, members }: Props) => {
   );
 };
 
+// Test 
 export default HeaderGroup;
 
 const styles = StyleSheet.create({
