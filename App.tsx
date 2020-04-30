@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import AppNavigator from './navigation/AppNavigator';
 import rootReducer from './store/reducer/';
 import { firebaseConfig } from './config/firebase.config';
-// Test pull code 
+
 const composeEnhancers = compose;
 
 const theme = {
