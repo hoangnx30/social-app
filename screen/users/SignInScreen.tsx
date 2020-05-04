@@ -1,12 +1,13 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTheme } from 'react-native-paper';
+import { useTheme, ActivityIndicator } from 'react-native-paper';
 
 import { AuthNavigatorProps } from '../../navigation/types';
 import { LoginAsync } from '../../store/action/auth.action';
 import { rootReducerType } from '../../store/reducer';
 import { UserInfo } from '../../store/action/types';
+import Color from '../../constants/Color';
 
 const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
   const theme = useTheme();
@@ -58,6 +59,10 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const dispatch = useDispatch();
+
+  const isLoading = useSelector((state) => state.authState.isLoading);
+
+  console.log(isLoading);
   const handleLogIn = useCallback(() => {
     dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));
   }, []);
@@ -79,6 +84,11 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
       <Text style={styles.forgotpass} onPress={() => navigation.navigate('ForgotPassword')}>
         Forgot Password?
       </Text>
+      {isLoading && (
+        <View style={{ marginTop: 20 }}>
+          <ActivityIndicator size="large" color={Color.primary} />
+        </View>
+      )}
     </View>
   );
 };

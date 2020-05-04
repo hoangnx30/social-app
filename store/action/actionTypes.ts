@@ -13,6 +13,11 @@ export const SET_COMMENT_DATA = 'SET_COMMENT_DATA';
 export const UPDATE_LISTLIKE_COMMENT = 'UPDATE_LISTLIKE_COMMENT';
 export const UPDATE_LIST_COMMENT = 'UPDATE_LIST_COMMENT';
 
+export const CREATE_GROUP = 'CREATE_GROUP';
+export const SET_GROUP = 'SET_GROUP';
+
+export const SET_LOADING = 'SET_LOADING';
+
 interface PostStatusAction {
   type: typeof POST_STATUS;
   payload: {};
@@ -72,6 +77,29 @@ interface UpdateListComment {
     newComment: Comment;
   };
 }
+
+interface CreateGroup {
+  type: typeof CREATE_GROUP;
+  payload: {
+    name: string;
+  };
+}
+
+interface SetGroup {
+  type: typeof SET_GROUP;
+  payload: {
+    data: Array<any>;
+  };
+}
+
+interface SetLoading {
+  type: typeof SET_LOADING;
+  payload: {
+    isLoading: boolean;
+  };
+}
+
 export type PostActionType = PostStatusAction | EditStatusAction | DeleteStatusAction | SetPostData | UpdateListLike;
-export type AuthActionType = Login;
+export type AuthActionType = Login | SetLoading;
 export type CommentActionType = SetCommentData | UpdateListLikeComment | UpdateListComment;
+export type GroupActionType = CreateGroup | SetGroup;

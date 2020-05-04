@@ -10,7 +10,6 @@ export const likeComment = (uidPost: string, uidComment: string, listLike: Array
 
 export const uploadComment = (userUid: string, uidPost: string, content: string, fullName: string) => {
   const timeUpload = Date.now();
-  console.log(timeUpload);
   firebase
     .database()
     .ref(`postData/${uidPost}/listComment`)

@@ -15,7 +15,6 @@ export const setPostDataAsync = () => {
   return async (dispatch: any) => {
     //createRef
     const postDataRef = firebase.database().ref('postData');
-    console.log('run');
     //Sync Data
     postDataRef.on('value', (snapshoot) => {
       const postData = snapshoot.val();

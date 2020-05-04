@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import firebase from 'firebase';
 import { TouchableOpacity, View, Text, StyleSheet, TextInput } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Color from '../../../constants/Color';
+import { rootReducerType } from '../../../store/reducer';
 
 const CreateGroupScreen = (props: any) => {
+  const dispatch = useDispatch();
   const [nameGroup, setNameGroup] = useState<string>('');
+  const authState = useSelector<rootReducerType>((state) => state.authState);
+
+  const onHandleCreateGroup = useCallback(() => {
+    firebase
+      .database()
+      .ref('group')
+      .push({ members: [authState.userInfo.uid], nameGroup: nameGroup, createAt: Date.now().toString() })
+      .then((value) => {
+        props.navigation.replace('GroupHome', { id: value.key });
+      });
+  }, [dispatch, nameGroup]);
 
   return (
     <View style={styles.container}>
@@ -27,7 +42,7 @@ const CreateGroupScreen = (props: any) => {
           style={nameGroup.length === 0 ? styles.wrapButtonDisabled : styles.wrapButton}
           activeOpacity={0.8}
           disabled={nameGroup.length === 0 ? true : false}
-          onPress={() => {}}
+          onPress={onHandleCreateGroup}
         >
           <Text style={nameGroup.length === 0 ? styles.contentButtonDisabled : styles.contentButton}>Create Group</Text>
         </TouchableOpacity>
@@ -87,5 +102,5 @@ const styles = StyleSheet.create({
   },
 
   contentButton: { fontSize: 18, color: '#ffffff', fontWeight: 'bold' },
-  contentButtonDisabled: { fontSize: 18, color: "#aaaaaa", fontWeight: 'bold' },
+  contentButtonDisabled: { fontSize: 18, color: '#aaaaaa', fontWeight: 'bold' },
 });

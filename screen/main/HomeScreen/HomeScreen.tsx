@@ -53,6 +53,7 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
             data={postDataFetch}
             renderItem={renderItem}
             refreshing={isRefreshing}
+            showsVerticalScrollIndicator={false}
             onRefresh={loadHomePage}
           />
           <ButtonCircle iconName="edit" typeIcon="MI" navigate={() => navigation.navigate('UpLoadPost')} />

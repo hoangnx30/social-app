@@ -4,9 +4,20 @@ import moment from 'moment';
 
 import AvatarGroup from './AvatarGroup';
 
-const GroupItem = (props: any) => {
+interface Props {
+  name?: string;
+  createAt?: string;
+  navigation?: any;
+  uid?: string;
+}
+
+const GroupItem = (props: Props) => {
   return (
-    <TouchableNativeFeedback onPress={() => {props.navigation.navigate('GroupHome')}}>
+    <TouchableNativeFeedback
+      onPress={() => {
+        props.navigation.navigate('GroupHome');
+      }}
+    >
       <View style={styles.groupItem}>
         <View style={{ width: '95%', flexDirection: 'row', alignSelf: 'center' }}>
           <View style={styles.avatar}>
