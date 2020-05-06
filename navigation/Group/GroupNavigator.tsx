@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -28,8 +29,20 @@ const GroupNavigator = () => {
       />
       <GroupStackNavigator.Screen name="GroupHome" component={GroupHomeScreen} />
       <GroupStackNavigator.Screen name="Post" component={PostScreen} />
-      <GroupStackNavigator.Screen name="CreateGroup" component={CreateGroupScreen} />
-      <GroupStackNavigator.Screen name="UpLoadPost" component={UploadPostScreen} />
+      <GroupStackNavigator.Screen
+        name="CreateGroup"
+        component={CreateGroupScreen}
+        options={{ headerTitle: 'Create Group' }}
+      />
+      <GroupStackNavigator.Screen
+        name="UpLoadPostGroup"
+        component={UploadPostScreen}
+        options={({ navigation, route }) => {
+          return {
+            headerTitle: 'Update Status',
+          };
+        }}
+      />
     </GroupStackNavigator.Navigator>
   );
 };

@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 import { Avatar } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../../store/reducer';
-import { uploadPostAsync } from '../../../store/action/post.action';
-import { HomeNavigatorProps } from '../../../navigation/types';
+import { HomeNavigatorProps, GroupNavigatorProps } from '../../../navigation/types';
+import { uploadPost } from '../../../services/service';
 
 const styles = StyleSheet.create({
   screen: {
@@ -24,24 +24,28 @@ const styles = StyleSheet.create({
   },
 });
 
-const UploadPostScreen = ({ navigation }: HomeNavigatorProps<'UpLoadPost'>) => {
+const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'> & GroupNavigatorProps<'Group'>) => {
   const [content, setContent] = useState<string>('');
-  const dispatch = useDispatch();
-  const uid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
+
+  const uidGroup = route.params ? route.params.uidGroup : null;
+  console.log(route.params);
+  console.log('------', uidGroup);
+  const owner = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const handleUploadStatus = useCallback(() => {
-    const postData = {
-      content: content,
-      owner: uid,
-      likeLike: [],
-      listComment: [],
-      timeUpload: Date.now(),
-    };
-    dispatch(uploadPostAsync(postData));
-    navigation.navigate('Home');
-  }, [dispatch, content]);
+    uploadPost(content, owner, [], [], Date.now(), uidGroup);
+    if (!uidGroup) {
+      navigation.navigate('Home');
+    } else {
+      navigation.replace('GroupHome', { uid: uidGroup });
+    }
+  }, [content]);
   useEffect(() => {
-    navigation.setParams({ handleUpload: handleUploadStatus });
-  }, [handleUploadStatus]);
+    navigation.setOptions({
+      headerRight: () => {
+        return <Button title="Upload" onPress={handleUploadStatus} disabled={content.length ? false : true} />;
+      },
+    });
+  }, [handleUploadStatus, setContent]);
   return (
     <View style={styles.screen}>
       <View style={styles.avatar}>

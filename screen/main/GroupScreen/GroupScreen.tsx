@@ -21,15 +21,14 @@ const GroupScreen = (props: any) => {
   }, [dispatch]);
 
   const renderItem = ({ item }: any) => {
-    return <GroupItem createAt={item.createAt} navigation={props.navigation} name={item.name} uid={item.uid} />;
+    return <GroupItem createAt={item.createAt} navigation={props.navigation} name={item.nameGroup} uid={item.id} />;
   };
 
   const group = useSelector<rootReducerType>((state) => state.groupState.group);
-  console.log('=============', group);
+  console.log(group)
   return (
     <View style={styles.screen}>
       <View>
-        <GroupItem navigation={props.navigation} />
         <FlatList renderItem={renderItem} showsVerticalScrollIndicator={false} data={group} />
       </View>
       <ButtonCircle navigate={() => props.navigation.navigate('CreateGroup')} typeIcon="MI" iconName="group-add" />

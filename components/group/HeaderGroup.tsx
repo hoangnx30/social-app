@@ -29,11 +29,13 @@ const styles = StyleSheet.create({
   },
   nameGroup: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 24,
+    textAlign: 'center'
   },
   members: {
     fontSize: 16,
     color: '#aaaaaa',
-    padding: 5
+    padding: 5,
+    textAlign: 'center'
   }
 });

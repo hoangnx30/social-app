@@ -36,7 +36,7 @@ export type GroupParamsList = {
   Group: undefined;
   GroupHome: undefined;
   Post: undefined;
-  UpLoadPost: undefined;
+  UpLoadPostGroup: undefined;
   CreateGroup: undefined;
 };
 

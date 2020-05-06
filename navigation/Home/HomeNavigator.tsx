@@ -36,12 +36,8 @@ const HomeNavigator = () => {
         name="UpLoadPost"
         component={UploadPostScreen}
         options={({ navigation, route }) => {
-          const handleUpload = route.params ? route.params.handleUpload : () => {};
           return {
             headerTitle: 'Update Status',
-            headerRight: ({ tintColor }) => {
-              return <Button title="Upload" onPress={handleUpload} />;
-            },
           };
         }}
       />

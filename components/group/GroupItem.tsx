@@ -15,7 +15,7 @@ const GroupItem = (props: Props) => {
   return (
     <TouchableNativeFeedback
       onPress={() => {
-        props.navigation.navigate('GroupHome');
+        props.navigation.navigate('GroupHome', { uid: props.uid });
       }}
     >
       <View style={styles.groupItem}>
@@ -25,9 +25,9 @@ const GroupItem = (props: Props) => {
           </View>
           <View>
             <Text style={styles.nameGroup} textBreakStrategy="simple">
-              This is a test group created by me
+              {props.name}
             </Text>
-            <Text style={styles.timeCreated}>Create at: {moment().format('YYYY-MM-DD')}</Text>
+            <Text style={styles.timeCreated}>Create at: {moment(+props.createAt).format('DD MMM YYYY h:mm A')}</Text>
           </View>
         </View>
       </View>

@@ -62,7 +62,6 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
 
   const isLoading = useSelector((state) => state.authState.isLoading);
 
-  console.log(isLoading);
   const handleLogIn = useCallback(() => {
     dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));
   }, []);

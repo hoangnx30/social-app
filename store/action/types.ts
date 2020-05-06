@@ -29,7 +29,7 @@ export interface ListPostData {
 }
 
 export interface ListCommentData {
-  listCommentData?: Array<CommentItem>;
+  listCommentData?: Array<CommentItem> | [];
 }
 
 export interface Comment {

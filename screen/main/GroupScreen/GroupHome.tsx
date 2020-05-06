@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
 
 const GroupHomeScreen = ({ route, navigation }: any) => {
   const params = route.params;
-  // const data = useSelector((state) => state.groupState.group.filter((item) => params.uid === item.uid));
+  const group = useSelector((state) => state.groupState.group.find((item) => params.uid === item.id));
+  const dataGroup = group ? group.ListPost : [];
   const data = [];
   const renderItem = ({ item }: any) => {
     return (
@@ -33,7 +34,6 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
       />
     );
   };
-
   return (
     <View style={styles.screen}>
       <View style={{ borderWidth: 1, width: '100%', height: '100%' }}>
@@ -41,10 +41,22 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
           <View>
             <HeaderGroup name="This is a name 's group" members={['a', 'b', 'c', 'd']} />
           </View>
-          <View>{data.length > 0 ? <FlatList data={[]} renderItem={renderItem} /> : <Text>No Post</Text>}</View>
+          <View>
+            {data.length > 0 ? (
+              <FlatList data={dataGroup} renderItem={renderItem} />
+            ) : (
+              <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                <Text style={{ fontSize: 18 }}>No Post is available</Text>
+              </View>
+            )}
+          </View>
         </ScrollView>
       </View>
-      <ButtonCircle iconName="edit" typeIcon="MI" navigate={() => props.navigation.navigate('UpLoadPost')} />
+      <ButtonCircle
+        iconName="edit"
+        typeIcon="MI"
+        navigate={() => navigation.navigate('UpLoadPostGroup', { uidGroup: params.uid })}
+      />
     </View>
   );
 };
