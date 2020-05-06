@@ -1,16 +1,39 @@
 import { ListCommentData } from './../store/action/types';
 import firebase from 'firebase';
 
-export const likePost = (uidPost: string, listLike: Array<string>) => {
+export const likePost = (uidPost: string, listLike: Array<string>, uidGroup: string) => {
+  if (uidGroup) {
+    firebase.database().ref(`group/${uidGroup}/listPost/${uidPost}`).update({ listLike: listLike });
+    return;
+  }
   firebase.database().ref(`postData/${uidPost}`).update({ listLike: listLike });
 };
 
-export const likeComment = (uidPost: string, uidComment: string, listLike: Array<string>) => {
-  firebase.database().ref(`postData/${uidPost}/listComment/${uidComment}`).update({ listlike: listLike });
+export const likeComment = (uidPost: string, uidComment: string, listLike: Array<string>, uidGroup: string) => {
+  if (uidGroup) {
+    firebase
+      .database()
+      .ref(`group/${uidGroup}/ListPost/${uidPost}/listComment/${uidComment}`)
+      .update({ listLike: listLike });
+    return;
+  }
+  firebase.database().ref(`postData/${uidPost}/listComment/${uidComment}`).update({ listLike: listLike });
 };
 
-export const uploadComment = (userUid: string, uidPost: string, content: string, fullName: string) => {
+export const uploadComment = (
+  userUid: string,
+  uidPost: string,
+  content: string,
+  fullName: string,
+  uidGroup: string
+) => {
   const timeUpload = Date.now();
+  if (uidGroup) {
+    firebase
+      .database()
+      .ref(`group/${uidGroup}/ListPost/${uidPost}/listComment`)
+      .push({ owner: userUid, content: content, createAt: timeUpload });
+  }
   firebase
     .database()
     .ref(`postData/${uidPost}/listComment`)

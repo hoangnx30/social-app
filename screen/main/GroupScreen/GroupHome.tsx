@@ -23,14 +23,12 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
   const group = useSelector((state) => state.groupState.group.find((item) => params.uid === item.id));
 
   let dataGroup = group ? group.ListPost : {};
-
+  console.log(group);
   useEffect(() => {
     dispatch(transformData(dataGroup));
   }, [dispatch]);
   const result = useSelector((state) => state.groupState.transformData);
-  console.log('aaaaaa', result);
   const renderItem = ({ item }: any) => {
-    console.log('=====', item);
     return (
       <Post
         uidPost={item.id}
@@ -47,20 +45,18 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
   return (
     <View style={styles.screen}>
       <View style={{ borderWidth: 1, width: '100%', height: '100%' }}>
-        <ScrollView>
-          <View>
-            <HeaderGroup name="This is a name 's group" members={['a', 'b', 'c', 'd']} />
-          </View>
-          <View>
-            {result.length > 0 ? (
-              <FlatList data={result} renderItem={renderItem} />
-            ) : (
-              <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                <Text style={{ fontSize: 18 }}>No Post is available</Text>
-              </View>
-            )}
-          </View>
-        </ScrollView>
+        <View>
+          <HeaderGroup name={group.nameGroup} members={group.members} />
+        </View>
+        <View>
+          {result.length > 0 ? (
+            <FlatList data={result} renderItem={renderItem} />
+          ) : (
+            <View style={{ alignSelf: 'center', marginTop: 20 }}>
+              <Text style={{ fontSize: 18 }}>No Post is available</Text>
+            </View>
+          )}
+        </View>
       </View>
       <ButtonCircle
         iconName="edit"

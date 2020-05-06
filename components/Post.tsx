@@ -64,7 +64,7 @@ const Post: React.FC<Props> = ({
     >
       <View style={styles.container}>
         <View style={styles.leftContainer}>
-          <Avatar.Image source={require('../assets/avatar.png')} />
+          <Avatar.Image source={require('../assets/avatar.png')} size={55} />
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.topContent}>
