@@ -7,6 +7,7 @@ import ButtonCircle from '../../../components/ButtonCircle';
 import { rootReducerType } from '../../../store/reducer/';
 import { setPostDataAsync } from '../../../store/action/post.action';
 import { HomeNavigatorProps } from '../../../navigation/types';
+import Color from '../../../constants/Color';
 
 const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -44,7 +45,7 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
     <React.Fragment>
       {postDataFetch.length == 0 ? (
         <View style={styles.screen}>
-          <ActivityIndicator size="large" color="#aec65a" />
+          <ActivityIndicator size="large" color={`${Color.primary}`} />
         </View>
       ) : (
         <View style={styles.screen}>

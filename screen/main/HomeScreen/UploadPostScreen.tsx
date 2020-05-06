@@ -28,8 +28,6 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
   const [content, setContent] = useState<string>('');
 
   const uidGroup = route.params ? route.params.uidGroup : null;
-  console.log(route.params);
-  console.log('------', uidGroup);
   const owner = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const handleUploadStatus = useCallback(() => {
     uploadPost(content, owner, [], [], Date.now(), uidGroup);

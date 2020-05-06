@@ -29,7 +29,7 @@ export const setPostDataAsync = () => {
           owner: postData[key].owner,
         };
         const usersRef = firebase.database().ref(`users/${postData[key].owner}`);
-        usersRef.on('value', (userSnapshoot) => {
+        usersRef.once('value', (userSnapshoot) => {
           postItem.username = userSnapshoot.val().fullName;
           listPostData.push(postItem);
           dispatch(setPostData(listPostData.reverse()));

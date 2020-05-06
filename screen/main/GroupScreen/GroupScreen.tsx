@@ -25,7 +25,6 @@ const GroupScreen = (props: any) => {
   };
 
   const group = useSelector<rootReducerType>((state) => state.groupState.group);
-  console.log(group)
   return (
     <View style={styles.screen}>
       <View>

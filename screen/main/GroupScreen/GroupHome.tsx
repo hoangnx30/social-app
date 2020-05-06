@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import firebase from 'firebase';
 
 import HeaderGroup from '../../../components/group/HeaderGroup';
 import ButtonCircle from '../../../components/ButtonCircle';
 import { ScrollView } from 'react-native-gesture-handler';
 import Post from '../../../components/Post';
+import { transformData } from '../../../store/action/group.action';
 
 const styles = StyleSheet.create({
   screen: {
@@ -17,17 +19,25 @@ const styles = StyleSheet.create({
 
 const GroupHomeScreen = ({ route, navigation }: any) => {
   const params = route.params;
+  const dispatch = useDispatch();
   const group = useSelector((state) => state.groupState.group.find((item) => params.uid === item.id));
-  const dataGroup = group ? group.ListPost : [];
-  const data = [];
+
+  let dataGroup = group ? group.ListPost : {};
+
+  useEffect(() => {
+    dispatch(transformData(dataGroup));
+  }, [dispatch]);
+  const result = useSelector((state) => state.groupState.transformData);
+  console.log('aaaaaa', result);
   const renderItem = ({ item }: any) => {
+    console.log('=====', item);
     return (
       <Post
         uidPost={item.id}
-        username={item.username}
+        username={item.fullName}
         date={item.timeUpload}
         listLike={item.listLike ? item.listLike : []}
-        listComment={item.listComment}
+        listComment={item.listComment ? item.listComment : []}
         content={item.content}
         navigation={navigation}
         owner={item.owner}
@@ -42,8 +52,8 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
             <HeaderGroup name="This is a name 's group" members={['a', 'b', 'c', 'd']} />
           </View>
           <View>
-            {data.length > 0 ? (
-              <FlatList data={dataGroup} renderItem={renderItem} />
+            {result.length > 0 ? (
+              <FlatList data={result} renderItem={renderItem} />
             ) : (
               <View style={{ alignSelf: 'center', marginTop: 20 }}>
                 <Text style={{ fontSize: 18 }}>No Post is available</Text>

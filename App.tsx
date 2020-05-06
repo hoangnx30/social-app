@@ -23,7 +23,7 @@ const theme = {
   },
 };
 
-YellowBox.ignoreWarnings(['Setting a timer']);
+YellowBox.ignoreWarnings(['Setting a timer', 'VirtualizedLists should never be nested']);
 const _console = _.clone(console);
 console.warn = (message: any) => {
   if (message.indexOf('Setting a timer') <= -1) {
