@@ -18,6 +18,7 @@ export const fetchGroup = () => {
       .ref('group')
       .on('value', (snapshoot) => {
         const groups = snapshoot.val();
+
         for (const group in groups) {
           groupData.push({ ...groups[group], id: group });
         }

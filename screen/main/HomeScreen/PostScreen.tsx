@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, ActivityIndicator, Keyboard } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
@@ -14,17 +14,20 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: 'white',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '100%',
   },
 });
 
 const PostScreen = ({ route, navigation }: any) => {
   const theme = useTheme();
   const authState = useSelector<rootReducerType>((state) => state.authState);
+  const uidGroup = route && route.params ? route.params.uidGroup : undefined;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [commentValue, setCommentValue] = useState<string>('');
   const { content, date, listComment, listLike, username, uidPost } = route.params;
+
+  const inputRef = useRef<HTMLInputElement>();
+
   if (isLoading) {
     return (
       <View style={styles.screen}>
@@ -32,6 +35,8 @@ const PostScreen = ({ route, navigation }: any) => {
       </View>
     );
   }
+
+  
   return (
     <View style={styles.screen}>
       <View style={{ flexShrink: 1, marginBottom: 52 }}>
@@ -43,6 +48,8 @@ const PostScreen = ({ route, navigation }: any) => {
             listLike={listLike}
             username={username}
             uidPost={uidPost}
+            uidGroup={uidGroup}
+            inputRef={inputRef}
           />
           {Object.keys(listComment).map((key: any, _: number) => {
             const item = listComment[key];
@@ -67,7 +74,7 @@ const PostScreen = ({ route, navigation }: any) => {
         value={commentValue}
         onHandleChangeText={(value) => setCommentValue(value)}
         onHandleSubmit={() => {
-          uploadComment(authState.userInfo.uid, uidPost, commentValue, authState.user.fullName);
+          uploadComment(authState.userInfo.uid, uidPost, commentValue, authState.user.fullName, uidGroup);
           setCommentValue('');
           Keyboard.dismiss();
         }}

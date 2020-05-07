@@ -8,8 +8,8 @@ import { useTheme } from 'react-native-paper';
 
 import { CustomHeaderButtonMCI } from './HeaderButton';
 import { rootReducerType } from '../store/reducer';
-import { updateListLikeAsync } from '../store/action/post.action';
 import { likePost } from '../services/service';
+import { fetchGroup } from '../store/action/group.action';
 
 interface Props {
   uidPost?: string;
@@ -18,18 +18,29 @@ interface Props {
   content?: string;
   listLike?: Array<string> | [];
   listComment?: Array<string> | [];
+  uidGroup?: string;
+  inputRef?: any;
 }
 
-const PostWithComment: React.FC<Props> = ({ username, timeUpload, content, listComment, listLike, uidPost }) => {
+const PostWithComment: React.FC<Props> = ({
+  username,
+  timeUpload,
+  content,
+  listComment,
+  listLike,
+  uidPost,
+  uidGroup,
+  inputRef,
+}) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
-  const theme = useTheme();
   const dispatch = useDispatch();
+  const theme = useTheme();
   return (
     <View style={styles.screen}>
       <View>
         <View style={styles.headerPost}>
-          <Avatar.Image style={styles.avatar} source={require('../assets/avatar.png')} />
+          <Avatar.Image style={styles.avatar} source={require('../assets/avatar.png')} size={55} />
           <View>
             <TouchableNativeFeedback>
               <View>
@@ -62,6 +73,29 @@ const PostWithComment: React.FC<Props> = ({ username, timeUpload, content, listC
               iconName={isLike ? 'heart' : 'heart-outline'}
               color={theme.colors.primary}
               onPress={() => {
+                if (uidGroup) {
+                  if (isLike) {
+                    const index = listLike?.indexOf(userUid);
+                    listLike?.splice(index, 1);
+                    const updateListLike = listLike?.filter((item) => item !== userUid);
+                    setIsLike(!isLike);
+                    likePost(uidPost, updateListLike, uidGroup);
+                    dispatch(fetchGroup());
+                  } else {
+                    listLike?.push(userUid);
+                    setIsLike(!isLike);
+                    if (listLike?.indexOf(userUid) >= 0) {
+                      const updateListLike = listLike;
+                      likePost(uidPost, updateListLike, uidGroup);
+                      dispatch(fetchGroup());
+                      return;
+                    }
+                    const updateListLike = listLike?.concat(userUid);
+                    likePost(uidPost, updateListLike, uidGroup);
+                  }
+                  return;
+                }
+
                 if (isLike) {
                   const index = listLike?.indexOf(userUid);
                   listLike?.splice(index, 1);
@@ -85,7 +119,13 @@ const PostWithComment: React.FC<Props> = ({ username, timeUpload, content, listC
           </HeaderButtons>
           <View style={{ borderWidth: 1, borderColor: '#ccc' }}></View>
           <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-            <Item title="comment" iconName="comment-outline" color={theme.colors.primary} onPress={() => {}}></Item>
+            <Item
+              title="comment"
+              iconName="comment-outline"
+              color={theme.colors.primary}
+              onPress={() => {
+                }}
+            ></Item>
           </HeaderButtons>
         </View>
         <View style={styles.slash}></View>
@@ -96,9 +136,8 @@ const PostWithComment: React.FC<Props> = ({ username, timeUpload, content, listC
 
 const styles = StyleSheet.create({
   screen: {
-    justifyContent: 'center',
-    alignItems: 'center',
     width: '100%',
+    borderWidth: 1,
   },
   headerPost: {
     flexDirection: 'row',

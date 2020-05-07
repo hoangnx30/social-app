@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import moment from 'moment';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Avatar, IconButton } from 'react-native-paper';
@@ -23,6 +23,7 @@ interface Props {
   navigation: StackNavigationProp<HomeParamsList, 'Home'>;
   isComment?: boolean;
   owner?: string;
+  uidGroup?: string;
 }
 
 const Post: React.FC<Props> = ({
@@ -35,12 +36,13 @@ const Post: React.FC<Props> = ({
   navigation,
   isComment,
   owner,
+  uidGroup,
 }) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const [onFocus, setOnFocus] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
+
   const theme = useTheme();
-  const dispatch = useDispatch();
   let timeOfPost;
   if (isComment) {
     timeOfPost = moment.duration(Date.now() - date)._data.minutes;
@@ -58,6 +60,7 @@ const Post: React.FC<Props> = ({
           listLike: listLike,
           content: content,
           uidPost: uidPost,
+          uidGroup: uidGroup,
         });
       }}
       style={{ backgroundColor: onFocus ? '#F5F5F5' : 'white' }}
@@ -97,6 +100,27 @@ const Post: React.FC<Props> = ({
                     color={theme.colors.primary}
                     iconName={isLike ? 'heart' : 'heart-outline'}
                     onPress={() => {
+                      if (uidGroup) {
+                        if (isLike) {
+                          const index = listLike?.indexOf(userUid);
+                          listLike?.splice(index, 1);
+                          const updateListLike = listLike?.filter((item) => item !== userUid);
+                          setIsLike(!isLike);
+                          likePost(uidPost, updateListLike, uidGroup);
+                        } else {
+                          listLike?.push(userUid);
+                          setIsLike(!isLike);
+                          if (listLike?.indexOf(userUid) >= 0) {
+                            const updateListLike = listLike;
+                            likePost(uidPost, updateListLike, uidGroup);
+                            return;
+                          }
+                          const updateListLike = listLike?.concat(userUid);
+                          likePost(uidPost, updateListLike, uidGroup);
+                        }
+                        return;
+                      }
+
                       if (isLike) {
                         const index = listLike?.indexOf(userUid);
                         listLike?.splice(index, 1);
@@ -134,6 +158,7 @@ const Post: React.FC<Props> = ({
                         listLike: listLike,
                         content: content,
                         uidPost: uidPost,
+                        uidGroup: uidGroup,
                       });
                     }}
                   ></Item>

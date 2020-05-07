@@ -1,14 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import firebase from 'firebase';
 
 import HeaderGroup from '../../../components/group/HeaderGroup';
 import ButtonCircle from '../../../components/ButtonCircle';
-import { ScrollView } from 'react-native-gesture-handler';
 import Post from '../../../components/Post';
-import { transformData } from '../../../store/action/group.action';
-
+import { transformData, fetchGroup } from '../../../store/action/group.action';
+import Colors from '../../../constants/Color';
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -19,15 +17,22 @@ const styles = StyleSheet.create({
 
 const GroupHomeScreen = ({ route, navigation }: any) => {
   const params = route.params;
+  const uidGroup = params.uid;
   const dispatch = useDispatch();
   const group = useSelector((state) => state.groupState.group.find((item) => params.uid === item.id));
+  const [isRefresh, setIsRefresh] = useState<boolean>(false);
 
+  const handleRefresh =  useCallback(() => {
+    setIsRefresh(true);
+    dispatch(fetchGroup());
+    setIsRefresh(false);
+  }, [isRefresh, dispatch]);
   let dataGroup = group ? group.ListPost : {};
-  console.log(group);
   useEffect(() => {
     dispatch(transformData(dataGroup));
-  }, [dispatch]);
+  }, [dispatch, dataGroup]);
   const result = useSelector((state) => state.groupState.transformData);
+
   const renderItem = ({ item }: any) => {
     return (
       <Post
@@ -39,6 +44,7 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
         content={item.content}
         navigation={navigation}
         owner={item.owner}
+        uidGroup={uidGroup}
       />
     );
   };
@@ -50,7 +56,13 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
         </View>
         <View>
           {result.length > 0 ? (
-            <FlatList data={result} renderItem={renderItem} />
+            <FlatList
+              data={result}
+              renderItem={renderItem}
+              refreshControl={
+                <RefreshControl refreshing={isRefresh} onRefresh={handleRefresh} colors={[Colors.primary]} />
+              }
+            />
           ) : (
             <View style={{ alignSelf: 'center', marginTop: 20 }}>
               <Text style={{ fontSize: 18 }}>No Post is available</Text>

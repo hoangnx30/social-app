@@ -9,9 +9,10 @@ interface Props {
   value?: string;
   onHandleChangeText: (value: string) => void;
   onHandleSubmit: () => void;
+  ref: any;
 }
 
-const CustomTextInput: React.FC<Props> = ({ value, onHandleChangeText, onHandleSubmit }) => {
+const CustomTextInput: React.FC<Props> = ({ value, onHandleChangeText, onHandleSubmit, ref }) => {
   const theme = useTheme();
   const styles = useMemo(() => {
     return StyleSheet.create({
@@ -32,10 +33,10 @@ const CustomTextInput: React.FC<Props> = ({ value, onHandleChangeText, onHandleS
       },
     });
   }, []);
-  const [text, setText] = useState<string>('');
   return (
     <View style={styles.customTextInput}>
       <TextInput
+        ref={ref}
         style={styles.textInput}
         multiline={true}
         autoCapitalize="sentences"

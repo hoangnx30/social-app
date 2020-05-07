@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Post from '../../../components/Post';
@@ -53,9 +53,10 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
             style={styles.listPost}
             data={postDataFetch}
             renderItem={renderItem}
-            refreshing={isRefreshing}
             showsVerticalScrollIndicator={false}
-            onRefresh={loadHomePage}
+            refreshControl={
+              <RefreshControl refreshing={isRefreshing} colors={[Color.primary]} onRefresh={loadHomePage} />
+            }
           />
           <ButtonCircle iconName="edit" typeIcon="MI" navigate={() => navigation.navigate('UpLoadPost')} />
         </View>

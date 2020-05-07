@@ -1,20 +1,24 @@
-import { ListCommentData } from './../store/action/types';
 import firebase from 'firebase';
+import { ListCommentData } from './../store/action/types';
+import { fetchGroup } from '../store/action/group.action';
 
-export const likePost = (uidPost: string, listLike: Array<string>, uidGroup: string) => {
+export const likePost = (uidPost: string, listLike: Array<string>, uidGroup?: string) => {
   if (uidGroup) {
-    firebase.database().ref(`group/${uidGroup}/listPost/${uidPost}`).update({ listLike: listLike });
+    firebase.database().ref(`group/${uidGroup}/ListPost/${uidPost}`).update({ listLike: listLike });
+    fetchGroup();
     return;
   }
   firebase.database().ref(`postData/${uidPost}`).update({ listLike: listLike });
 };
 
-export const likeComment = (uidPost: string, uidComment: string, listLike: Array<string>, uidGroup: string) => {
+export const likeComment = (uidPost: string, uidComment: string, listLike: Array<string>, uidGroup?: string) => {
   if (uidGroup) {
     firebase
       .database()
       .ref(`group/${uidGroup}/ListPost/${uidPost}/listComment/${uidComment}`)
       .update({ listLike: listLike });
+    fetchGroup();
+
     return;
   }
   firebase.database().ref(`postData/${uidPost}/listComment/${uidComment}`).update({ listLike: listLike });
@@ -25,14 +29,15 @@ export const uploadComment = (
   uidPost: string,
   content: string,
   fullName: string,
-  uidGroup: string
+  uidGroup?: string
 ) => {
   const timeUpload = Date.now();
   if (uidGroup) {
     firebase
       .database()
       .ref(`group/${uidGroup}/ListPost/${uidPost}/listComment`)
-      .push({ owner: userUid, content: content, createAt: timeUpload });
+      .push({ owner: userUid, content: content, timeUpload: timeUpload });
+    return;
   }
   firebase
     .database()
@@ -46,7 +51,7 @@ export const uploadPost = (
   listComment: ListCommentData,
   listLike: Array<string>,
   timeUpload: string,
-  uidPost: string
+  uidPost?: string
 ) => {
   if (uidPost === null) {
     const newPost = {

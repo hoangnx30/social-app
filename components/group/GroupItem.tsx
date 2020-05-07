@@ -16,7 +16,6 @@ const GroupItem = (props: Props) => {
     <TouchableNativeFeedback
       onPress={() => {
         props.navigation.navigate('GroupHome', { uid: props.uid });
-        props.navigation.setOptions({headerTitle: props.name})
       }}
     >
       <View style={styles.groupItem}>
