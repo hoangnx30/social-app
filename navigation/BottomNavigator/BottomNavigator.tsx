@@ -69,9 +69,19 @@ const BottomNavigator = () => {
         name="DocumentationNavigator"
         component={DocumentationNavigator}
         options={{
-          tabBarIcon: ({ color }) => <FontAwesome name="bars" size={30} color={color} />,
+          tabBarIcon: ({ color }) => {
+            return <MaterialCommunityIcons name="file-document" size={30} color={color} />;
+          },
         }}
       />
+
+      {/* <BottomTabNavigator.Screen
+        name="DocumentationNavigator"
+        component={DocumentationNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <FontAwesome name="bars" size={30} color={color} />,
+        }}
+      /> */}
     </BottomTabNavigator.Navigator>
   );
 };

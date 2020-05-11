@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import ButtonCirlce from '../../../components/ButtonCircle';
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -9,10 +10,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const ListFolderDocumentationScreen = () => {
+const ListFolderDocumentationScreen = (props: any) => {
   return (
     <View style={styles.screen}>
       <Text>ListFolderDocumentationScreen</Text>
+      <ButtonCirlce typeIcon="MI" iconName="create-new-folder" navigate={() => props.navigation.navigate('UploadNewDocumentation')}/>
     </View>
   );
 };

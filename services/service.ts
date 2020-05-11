@@ -1,6 +1,12 @@
 import firebase from 'firebase';
+import * as Permissions from 'expo-permissions';
+import * as FileSystem from 'expo-file-system';
+import * as DocumentPicker from 'expo-document-picker'; 
+
 import { ListCommentData } from './../store/action/types';
 import { fetchGroup } from '../store/action/group.action';
+
+
 
 export const likePost = (uidPost: string, listLike: Array<string>, uidGroup?: string) => {
   if (uidGroup) {
@@ -85,4 +91,12 @@ export const deleteStatus = (uidPost?: string) => {
 
 export const uploadContent = (uidPost?: string, content?: string) => {
   firebase.database().ref(`postData/${uidPost}`).update({ content: content });
+};
+
+export const uploadFile = (urlImage: string) => {
+
+};
+
+export const saveFile = (uidFolder: string, uidFile: string) => {
+
 };
