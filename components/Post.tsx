@@ -11,8 +11,9 @@ import { HomeParamsList } from '../navigation/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { rootReducerType } from '../store/reducer';
-import { updateListLikeAsync } from '../store/action/post.action';
 import { likePost } from '../services/service';
+import { setData } from '../store/action/user.action';
+
 interface Props {
   uidPost: string;
   username?: string;
@@ -24,24 +25,28 @@ interface Props {
   isComment?: boolean;
   owner?: string;
   uidGroup?: string;
+  isVisible?: boolean;
+  showModal?: any;
 }
 
 const Post: React.FC<Props> = ({
   uidPost,
   username,
   date,
-  content,
   listLike,
+  content,
   listComment,
   navigation,
   isComment,
+  showModal,
   owner,
+  isVisible,
   uidGroup,
 }) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const [onFocus, setOnFocus] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
-
+  const dispatch = useDispatch();
   const theme = useTheme();
   let timeOfPost;
   if (isComment) {
@@ -65,6 +70,7 @@ const Post: React.FC<Props> = ({
       }}
       style={{ backgroundColor: onFocus ? '#F5F5F5' : 'white' }}
     >
+      {/* <Modal> */}
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <Avatar.Image source={require('../assets/avatar.png')} size={55} />
@@ -80,7 +86,13 @@ const Post: React.FC<Props> = ({
             </View>
             {owner === userUid ? (
               <View>
-                <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
+                <IconButton
+                  icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />}
+                  onPress={() => {
+                    showModal();
+                    dispatch(setData(uidPost, content));
+                  }}
+                />
               </View>
             ) : null}
           </View>
@@ -169,6 +181,7 @@ const Post: React.FC<Props> = ({
           </View>
         </View>
       </View>
+      {/* </Modal> */}
     </TouchableOpacity>
   );
 };

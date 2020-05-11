@@ -8,10 +8,12 @@ import { rootReducerType } from '../../../store/reducer/';
 import { setPostDataAsync } from '../../../store/action/post.action';
 import { HomeNavigatorProps } from '../../../navigation/types';
 import Color from '../../../constants/Color';
+import Modal from '../../../components/Modal';
 
 const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const dispatch = useDispatch();
 
   const loadHomePage = useCallback(async () => {
@@ -35,10 +37,19 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
         content={item.content}
         navigation={navigation}
         owner={item.owner}
+        isVisible={isVisible}
+        showModal={handleShowModal}
       />
     );
   };
 
+  const handleShowModal = useCallback(() => {
+    setIsVisible(true);
+  }, [setIsVisible]);
+
+  const handleCloseModal = useCallback(() => {
+    setIsVisible(false);
+  }, [setIsVisible]);
   const postDataFetch: any = useSelector<rootReducerType>((state) => state.postState.postData);
 
   return (
@@ -49,16 +60,18 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
         </View>
       ) : (
         <View style={styles.screen}>
-          <FlatList
-            style={styles.listPost}
-            data={postDataFetch}
-            renderItem={renderItem}
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl refreshing={isRefreshing} colors={[Color.primary]} onRefresh={loadHomePage} />
-            }
-          />
-          <ButtonCircle iconName="edit" typeIcon="MI" navigate={() => navigation.navigate('UpLoadPost')} />
+          <Modal isVisible={isVisible} showModal={handleShowModal} closeModal={handleCloseModal}>
+            <FlatList
+              style={styles.listPost}
+              data={postDataFetch}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={isRefreshing} colors={[Color.primary]} onRefresh={loadHomePage} />
+              }
+            />
+            <ButtonCircle iconName="edit" typeIcon="MI" navigate={() => navigation.navigate('UpLoadPost')} />
+          </Modal>
         </View>
       )}
     </React.Fragment>

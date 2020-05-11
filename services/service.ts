@@ -78,3 +78,11 @@ export const uploadPost = (
     firebase.database().ref(`group/${uidPost}/ListPost`).push(newPost);
   }
 };
+
+export const deleteStatus = (uidPost?: string) => {
+  firebase.database().ref(`postData/${uidPost}`).remove();
+};
+
+export const uploadContent = (uidPost?: string, content?: string) => {
+  firebase.database().ref(`postData/${uidPost}`).update({ content: content });
+};

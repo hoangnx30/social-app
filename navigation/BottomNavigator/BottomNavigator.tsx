@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 
 import { BottomTabParamsList } from '../types';
 import HomeNavigator from '../Home/HomeNavigator';
@@ -32,7 +32,7 @@ const BottomNavigator = () => {
           }
           return {
             tabBarIcon: ({ color }) => {
-              return <MaterialCommunityIcons name="home" size={32} color={color} />;
+              return <MaterialCommunityIcons name="home" size={30} color={color} />;
             },
             tabBarVisible,
           };
@@ -41,7 +41,7 @@ const BottomNavigator = () => {
       <BottomTabNavigator.Screen
         name="NotificationNavigator"
         component={NotificationNavigator}
-        options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="earth" size={32} color={color} /> }}
+        options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="earth" size={30} color={color} /> }}
       />
       <BottomTabNavigator.Screen
         name="GroupNavigator"
@@ -53,7 +53,7 @@ const BottomNavigator = () => {
             tabBarVisible = routes[routes.length - 1].name === 'CreateGroup' ? false : true;
           }
           return {
-            tabBarIcon: ({ color }) => <MaterialIcons name="group" size={32} color={color} />,
+            tabBarIcon: ({ color }) => <MaterialIcons name="group" size={30} color={color} />,
             tabBarVisible,
           };
         }}
@@ -62,14 +62,14 @@ const BottomNavigator = () => {
         name="MessageNavigator"
         component={MessageNavigator}
         options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="message" size={32} color={color} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="message" size={30} color={color} />,
         }}
       />
       <BottomTabNavigator.Screen
         name="DocumentationNavigator"
         component={DocumentationNavigator}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="file-document" size={32} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome name="bars" size={30} color={color} />,
         }}
       />
     </BottomTabNavigator.Navigator>
