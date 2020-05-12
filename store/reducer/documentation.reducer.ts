@@ -1,5 +1,5 @@
 const initialState = {
-  folder: [],
+  listFolder: [],
 };
 
 export default (state = initialState, action: any) => {
@@ -7,7 +7,7 @@ export default (state = initialState, action: any) => {
     case 'FETCH_FOLDER_DOCUMENTATION':
       return {
         ...state,
-        folder: action.payload.data,
+        listFolder: action.payload.data,
       };
     default:
       return state;

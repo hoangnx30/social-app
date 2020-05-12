@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { rootReducerType } from '../store/reducer';
 import { likePost } from '../services/service';
 import { setData } from '../store/action/user.action';
+import Color from '../constants/Color';
 
 interface Props {
   uidPost: string;
@@ -109,7 +110,7 @@ const Post: React.FC<Props> = ({
                 <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
                   <Item
                     title="heart"
-                    color={theme.colors.primary}
+                    color={Color.primary}
                     iconName={isLike ? 'heart' : 'heart-outline'}
                     onPress={() => {
                       if (uidGroup) {
@@ -161,7 +162,7 @@ const Post: React.FC<Props> = ({
                   <Item
                     title="comment"
                     iconName="comment-outline"
-                    color={theme.colors.primary}
+                    color={Color.primary}
                     onPress={() => {
                       navigation.navigate('Post', {
                         listComment: listComment,

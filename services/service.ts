@@ -6,8 +6,6 @@ import * as DocumentPicker from 'expo-document-picker';
 import { ListCommentData } from './../store/action/types';
 import { fetchGroup } from '../store/action/group.action';
 
-
-
 export const likePost = (uidPost: string, listLike: Array<string>, uidGroup?: string) => {
   if (uidGroup) {
     firebase.database().ref(`group/${uidGroup}/ListPost/${uidPost}`).update({ listLike: listLike });

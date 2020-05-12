@@ -8,10 +8,11 @@ const UploadNewDocumentationScreen = (props: any) => {
   const [nameFolder, setNameFolder] = useState<string>('');
 
   const onHandleCreateFolder = () => {
+    const createAt = Date.now();
     firebase
       .database()
       .ref('documentation')
-      .push({ nameFolder: nameFolder })
+      .push({ nameFolder: nameFolder, createAt: createAt })
       .then(() => {
         setNameFolder('');
         props.navigation.navigate('ListFolderDocumentation');

@@ -8,6 +8,7 @@ import HomeScreen from '../../screen/main/HomeScreen/HomeScreen';
 import PostScreen from '../../screen/main/HomeScreen/PostScreen';
 import UploadPostScreen from '../../screen/main/HomeScreen/UploadPostScreen';
 import { CustomHeaderButtonMCI, CustomHeaderButtonMI } from '../../components/HeaderButton';
+import Color from '../../constants/Color';
 
 const HomeStackNavigator = createStackNavigator<HomeParamsList>();
 
@@ -21,7 +22,7 @@ const HomeNavigator = () => {
           headerTitle: 'Home',
           headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-              <Item title="avatar" iconName="account-circle" />
+              <Item title="avatar" iconName="account-circle" color={Color.primary} />
             </HeaderButtons>
           ),
           headerRight: () => (

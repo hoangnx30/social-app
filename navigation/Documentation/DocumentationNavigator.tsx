@@ -16,13 +16,15 @@ const DocumentationNavigator = () => {
       <DocumentationStackNavigator.Screen
         name="ListFolderDocumentation"
         component={ListFolderDocumentationScreen}
-        options={{
-          headerLeft: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-              <Item title="avatar" iconName="account-circle" />
-            </HeaderButtons>
-          ),
-          headerTitle: 'Documentation',
+        options={({ route, navigation }) => {
+          return {
+            headerLeft: () => (
+              <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
+                <Item title="avatar" iconName="account-circle" />
+              </HeaderButtons>
+            ),
+            headerTitle: 'List Folder',
+          };
         }}
       />
       <DocumentationStackNavigator.Screen name="ListDocumentation" component={ListDocumentationScreen} />

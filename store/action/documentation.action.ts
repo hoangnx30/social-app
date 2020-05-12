@@ -13,6 +13,7 @@ export const loadDocumentation = () => {
             id: key,
             ...res[key],
           };
+          transformData.push(data);
         }
         dispatch({
           type: 'FETCH_FOLDER_DOCUMENTATION',

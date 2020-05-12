@@ -8,6 +8,7 @@ import NotificationNavigator from '../Notification/NotificationNavigator';
 import GroupNavigator from '../Group/GroupNavigator';
 import MessageNavigator from '../Message/MessageNavigator';
 import DocumentationNavigator from '../Documentation/DocumentationNavigator';
+import Color from '../../constants/Color';
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabParamsList>();
 
@@ -15,7 +16,7 @@ const BottomNavigator = () => {
   return (
     <BottomTabNavigator.Navigator
       screenOptions={{ tabBarLabel: () => null }}
-      tabBarOptions={{ inactiveTintColor: 'black' }}
+      tabBarOptions={{ inactiveTintColor: 'black', activeTintColor: Color.primary }}
     >
       <BottomTabNavigator.Screen
         name="HomeNavigator"

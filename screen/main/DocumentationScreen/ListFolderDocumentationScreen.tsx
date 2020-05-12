@@ -1,20 +1,52 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
-import ButtonCirlce from '../../../components/ButtonCircle';
+import ButtonCircle from '../../../components/ButtonCircle';
+import FolderItem from '../../../components/documentation/FolderItem';
+import { loadDocumentation } from '../../../store/action/documentation.action';
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
 });
 
 const ListFolderDocumentationScreen = (props: any) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadDocumentation());
+  }, []);
+
+  const listFolder = useSelector((state) => state.documentationState.listFolder);
+  const renderItem = useCallback(
+    ({ item }) => {
+      return (
+        <FolderItem
+          nameFolder={item.nameFolder}
+          createAt={item.createAt}
+          navigation={props.navigation}
+          uidFolder={item.id}
+        />
+      );
+    },
+    [listFolder]
+  );
+
   return (
     <View style={styles.screen}>
-      <Text>ListFolderDocumentationScreen</Text>
-      <ButtonCirlce typeIcon="MI" iconName="create-new-folder" navigate={() => props.navigation.navigate('UploadNewDocumentation')}/>
+      {listFolder && listFolder.length === 0 && (
+        <View>
+          <Text>No folder existed</Text>
+        </View>
+      )}
+      <FlatList data={listFolder} renderItem={renderItem} />
+      <ButtonCircle
+        typeIcon="MI"
+        iconName="create-new-folder"
+        navigate={() => props.navigation.navigate('UploadNewDocumentation')}
+      />
     </View>
   );
 };
