@@ -8,6 +8,7 @@ export const loadDocumentation = () => {
       .on('value', (snapshot) => {
         const transformData: Array<any> = [];
         const res = snapshot.val();
+
         for (const key in res) {
           const data = {
             id: key,
