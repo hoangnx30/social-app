@@ -26,29 +26,41 @@ export const LoginAsync = (email: string, password: string) => {
       },
     })
       .then((response) => {
-        dispatch({
-          type: SET_LOADING,
-          payload: {
-            isLoading: false,
-          },
-        });
         const data = response.data;
-        axios.get(`https://sguet-9a1c4.firebaseio.com/users/${data.localId}.json`).then((res) => {
-          dispatch({
-            type: LOG_IN,
-            payload: {
-              userInfo: {
-                accessToken: data.idToken,
-                refreshToken: data.refreshToken,
-                expirationTime: data.expiresIn,
-                uid: data.localId,
+        firebase
+          .database()
+          .ref(`users/${data.localId}`)
+          .on('value', (snapshot) => {
+            console.log(snapshot.val());
+            dispatch({
+              type: LOG_IN,
+              payload: {
+                userInfo: {
+                  accessToken: data.idToken,
+                  refreshToken: data.refreshToken,
+                  expirationTime: data.expiresIn,
+                  uid: data.localId,
+                },
+                user: { userId: data.localId, ...snapshot.val() },
               },
-              user: { ...res.data, userId: data.localId },
-            },
+            });
           });
-        });
+
+        // axios.get(`https://sguet-9a1c4.firebaseio.com/users/${data.localId}.json`).then((res) => {
+        //   dispatch({
+        //     type: LOG_IN,
+        //     payload: {
+        //       userInfo: {
+        //         accessToken: data.idToken,
+        //         refreshToken: data.refreshToken,
+        //         expirationTime: data.expiresIn,
+        //         uid: data.localId,
+        //       },
+        //       user: { ...res.data, userId: data.localId },
+        //     },
+        //   });
+        // });
       })
       .catch((error) => console.log(error));
   };
 };
-

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme, ActivityIndicator } from 'react-native-paper';
@@ -61,21 +61,24 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
   const dispatch = useDispatch();
 
   const isLoading = useSelector((state) => state.authState.isLoading);
-
   const handleLogIn = useCallback(() => {
-    dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));
+    // dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));
+    dispatch(LoginAsync(email, password));
+  }, [email, password]);
+
+  const setEmailCB = useCallback((value) => {
+    setEmail(value);
+  }, []);
+
+  const setPasswordCB = useCallback((value) => {
+    setPassword(value);
   }, []);
 
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>SGUET</Text>
-      <TextInput style={styles.input} placeholder="Email" onChangeText={(email) => setEmail(email.toString().trim())} />
-      <TextInput
-        secureTextEntry={true}
-        onChangeText={(password) => setPassword(password.trim())}
-        style={styles.input}
-        placeholder="Password"
-      />
+      <TextInput style={styles.input} placeholder="Email" onChangeText={setEmailCB} />
+      <TextInput secureTextEntry={true} onChangeText={setPasswordCB} style={styles.input} placeholder="Password" />
       <TouchableOpacity style={styles.submit} onPress={handleLogIn} activeOpacity={0.8}>
         <Text style={styles.submitText}>Login</Text>
       </TouchableOpacity>

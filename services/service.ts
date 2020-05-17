@@ -98,30 +98,31 @@ export const createNewConversation = (
   userUid1: string,
   userUid2: string
 ) => {
-  console.log(conOfUser1, conOfUser2);
-  if (conOfUser1 && conOfUser2) {
-    console.log('-----', conOfUser1);
-    const check = conOfUser1.filter((e) => conOfUser2.includes(e));
-    if (check.length > 0) {
-      return;
-    }
-  } else {
-    conOfUser1 = conOfUser1 || [];
-    conOfUser2 = conOfUser2 || [];
+  return new Promise((resolve, reject) => {
+    if (conOfUser1 && conOfUser2) {
+      const check = conOfUser1.filter((e) => conOfUser2.includes(e));
+      if (check.length > 0) {
+        resolve(check[0]);
+      }
+    } else {
+      conOfUser1 = conOfUser1 || [];
+      conOfUser2 = conOfUser2 || [];
 
-    firebase
-      .database()
-      .ref('conversations')
-      .push({ members: [userUid1, userUid2] })
-      .then((snapshot) => {
-        firebase
-          .database()
-          .ref(`users/${userUid1}/conversations`)
-          .set(conOfUser1.concat([snapshot.key]));
-        firebase
-          .database()
-          .ref(`users/${userUid2}/conversations`)
-          .set(conOfUser1.concat([snapshot.key]));
-      });
-  }
+      firebase
+        .database()
+        .ref('conversations')
+        .push({ members: [userUid1, userUid2] })
+        .then((snapshot) => {
+          firebase
+            .database()
+            .ref(`users/${userUid1}/conversations`)
+            .set(conOfUser1.concat([snapshot.key]));
+          firebase
+            .database()
+            .ref(`users/${userUid2}/conversations`)
+            .set(conOfUser2.concat([snapshot.key]));
+          resolve(snapshot.key);
+        });
+    }
+  });
 };

@@ -25,26 +25,34 @@ const CreateNewMessageScreen = ({ route, navigation }) => {
     return (
       <TouchableNativeFeedback
         onPress={async () => {
-          await createNewConversation(currentUser.conversations, item.conversations, currentUser.userId, item.userId);
-          dispatch(fetchAllUser());
-          firebase
-            .database()
-            .ref(`users/${currentUser.userId}`)
-            .once('value')
-            .then((snapshot) => {
-              const value = snapshot.val();
-              const data = {
-                ...value,
-                userId: snapshot.key,
-              };
-              dispatch({
-                type: FETCH_USER,
-                payload: {
-                  data: data,
-                },
+          createNewConversation(currentUser.conversations, item.conversations, currentUser.userId, item.userId).then(
+            (conversationId) => {
+              dispatch(fetchAllUser());
+              firebase
+                .database()
+                .ref(`users/${currentUser.userId}`)
+                .once('value')
+                .then((snapshot) => {
+                  const value = snapshot.val();
+                  const data = {
+                    ...value,
+                    userId: snapshot.key,
+                  };
+                  dispatch({
+                    type: FETCH_USER,
+                    payload: {
+                      data: data,
+                    },
+                  });
+                });
+
+              navigation.replace('Message', {
+                headerTitle: item.fullName,
+                user: currentUser,
+                conversationId: conversationId,
               });
-            });
-          navigation.replace('Message', { headerTitle: item.fullName });
+            }
+          );
         }}
       >
         <View style={styles.item}>
