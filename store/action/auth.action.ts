@@ -1,6 +1,7 @@
 import { firebaseConfig } from '../../config/firebase.config';
 
 const API_KEY = firebaseConfig.apiKey;
+import firebase from 'firebase';
 import axios from 'axios';
 import { LOG_IN, SET_LOADING } from './actionTypes';
 
@@ -42,7 +43,7 @@ export const LoginAsync = (email: string, password: string) => {
                 expirationTime: data.expiresIn,
                 uid: data.localId,
               },
-              user: res.data,
+              user: { ...res.data, userId: data.localId },
             },
           });
         });
@@ -50,3 +51,4 @@ export const LoginAsync = (email: string, password: string) => {
       .catch((error) => console.log(error));
   };
 };
+

@@ -4,7 +4,7 @@ import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import moment from 'moment';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-
+import * as Permissions from 'expo-permissions';
 import Color from '../../constants/Color';
 
 interface Props {
@@ -15,19 +15,33 @@ interface Props {
   route?: any;
 }
 
-
 const FileItem = (props: Props) => {
   const [progress, setProgress] = useState(0);
 
+  const verifyPermission = async () => {
+    const result = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (result.status !== 'granted') {
+      Alert.alert('Insufficient permissions!', 'You need to grant camera permission to use this app', [
+        { text: 'Okay' },
+      ]);
+      return false;
+    }
+    return true;
+  };
+
   const handleDownload = async () => {
+    const hasPermission = await verifyPermission();
+    if (!hasPermission) {
+      return;
+    }
     const callback = (downloadProgress) => {
       const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
       setProgress(progress);
     };
-
+    console.log(props.url);
     const downloadResumable = FileSystem.createDownloadResumable(
       props.url,
-      `${FileSystem.documentDirectory} + ${props.nameFile}`,
+      `${FileSystem.documentDirectory}${props.nameFile}`,
       {},
       callback
     );
@@ -56,6 +70,7 @@ const FileItem = (props: Props) => {
 
     async function saveFile(fileUri: string) {
       try {
+        console.log('fileUri', fileUri);
         const asset = await MediaLibrary.createAssetAsync(fileUri);
         await MediaLibrary.createAlbumAsync('Download', asset, false);
         Alert.alert('Success', 'File was successfully downloaded!', [{ text: 'Okay' }]);

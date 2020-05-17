@@ -1,3 +1,4 @@
+import { FETCH_USER } from './../action/actionTypes';
 import { UserInfo } from './../action/types';
 import { AuthActionType, LOG_IN } from '../action/actionTypes';
 
@@ -25,6 +26,11 @@ export default (state: State = initialState, action: AuthActionType) => {
         ...state,
         userInfo: action.payload.userInfo,
         user: action.payload.user,
+      };
+    case FETCH_USER:
+      return {
+        ...state,
+        user: action.payload.data,
       };
     default:
       return state;

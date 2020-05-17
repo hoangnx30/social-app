@@ -6,6 +6,7 @@ import commentReducer from './comment.reducer';
 import groupReducer from './group.reducer';
 import userReducer from './user.reducer';
 import documentationReducer from './documentation.reducer';
+import messageReducer from './message.reducer';
 
 const rootReducer = combineReducers({
   postState: postReducer,
@@ -13,7 +14,9 @@ const rootReducer = combineReducers({
   commentState: commentReducer,
   groupState: groupReducer,
   userState: userReducer,
-  documentationState: documentationReducer
+  documentationState: documentationReducer,
+  messageState: messageReducer,
 });
+
 export default rootReducer;
 export type rootReducerType = ReturnType<typeof rootReducer>;

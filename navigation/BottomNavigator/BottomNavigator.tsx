@@ -62,8 +62,17 @@ const BottomNavigator = () => {
       <BottomTabNavigator.Screen
         name="MessageNavigator"
         component={MessageNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="message" size={30} color={color} />,
+        options={({ route, navigation }) => {
+          let tabBarVisible = true;
+          if (route.state) {
+            const routes = route.state.routes;
+            tabBarVisible = routes[routes.length - 1].name === 'Message' ? false : true;
+          }
+
+          return {
+            tabBarIcon: ({ color }) => <MaterialIcons name="message" size={30} color={color} />,
+            tabBarVisible,
+          };
         }}
       />
       <BottomTabNavigator.Screen

@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { GiftedChat } from 'react-native-gifted-chat';
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
 });
 
 const MessageScreen = () => {
   return (
     <View style={styles.screen}>
-      <Text>MessageScreen</Text>
+      <GiftedChat />
     </View>
   );
 };

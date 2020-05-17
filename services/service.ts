@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import * as Permissions from 'expo-permissions';
 import * as FileSystem from 'expo-file-system';
-import * as DocumentPicker from 'expo-document-picker'; 
+import * as DocumentPicker from 'expo-document-picker';
 
 import { ListCommentData } from './../store/action/types';
 import { fetchGroup } from '../store/action/group.action';
@@ -91,10 +91,37 @@ export const uploadContent = (uidPost?: string, content?: string) => {
   firebase.database().ref(`postData/${uidPost}`).update({ content: content });
 };
 
-export const uploadFile = (urlImage: string) => {
+// con => conversation
+export const createNewConversation = (
+  conOfUser1: Array<string>,
+  conOfUser2: Array<string>,
+  userUid1: string,
+  userUid2: string
+) => {
+  console.log(conOfUser1, conOfUser2);
+  if (conOfUser1 && conOfUser2) {
+    console.log('-----', conOfUser1);
+    const check = conOfUser1.filter((e) => conOfUser2.includes(e));
+    if (check.length > 0) {
+      return;
+    }
+  } else {
+    conOfUser1 = conOfUser1 || [];
+    conOfUser2 = conOfUser2 || [];
 
-};
-
-export const saveFile = (uidFolder: string, uidFile: string) => {
-
+    firebase
+      .database()
+      .ref('conversations')
+      .push({ members: [userUid1, userUid2] })
+      .then((snapshot) => {
+        firebase
+          .database()
+          .ref(`users/${userUid1}/conversations`)
+          .set(conOfUser1.concat([snapshot.key]));
+        firebase
+          .database()
+          .ref(`users/${userUid2}/conversations`)
+          .set(conOfUser1.concat([snapshot.key]));
+      });
+  }
 };

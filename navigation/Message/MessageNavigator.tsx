@@ -24,8 +24,24 @@ const MessageNavigator = () => {
           ),
         }}
       />
-      <MessageStackNavigator.Screen name="Message" component={MessageScreen} />
-      <MessageStackNavigator.Screen name="NewMessage" component={CreateNewMessageScreen} />
+      <MessageStackNavigator.Screen
+        name="Message"
+        component={MessageScreen}
+        options={({ route, navigation }) => {
+          return {
+            headerTitle: route.params.headerTitle,
+          };
+        }}
+      />
+      <MessageStackNavigator.Screen
+        name="NewMessage"
+        component={CreateNewMessageScreen}
+        options={({ route, navigation }) => {
+          return {
+            headerTitle: 'New message',
+          };
+        }}
+      />
     </MessageStackNavigator.Navigator>
   );
 };

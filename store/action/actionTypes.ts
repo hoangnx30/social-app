@@ -8,6 +8,7 @@ export const SET_POST_DATA = 'SET_POST_DATA';
 export const UPDATE_LISTLIKE = 'UPDATE_LISTLIKE';
 
 export const LOG_IN = 'LOG_IN';
+export const FETCH_USER = 'FETCH_USER';
 
 export const SET_COMMENT_DATA = 'SET_COMMENT_DATA';
 export const UPDATE_LISTLIKE_COMMENT = 'UPDATE_LISTLIKE_COMMENT';
@@ -107,7 +108,14 @@ interface TransformData {
   };
 }
 
+interface FetchUser {
+  type: typeof FETCH_USER;
+  payload: {
+    data: any;
+  };
+}
+
 export type PostActionType = PostStatusAction | EditStatusAction | DeleteStatusAction | SetPostData | UpdateListLike;
-export type AuthActionType = Login | SetLoading;
+export type AuthActionType = Login | SetLoading | FetchUser;
 export type CommentActionType = SetCommentData | UpdateListLikeComment | UpdateListComment;
 export type GroupActionType = CreateGroup | SetGroup | TransformData;
