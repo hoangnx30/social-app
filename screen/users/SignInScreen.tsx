@@ -62,8 +62,8 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
 
   const isLoading = useSelector((state) => state.authState.isLoading);
   const handleLogIn = useCallback(() => {
-    // dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));
-    dispatch(LoginAsync(email, password));
+    dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));
+    // dispatch(LoginAsync(email, password));
   }, [email, password]);
 
   const setEmailCB = useCallback((value) => {

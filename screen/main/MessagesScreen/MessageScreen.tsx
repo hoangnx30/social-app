@@ -14,7 +14,6 @@ const MessageScreen = ({ route, navigation }) => {
   const [messages, setMessages] = useState([]);
   const currentUser = route.params.user;
   const conversationId = route.params.conversationId;
-  console.log(conversationId);
   useEffect(() => {
     firebase
       .database()

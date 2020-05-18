@@ -3,7 +3,6 @@ import { SET_POST_DATA } from './actionTypes';
 import { PostItem } from './types';
 
 const setPostData = (listPostData: Array<PostItem>) => {
-  console.log('..................', listPostData);
   return {
     type: SET_POST_DATA,
     payload: {

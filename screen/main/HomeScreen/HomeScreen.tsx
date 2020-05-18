@@ -51,7 +51,6 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
     setIsVisible(false);
   }, [setIsVisible]);
   const postDataFetch: any = useSelector<rootReducerType>((state) => state.postState.postData);
-  console.log('ddd hieu', postDataFetch);
   return (
     <React.Fragment>
       {postDataFetch.length == 0 ? (
