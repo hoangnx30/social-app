@@ -31,7 +31,6 @@ export const LoginAsync = (email: string, password: string) => {
           .database()
           .ref(`users/${data.localId}`)
           .on('value', (snapshot) => {
-            console.log(snapshot.val());
             dispatch({
               type: LOG_IN,
               payload: {

@@ -9,12 +9,17 @@ import { setPostDataAsync } from '../../../store/action/post.action';
 import { HomeNavigatorProps } from '../../../navigation/types';
 import Color from '../../../constants/Color';
 import Modal from '../../../components/Modal';
+import { fetchConversations } from '../../../store/action/message.action';
 
 const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.authState.user);
+
+  const lastMessage = useSelector((state) => state.messageState.lastMessages);
 
   const loadHomePage = useCallback(async () => {
     setIsRefreshing(true);
@@ -25,6 +30,7 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
   useEffect(() => {
     setIsLoading(true);
     loadHomePage().then(setIsLoading(false));
+    dispatch(fetchConversations(user.conversations, user.userId));
   }, [dispatch, loadHomePage]);
   const renderItem = ({ item }: any) => {
     return (
