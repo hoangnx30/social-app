@@ -11,7 +11,6 @@ import { CustomHeaderButtonMCI } from './HeaderButton';
 import { HomeParamsList } from '../navigation/types';
 import { useSelector, useDispatch } from 'react-redux';
 import { rootReducerType } from '../store/reducer';
-import { updateListLikeCommentAsync } from '../store/action/comment.action';
 import { likeComment } from '../services/service';
 
 interface Props {

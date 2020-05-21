@@ -55,7 +55,8 @@ export const uploadPost = (
   listComment: ListCommentData,
   listLike: Array<string>,
   timeUpload: string,
-  uidPost?: string
+  uidPost?: string,
+  urlImage?: string
 ) => {
   if (uidPost === null) {
     const newPost = {

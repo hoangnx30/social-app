@@ -20,22 +20,27 @@ export const setPostDataAsync = () => {
       const postData = snapshot.val();
 
       const listPostData: Array<PostItem> = [];
-      for (let key in postData) {
-        let postItem: PostItem = {
-          id: key,
-          content: postData[key].content,
-          listComment: postData[key].listComment || [],
-          listLike: postData[key].listLike || [],
-          timeUpload: postData[key].timeUpload,
-          owner: postData[key].owner,
-        };
-        const usersRef = firebase.database().ref(`users/${postData[key].owner}`);
-        usersRef.once('value', (userSnapshot) => {
-          postItem.username = userSnapshot.val().fullName;
-          listPostData.push(postItem);
-          dispatch(setPostData(listPostData.reverse()));
+      const listPromise = Object.keys(postData).map((key) => {
+        return new Promise((resolve, reject) => {
+          let postItem: PostItem = {
+            id: key,
+            content: postData[key].content,
+            listComment: postData[key].listComment || [],
+            listLike: postData[key].listLike || [],
+            timeUpload: postData[key].timeUpload,
+            owner: postData[key].owner,
+          };
+          const usersRef = firebase.database().ref(`users/${postData[key].owner}`);
+          usersRef.once('value', (userSnapshot) => {
+            postItem.username = userSnapshot.val().fullName;
+            listPostData.push(postItem);
+            resolve(postItem);
+          });
         });
-      }
+      });
+      Promise.all(listPromise).then((res) => {
+        dispatch(setPostData(res.reverse()));
+      });
     });
   };
 };

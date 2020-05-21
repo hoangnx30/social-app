@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import moment from 'moment';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Avatar, IconButton } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -28,6 +28,7 @@ interface Props {
   uidGroup?: string;
   isVisible?: boolean;
   showModal?: any;
+  urlImage?: string;
 }
 
 const Post: React.FC<Props> = ({
@@ -43,6 +44,7 @@ const Post: React.FC<Props> = ({
   owner,
   isVisible,
   uidGroup,
+  urlImage,
 }) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const [onFocus, setOnFocus] = useState<boolean>(false);
@@ -104,6 +106,11 @@ const Post: React.FC<Props> = ({
             </View>
           </View>
 
+          {urlImage ? (
+            <View style={{ width: '100%' }}>
+              <Image source={{ uri: urlImage }} />
+            </View>
+          ) : null}
           <View>
             <View style={styles.bottomContent}>
               <View style={styles.action}>

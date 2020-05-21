@@ -25,11 +25,9 @@ const BottomNavigator = () => {
           let tabBarVisible = true;
           if (route.state) {
             const routes = route.state.routes;
-            tabBarVisible = routes[routes.length - 1].name === 'UpLoadPost' ? false : true;
-          }
-          if (route.state) {
-            const routes = route.state.routes;
-            tabBarVisible = routes[routes.length - 1].name === 'Post' ? false : true;
+            console.log(routes[routes.length - 1]);
+            const name = routes[routes.length - 1].name;
+            tabBarVisible = name === 'UpLoadPost' || name === 'Post' ? false : true;
           }
           return {
             tabBarIcon: ({ color }) => {
