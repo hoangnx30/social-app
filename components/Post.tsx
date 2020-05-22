@@ -5,7 +5,7 @@ import { Avatar, IconButton } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useTheme } from '@react-navigation/native';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CustomHeaderButtonMCI } from './HeaderButton';
 import { HomeParamsList } from '../navigation/types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -55,6 +55,59 @@ const Post: React.FC<Props> = ({
   if (isComment) {
     timeOfPost = moment.duration(Date.now() - date)._data.minutes;
   }
+
+  const heartIcon = useMemo(() => {
+    return (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
+        <Item
+          title="heart"
+          color={Color.primary}
+          iconName={isLike ? 'heart' : 'heart-outline'}
+          onPress={() => {
+            if (uidGroup) {
+              if (isLike) {
+                const index = listLike?.indexOf(userUid);
+                listLike?.splice(index, 1);
+                const updateListLike = listLike?.filter((item) => item !== userUid);
+                setIsLike(!isLike);
+                likePost(uidPost, updateListLike, uidGroup);
+              } else {
+                listLike?.push(userUid);
+                setIsLike(!isLike);
+                if (listLike?.indexOf(userUid) >= 0) {
+                  const updateListLike = listLike;
+                  likePost(uidPost, updateListLike, uidGroup);
+                  return;
+                }
+                const updateListLike = listLike?.concat(userUid);
+                likePost(uidPost, updateListLike, uidGroup);
+              }
+              return;
+            }
+
+            if (isLike) {
+              const index = listLike?.indexOf(userUid);
+              listLike?.splice(index, 1);
+              const updateListLike = listLike?.filter((item) => item !== userUid);
+              setIsLike(!isLike);
+              likePost(uidPost, updateListLike);
+            } else {
+              listLike?.push(userUid);
+              setIsLike(!isLike);
+              if (listLike?.indexOf(userUid) >= 0) {
+                const updateListLike = listLike;
+                likePost(uidPost, updateListLike);
+                return;
+              }
+              const updateListLike = listLike?.concat(userUid);
+              likePost(uidPost, updateListLike);
+            }
+          }}
+        ></Item>
+      </HeaderButtons>
+    );
+  }, [isLike]);
+
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -69,6 +122,7 @@ const Post: React.FC<Props> = ({
           content: content,
           uidPost: uidPost,
           uidGroup: uidGroup,
+          urlImage: urlImage,
         });
       }}
       style={{ backgroundColor: onFocus ? '#F5F5F5' : 'white' }}
@@ -108,13 +162,13 @@ const Post: React.FC<Props> = ({
 
           {urlImage ? (
             <View style={{ width: '100%' }}>
-              <Image source={{ uri: urlImage }} />
+              <Image source={{ uri: urlImage }} style={{ width: '100%', height: 200 }} resizeMode="contain" />
             </View>
           ) : null}
           <View>
             <View style={styles.bottomContent}>
               <View style={styles.action}>
-                <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
+                {/* <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
                   <Item
                     title="heart"
                     color={Color.primary}
@@ -160,7 +214,8 @@ const Post: React.FC<Props> = ({
                       }
                     }}
                   ></Item>
-                </HeaderButtons>
+                </HeaderButtons> */}
+                {heartIcon}
                 <Text style={styles.numberOfAction}>{listLike?.length}</Text>
               </View>
 

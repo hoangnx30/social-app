@@ -49,7 +49,7 @@ export const uploadComment = (
     .push({ owner: userUid, content: content, fullName: fullName, timeUpload: timeUpload });
 };
 
-export const uploadPost = (
+export const uploadPost = async (
   content: string,
   owner: string,
   listComment: ListCommentData,
@@ -58,6 +58,14 @@ export const uploadPost = (
   uidPost?: string,
   urlImage?: string
 ) => {
+  let urlFirebase;
+  if (urlImage) {
+    const nameFile = urlImage.slice(urlImage.lastIndexOf('/') + 1);
+    const res = await fetch(urlImage);
+    const dataBlob = await res.blob();
+    const refFirebase = await firebase.storage().ref(`imagePost/${nameFile}`).put(dataBlob);
+    urlFirebase = await refFirebase.ref.getDownloadURL();
+  }
   if (uidPost === null) {
     const newPost = {
       owner: owner,
@@ -65,6 +73,7 @@ export const uploadPost = (
       listComment: listComment,
       listLike: listLike,
       timeUpload: timeUpload,
+      urlImage: urlFirebase,
     };
     firebase
       .database()
@@ -79,6 +88,7 @@ export const uploadPost = (
       listComment: listComment,
       listLike: listLike,
       timeUpload: timeUpload,
+      urlImage: urlFirebase,
     };
     firebase.database().ref(`group/${uidPost}/ListPost`).push(newPost);
   }

@@ -25,7 +25,6 @@ const BottomNavigator = () => {
           let tabBarVisible = true;
           if (route.state) {
             const routes = route.state.routes;
-            console.log(routes[routes.length - 1]);
             const name = routes[routes.length - 1].name;
             tabBarVisible = name === 'UpLoadPost' || name === 'Post' ? false : true;
           }

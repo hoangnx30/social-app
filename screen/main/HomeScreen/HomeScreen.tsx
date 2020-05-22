@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { View, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -18,8 +18,6 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.authState.user);
-
-  const lastMessage = useSelector((state) => state.messageState.lastMessages);
 
   const loadHomePage = useCallback(async () => {
     setIsRefreshing(true);
@@ -44,6 +42,7 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
         navigation={navigation}
         owner={item.owner}
         isVisible={isVisible}
+        urlImage={item.urlImage}
         showModal={handleShowModal}
       />
     );

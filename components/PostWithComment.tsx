@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import { View, Text, StyleSheet, TouchableNativeFeedback, Image } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,6 +20,7 @@ interface Props {
   listComment?: Array<string> | [];
   uidGroup?: string;
   inputRef?: any;
+  urlImage?: string;
 }
 
 const PostWithComment: React.FC<Props> = ({
@@ -31,6 +32,7 @@ const PostWithComment: React.FC<Props> = ({
   uidPost,
   uidGroup,
   inputRef,
+  urlImage,
 }) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
@@ -50,9 +52,17 @@ const PostWithComment: React.FC<Props> = ({
             <Text>{moment(timeUpload).calendar()}</Text>
           </View>
         </View>
+
         <View style={styles.content}>
           <Text>{content}</Text>
         </View>
+
+        {urlImage ? (
+          <View style={{ width: '100%' }}>
+            <Image source={{ uri: urlImage }} style={{ width: '100%', height: 200 }} resizeMode="contain" />
+          </View>
+        ) : null}
+
         <View style={styles.slash}></View>
         <View style={styles.infoStatus}>
           <View style={styles.infoStatusItem}>
@@ -78,12 +88,12 @@ const PostWithComment: React.FC<Props> = ({
                     const index = listLike?.indexOf(userUid);
                     listLike?.splice(index, 1);
                     const updateListLike = listLike?.filter((item) => item !== userUid);
-                    setIsLike(!isLike);
+                    // setIsLike(!isLike);
                     likePost(uidPost, updateListLike, uidGroup);
                     dispatch(fetchGroup());
                   } else {
                     listLike?.push(userUid);
-                    setIsLike(!isLike);
+                    // setIsLike(!isLike);
                     if (listLike?.indexOf(userUid) >= 0) {
                       const updateListLike = listLike;
                       likePost(uidPost, updateListLike, uidGroup);
@@ -100,11 +110,11 @@ const PostWithComment: React.FC<Props> = ({
                   const index = listLike?.indexOf(userUid);
                   listLike?.splice(index, 1);
                   const updateListLike = listLike?.filter((item) => item !== userUid);
-                  setIsLike(!isLike);
+                  // setIsLike(!isLike);
                   likePost(uidPost, updateListLike);
                 } else {
                   listLike?.push(userUid);
-                  setIsLike(!isLike);
+                  // setIsLike(!isLike);
                   if (listLike?.indexOf(userUid) >= 0) {
                     const updateListLike = listLike;
                     likePost(uidPost, updateListLike);
@@ -119,13 +129,7 @@ const PostWithComment: React.FC<Props> = ({
           </HeaderButtons>
           <View style={{ borderWidth: 1, borderColor: '#ccc' }}></View>
           <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-            <Item
-              title="comment"
-              iconName="comment-outline"
-              color={theme.colors.primary}
-              onPress={() => {
-                }}
-            ></Item>
+            <Item title="comment" iconName="comment-outline" color={theme.colors.primary} onPress={() => {}}></Item>
           </HeaderButtons>
         </View>
         <View style={styles.slash}></View>

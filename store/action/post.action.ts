@@ -29,6 +29,7 @@ export const setPostDataAsync = () => {
             listLike: postData[key].listLike || [],
             timeUpload: postData[key].timeUpload,
             owner: postData[key].owner,
+            urlImage: postData[key].urlImage,
           };
           const usersRef = firebase.database().ref(`users/${postData[key].owner}`);
           usersRef.once('value', (userSnapshot) => {

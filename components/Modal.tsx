@@ -10,6 +10,7 @@ interface Props {
   isVisible?: boolean;
   showModal?: () => void;
   closeModal?: any;
+  navigation?: any;
 }
 
 const ModalCustom = (props: Props) => {

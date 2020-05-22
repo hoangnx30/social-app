@@ -25,7 +25,7 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
     } else {
       navigation.replace('GroupHome', { uid: uidGroup });
     }
-  }, [content]);
+  }, [content, urlImage]);
 
   const verifyPermission = async () => {
     const result = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -60,9 +60,6 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
     },
     [setUrlImage]
   );
-
-  console.log(urlImage);
-
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
@@ -71,7 +68,7 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
             {/* <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMI}>
               <Item title="search" iconName="search" onPress={() => {}} />
             </HeaderButtons> */}
-            <Button title="Upload" onPress={handleUploadStatus} disabled={content.length ? false : true} />
+            <Button title="Upload" onPress={handleUploadStatus} disabled={content.length || urlImage ? false : true} />
           </View>
         );
       },

@@ -6,6 +6,7 @@ export interface PostItem {
   listLike?: Array<string>;
   username?: string;
   owner?: string;
+  urlImage?: string;
 }
 
 export interface CommentItem {

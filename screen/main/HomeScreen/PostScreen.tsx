@@ -24,7 +24,7 @@ const PostScreen = ({ route, navigation }: any) => {
   const uidGroup = route && route.params ? route.params.uidGroup : undefined;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [commentValue, setCommentValue] = useState<string>('');
-  const { content, date, listComment, listLike, username, uidPost } = route.params;
+  const { content, date, listComment, listLike, username, uidPost, urlImage } = route.params;
 
   const inputRef = useRef<HTMLInputElement>();
 
@@ -36,7 +36,6 @@ const PostScreen = ({ route, navigation }: any) => {
     );
   }
 
-  
   return (
     <View style={styles.screen}>
       <View style={{ flexShrink: 1, marginBottom: 52 }}>
@@ -49,6 +48,7 @@ const PostScreen = ({ route, navigation }: any) => {
             username={username}
             uidPost={uidPost}
             uidGroup={uidGroup}
+            urlImage={urlImage}
             inputRef={inputRef}
           />
           {Object.keys(listComment).map((key: any, _: number) => {
