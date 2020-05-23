@@ -3,13 +3,15 @@ import { View, Text, StyleSheet, TextInput, FlatList, TouchableNativeFeedback } 
 import { useSelector, useDispatch } from 'react-redux';
 import firebase from 'firebase';
 
-import Avatar from '../../../components/Avatar';
 import { createNewConversation } from '../../../services/service';
 import { fetchAllUser } from '../../../store/action/message.action';
 import { FETCH_USER } from '../../../store/action/actionTypes';
+import { GiftedAvatar } from 'react-native-gifted-chat';
 
 const CreateNewMessageScreen = ({ route, navigation }) => {
   const [fetchUser, setFetchUser] = useState([]);
+  const [displayUser, setDisplayUser] = useState([]);
+  const [value, setValue] = useState('');
   const dispatch = useDispatch();
 
   const allUser = useSelector((state) => state.messageState.users);
@@ -19,9 +21,15 @@ const CreateNewMessageScreen = ({ route, navigation }) => {
   useEffect(() => {
     const result = allUser.filter((user) => user.MSSV !== currentUser.MSSV);
     setFetchUser(result);
+    setDisplayUser(result);
   }, []);
 
   const renderItem = useCallback(({ item }) => {
+    const user = {
+      name: item.fullName,
+      _id: item.userId,
+      avartar: item.avatar
+    }
     return (
       <TouchableNativeFeedback
         onPress={async () => {
@@ -56,21 +64,44 @@ const CreateNewMessageScreen = ({ route, navigation }) => {
         }}
       >
         <View style={styles.item}>
-          <Avatar uri={item.avatar} />
-          <Text style={{ marginLeft: 10, fontSize: 16 }}>{item.fullName}</Text>
+          <GiftedAvatar
+            user={user}
+            avatarStyle={{ height: 50, width: 50, borderRadius: 25 }}
+            textStyle={{ fontSize: 20 }}
+          />
+          <Text style={{ marginLeft: 10, fontSize: 17 }}>{item.fullName}</Text>
         </View>
       </TouchableNativeFeedback>
     );
   }, []);
+
+  const handleFilterUser = useCallback((text) => {
+    if (text.length === 0) {
+      console.log("text length", text.length);
+      const result = allUser.filter((user) => user.MSSV !== currentUser.MSSV);
+      setFetchUser(result);
+      return;
+    }
+    const data = fetchUser.filter(item => {
+      return item.fullName.toLowerCase().includes(text.toLowerCase());
+    })
+    console.log(text);
+    console.log(data);
+    setDisplayUser(data);
+  }, [value])
+
   return (
     <View style={styles.screen}>
       <View style={styles.wrapSearch}>
         <Text style={styles.text}>To: </Text>
-        <TextInput style={styles.textInput} placeholder="Type a name" />
+        <TextInput style={styles.textInput} placeholder="Type a name" value={value} onChangeText={(text) => {
+          handleFilterUser(text);
+          setValue(text);
+        }} />
       </View>
       <FlatList
         style={{ marginTop: 20 }}
-        data={fetchUser}
+        data={displayUser}
         renderItem={renderItem}
         keyExtractor={(item) => {
           return item.userId;

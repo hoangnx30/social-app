@@ -127,9 +127,9 @@ const PostWithComment: React.FC<Props> = ({
               }}
             ></Item>
           </HeaderButtons>
-          <View style={{ borderWidth: 1, borderColor: '#ccc' }}></View>
+          <View style={{ borderColor: '#ccc' }}></View>
           <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-            <Item title="comment" iconName="comment-outline" color={theme.colors.primary} onPress={() => {}}></Item>
+            <Item title="comment" iconName="comment-outline" color={theme.colors.primary} onPress={() => { }}></Item>
           </HeaderButtons>
         </View>
         <View style={styles.slash}></View>
@@ -141,7 +141,6 @@ const PostWithComment: React.FC<Props> = ({
 const styles = StyleSheet.create({
   screen: {
     width: '100%',
-    borderWidth: 1,
   },
   headerPost: {
     flexDirection: 'row',
