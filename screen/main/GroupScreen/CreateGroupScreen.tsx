@@ -17,7 +17,7 @@ const CreateGroupScreen = (props: any) => {
       .ref('group')
       .push({ members: [authState.userInfo.uid], nameGroup: nameGroup, createAt: Date.now().toString() })
       .then((value) => {
-        props.navigation.replace('GroupHome', { id: value.key });
+        props.navigation.replace('GroupHome', { id: value.key, nameGroup: nameGroup });
       });
   }, [dispatch, nameGroup]);
 

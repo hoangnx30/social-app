@@ -14,10 +14,11 @@ import { rootReducerType } from '../store/reducer';
 import { likePost } from '../services/service';
 import { setData } from '../store/action/user.action';
 import Color from '../constants/Color';
+import { GiftedAvatar } from 'react-native-gifted-chat';
 
 interface Props {
   uidPost: string;
-  username?: string;
+  user?: any;
   date?: string;
   content?: string;
   listLike?: Array<string>;
@@ -33,7 +34,7 @@ interface Props {
 
 const Post: React.FC<Props> = ({
   uidPost,
-  username,
+  user,
   date,
   listLike,
   content,
@@ -55,7 +56,6 @@ const Post: React.FC<Props> = ({
   if (isComment) {
     timeOfPost = moment.duration(Date.now() - date)._data.minutes;
   }
-
   const heartIcon = useMemo(() => {
     return (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
@@ -116,7 +116,7 @@ const Post: React.FC<Props> = ({
       onPress={() => {
         navigation.navigate('Post', {
           listComment: listComment,
-          username: username,
+          user: user,
           date: date,
           listLike: listLike,
           content: content,
@@ -130,13 +130,17 @@ const Post: React.FC<Props> = ({
       {/* <Modal> */}
       <View style={styles.container}>
         <View style={styles.leftContainer}>
-          <Avatar.Image source={require('../assets/avatar.png')} size={55} />
+          <GiftedAvatar
+            user={{ name: user.fullName, avatar: user.avatar }}
+            avatarStyle={{ height: 50, width: 50, borderRadius: 25 }}
+            textStyle={{ fontSize: 20 }}
+          />
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.topContent}>
             <View style={{ flexShrink: 1, width: '100%' }}>
               <View style={styles.topLeftContainer}>
-                <Text style={styles.username}>{username}</Text>
+                <Text style={styles.username}>{user.fullName}</Text>
                 {isComment && <Text style={{ marginRight: 3 }}>{timeOfPost === 0 ? '1' : timeOfPost} minutes ago</Text>}
               </View>
               {!isComment && <Text>{moment(date).calendar()}</Text>}
@@ -147,7 +151,7 @@ const Post: React.FC<Props> = ({
                   icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />}
                   onPress={() => {
                     showModal();
-                    dispatch(setData(uidPost, content));
+                    dispatch(setData(uidPost, content, urlImage));
                   }}
                 />
               </View>
@@ -161,7 +165,7 @@ const Post: React.FC<Props> = ({
           </View>
 
           {urlImage ? (
-            <View style={{ width: '100%' }}>
+            <View style={{ width: '100%', marginBottom: 5 }}>
               <Image source={{ uri: urlImage }} style={{ width: '100%', height: 200 }} resizeMode="contain" />
             </View>
           ) : null}

@@ -11,8 +11,8 @@ export const createGroup = (name: string, uid: string) => {
 };
 
 export const fetchGroup = () => {
+  const groupData: Array<any> = [];
   return (dispatch: any) => {
-    const groupData: Array<any> = [];
     firebase
       .database()
       .ref('group')
@@ -45,7 +45,7 @@ export const transformData = (dataGroup: any) => {
         .ref(`users/${dataGroup[key]['owner']}`)
         .once('value', (snapshoot) => {
           const value = snapshoot.val();
-          builder.fullName = value.fullName;
+          builder.user = value;
           result.push(builder);
           dispatch({
             type: TRANSFORM_DATA,

@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { rootReducerType } from '../../../store/reducer';
 import { HomeNavigatorProps, GroupNavigatorProps } from '../../../navigation/types';
-import { uploadPost } from '../../../services/service';
+import { uploadPost, editPost } from '../../../services/service';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { CustomHeaderButtonMI } from '../../../components/HeaderButton';
 import Color from '../../../constants/Color';
@@ -16,14 +16,38 @@ import ImagePost from '../../../components/ImagePost';
 const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'> & GroupNavigatorProps<'Group'>) => {
   const [content, setContent] = useState<string>('');
   const [urlImage, setUrlImage] = useState('');
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
   const uidGroup = route.params ? route.params.uidGroup : null;
   const owner = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
+
+  useEffect(() => {
+    if (route.params) {
+      if (route.params.edit) {
+        const params = route.params;
+        setContent(params.content);
+        setUrlImage(params.urlImage)
+        Image.getSize(params.urlImage, (width, height) => {
+          setWidth(width / 14);
+          setHeight(height / 14);
+        })
+      }
+    }
+  }, [route.params])
+
   const handleUploadStatus = useCallback(() => {
-    uploadPost(content, owner, [], [], Date.now(), uidGroup, urlImage);
+    if (route.params && route.params.edit) {
+      editPost(content, route.params.uidPost, urlImage);
+      return;
+    }
+
     if (!uidGroup) {
       navigation.navigate('Home');
+      console.log('here');
+      uploadPost(content, owner, [], [], Date.now(), urlImage);
     } else {
-      navigation.replace('GroupHome', { uid: uidGroup });
+      uploadPost(content, owner, [], [], Date.now(), urlImage, uidGroup);
+      navigation.navigate('GroupHome', { uid: uidGroup });
     }
   }, [content, urlImage]);
 
@@ -56,10 +80,17 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
 
       if (imageUri) {
         setUrlImage(imageUri);
+        Image.getSize(imageUri, (width, height) => {
+          setWidth(width / 12);
+          setHeight(height / 12);
+        }, (error) => {
+          console.log(error);
+        })
       }
     },
     [setUrlImage]
   );
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
@@ -74,6 +105,7 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
       },
     });
   }, [handleUploadStatus, setContent]);
+
   return (
     <View style={styles.screen}>
       <View style={{ flexDirection: 'row' }}>
@@ -95,7 +127,7 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
           />
         </View>
       </View>
-      {urlImage ? <ImagePost urlImage={urlImage} handleClose={() => setUrlImage('')} /> : null}
+      {urlImage ? <ImagePost urlImage={urlImage} handleClose={() => setUrlImage('')} width={width} height={height} /> : null}
       <View
         style={{
           flexDirection: 'row',

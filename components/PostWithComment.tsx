@@ -10,6 +10,7 @@ import { CustomHeaderButtonMCI } from './HeaderButton';
 import { rootReducerType } from '../store/reducer';
 import { likePost } from '../services/service';
 import { fetchGroup } from '../store/action/group.action';
+import { GiftedAvatar } from 'react-native-gifted-chat';
 
 interface Props {
   uidPost?: string;
@@ -20,18 +21,19 @@ interface Props {
   listComment?: Array<string> | [];
   uidGroup?: string;
   inputRef?: any;
+  user?: any
   urlImage?: string;
 }
 
 const PostWithComment: React.FC<Props> = ({
   username,
   timeUpload,
+  user,
   content,
   listComment,
   listLike,
   uidPost,
   uidGroup,
-  inputRef,
   urlImage,
 }) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
@@ -42,11 +44,15 @@ const PostWithComment: React.FC<Props> = ({
     <View style={styles.screen}>
       <View>
         <View style={styles.headerPost}>
-          <Avatar.Image style={styles.avatar} source={require('../assets/avatar.png')} size={55} />
-          <View>
+          <GiftedAvatar
+            user={{ name: user.fullName, avatar: user.avatar }}
+            avatarStyle={{ height: 50, width: 50, borderRadius: 25 }}
+            textStyle={{ fontSize: 20 }}
+          />
+          <View style={{ marginLeft: 8 }}>
             <TouchableNativeFeedback>
               <View>
-                <Text style={styles.username}>{username}</Text>
+                <Text style={styles.username}>{user.fullName}</Text>
               </View>
             </TouchableNativeFeedback>
             <Text>{moment(timeUpload).calendar()}</Text>
@@ -58,7 +64,7 @@ const PostWithComment: React.FC<Props> = ({
         </View>
 
         {urlImage ? (
-          <View style={{ width: '100%' }}>
+          <View style={{ marginBottom: 10 }}>
             <Image source={{ uri: urlImage }} style={{ width: '100%', height: 200 }} resizeMode="contain" />
           </View>
         ) : null}
@@ -145,6 +151,7 @@ const styles = StyleSheet.create({
   headerPost: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 10
   },
   avatar: {
     margin: 10,

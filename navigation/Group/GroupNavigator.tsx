@@ -27,7 +27,11 @@ const GroupNavigator = () => {
           ),
         }}
       />
-      <GroupStackNavigator.Screen name="GroupHome" component={GroupHomeScreen} />
+      <GroupStackNavigator.Screen name="GroupHome" component={GroupHomeScreen} options={({ route, navigation }) => {
+        return {
+          headerTitle: route.params.title
+        }
+      }} />
       <GroupStackNavigator.Screen name="Post" component={PostScreen} />
       <GroupStackNavigator.Screen
         name="CreateGroup"

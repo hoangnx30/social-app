@@ -38,7 +38,6 @@ const FileItem = (props: Props) => {
       const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
       setProgress(progress);
     };
-    console.log(props.url);
     const downloadResumable = FileSystem.createDownloadResumable(
       props.url,
       `${FileSystem.documentDirectory}${props.nameFile}`,
@@ -48,14 +47,12 @@ const FileItem = (props: Props) => {
 
     try {
       const { uri } = await downloadResumable.downloadAsync();
-      console.log('Finished downloading to ', uri);
     } catch (e) {
       console.error(e);
     }
 
     try {
       await downloadResumable.pauseAsync();
-      console.log('Paused download operation, saving for future retrieval');
       AsyncStorage.setItem('pausedDownload', JSON.stringify(downloadResumable.savable()));
     } catch (e) {
       console.error(e);
@@ -63,14 +60,12 @@ const FileItem = (props: Props) => {
     try {
       const { uri } = await downloadResumable.resumeAsync();
       saveFile(uri);
-      console.log('Finished downloading to ', uri);
     } catch (e) {
       console.error(e);
     }
 
     async function saveFile(fileUri: string) {
       try {
-        console.log('fileUri', fileUri);
         const asset = await MediaLibrary.createAssetAsync(fileUri);
         await MediaLibrary.createAlbumAsync('Download', asset, false);
         Alert.alert('Success', 'File was successfully downloaded!', [{ text: 'Okay' }]);
@@ -92,7 +87,6 @@ const FileItem = (props: Props) => {
 
     try {
       const { uri } = await downloadResumabl.resumeAsync();
-      console.log('Finished downloading to ', uri);
     } catch (e) {
       console.error(e);
     }

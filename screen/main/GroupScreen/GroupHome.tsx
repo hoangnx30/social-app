@@ -16,28 +16,34 @@ const styles = StyleSheet.create({
 });
 
 const GroupHomeScreen = ({ route, navigation }: any) => {
-  const params = route.params;
-  const uidGroup = params.uid;
   const dispatch = useDispatch();
-  const group = useSelector((state) => state.groupState.group.find((item) => params.uid === item.id));
+
+  const params = route.params;
+  const uidGroup = params.id;
+
+  const group = useSelector((state) => state.groupState.group.find((item) => uidGroup === item.id));
+
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
 
-  const handleRefresh =  useCallback(() => {
+  const handleRefresh = useCallback(() => {
     setIsRefresh(true);
     dispatch(fetchGroup());
     setIsRefresh(false);
   }, [isRefresh, dispatch]);
-  let dataGroup = group ? group.ListPost : {};
+
+  let dataGroup = group && group.ListPost ? group.ListPost : {};
+
   useEffect(() => {
     dispatch(transformData(dataGroup));
   }, [dispatch, dataGroup]);
+
   const result = useSelector((state) => state.groupState.transformData);
 
   const renderItem = ({ item }: any) => {
     return (
       <Post
         uidPost={item.id}
-        username={item.fullName}
+        user={item.user}
         date={item.timeUpload}
         listLike={item.listLike ? item.listLike : []}
         listComment={item.listComment ? item.listComment : []}
@@ -45,12 +51,13 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
         navigation={navigation}
         owner={item.owner}
         uidGroup={uidGroup}
+        urlImage={item.urlImage}
       />
     );
   };
   return (
     <View style={styles.screen}>
-      <View style={{ borderWidth: 1, width: '100%', height: '100%' }}>
+      <View style={{ width: '100%', height: '100%' }}>
         <View>
           <HeaderGroup name={group.nameGroup} members={group.members} />
         </View>
@@ -64,10 +71,10 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
               }
             />
           ) : (
-            <View style={{ alignSelf: 'center', marginTop: 20 }}>
-              <Text style={{ fontSize: 18 }}>No Post is available</Text>
-            </View>
-          )}
+              <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                <Text style={{ fontSize: 18 }}>No Post is available</Text>
+              </View>
+            )}
         </View>
       </View>
       <ButtonCircle

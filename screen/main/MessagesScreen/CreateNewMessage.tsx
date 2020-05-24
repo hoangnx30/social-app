@@ -77,7 +77,6 @@ const CreateNewMessageScreen = ({ route, navigation }) => {
 
   const handleFilterUser = useCallback((text) => {
     if (text.length === 0) {
-      console.log("text length", text.length);
       const result = allUser.filter((user) => user.MSSV !== currentUser.MSSV);
       setFetchUser(result);
       return;
@@ -85,8 +84,6 @@ const CreateNewMessageScreen = ({ route, navigation }) => {
     const data = fetchUser.filter(item => {
       return item.fullName.toLowerCase().includes(text.toLowerCase());
     })
-    console.log(text);
-    console.log(data);
     setDisplayUser(data);
   }, [value])
 

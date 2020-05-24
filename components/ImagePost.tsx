@@ -4,15 +4,16 @@ import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 interface Props {
   urlImage: string;
   handleClose: any;
+  height: number;
+  width: number;
 }
 
-const ImagePost = ({ urlImage, handleClose }: Props) => {
+const ImagePost = ({ urlImage, handleClose, height, width }: Props) => {
   return (
     <View
       style={{
-        width: 200,
-        height: 200,
-        borderWidth: 1,
+        width: width,
+        height: height,
         alignSelf: 'flex-end',
         marginRight: 10,
         marginTop: 20,
@@ -20,9 +21,9 @@ const ImagePost = ({ urlImage, handleClose }: Props) => {
       }}
     >
       <View style={{ position: 'absolute', zIndex: 1000, right: 5, top: 5 }}>
-        <MaterialIcons name="close" color="white" size={32} onPress={handleClose} />
+        <MaterialIcons name="close" color="black" size={32} onPress={handleClose} />
       </View>
-      <Image source={{ uri: urlImage }} style={{ width: '100%', height: '100%', overflow: 'hidden' }} />
+      <Image source={{ uri: urlImage }} resizeMode="contain" style={{ width: '100%', height: '100%', overflow: 'hidden' }} />
     </View>
   );
 };

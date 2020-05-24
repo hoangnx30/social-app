@@ -4,7 +4,7 @@ export interface PostItem {
   timeUpload?: string;
   listComment?: Array<string>;
   listLike?: Array<string>;
-  username?: string;
+  user?: any
   owner?: string;
   urlImage?: string;
 }

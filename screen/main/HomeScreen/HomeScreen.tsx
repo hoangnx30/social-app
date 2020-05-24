@@ -34,7 +34,7 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
     return (
       <Post
         uidPost={item.id}
-        username={item.username}
+        user={item.user}
         date={item.timeUpload}
         listLike={item.listLike ? item.listLike : []}
         listComment={item.listComment}
@@ -63,21 +63,21 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
           <ActivityIndicator size="large" color={`${Color.primary}`} />
         </View>
       ) : (
-        <View style={styles.screen}>
-          <Modal isVisible={isVisible} showModal={handleShowModal} closeModal={handleCloseModal}>
-            <FlatList
-              style={styles.listPost}
-              data={postDataFetch}
-              renderItem={renderItem}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl refreshing={isRefreshing} colors={[Color.primary]} onRefresh={loadHomePage} />
-              }
-            />
-            <ButtonCircle iconName="edit" typeIcon="MI" navigate={() => navigation.navigate('UpLoadPost')} />
-          </Modal>
-        </View>
-      )}
+          <View style={styles.screen}>
+            <Modal isVisible={isVisible} showModal={handleShowModal} closeModal={handleCloseModal} navigation={navigation}>
+              <FlatList
+                style={styles.listPost}
+                data={postDataFetch}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                  <RefreshControl refreshing={isRefreshing} colors={[Color.primary]} onRefresh={loadHomePage} />
+                }
+              />
+              <ButtonCircle iconName="edit" typeIcon="MI" navigate={() => navigation.navigate('UpLoadPost')} />
+            </Modal>
+          </View>
+        )}
     </React.Fragment>
   );
 };

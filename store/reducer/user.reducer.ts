@@ -1,6 +1,7 @@
 const initialState = {
   uidPost: null,
   content: null,
+  urlImage: null
 };
 
 export default (state = initialState, action: any) => {
@@ -10,6 +11,7 @@ export default (state = initialState, action: any) => {
         ...state,
         uidPost: action.payload.uidPost,
         content: action.payload.content,
+        urlImage: action.payload.urlImage
       };
     default:
       return state;

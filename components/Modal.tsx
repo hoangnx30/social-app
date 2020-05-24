@@ -16,6 +16,7 @@ interface Props {
 const ModalCustom = (props: Props) => {
   const uidPost = useSelector((state) => state.userState.uidPost);
   const content = useSelector((state) => state.userState.content);
+  const urlImage = useSelector(state => state.userState.urlImage);
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -41,6 +42,12 @@ const ModalCustom = (props: Props) => {
               <TouchableNativeFeedback
                 onPress={() => {
                   props.closeModal();
+                  props.navigation.navigate('UpLoadPost', {
+                    urlImage: urlImage,
+                    content: content,
+                    uidPost: uidPost,
+                    edit: true
+                  })
                 }}
               >
                 <View style={styles.wrapItem}>
