@@ -29,7 +29,6 @@ const PostScreen = ({ route, navigation }: any) => {
   const listPost = useSelector(state => state.postState.postData);
 
   const currentPost = listPost.find(item => item.id === uidPost)
-  console.log("post", post)
   useEffect(() => {
     setPost(currentPost)
   }, [listPost, uidPost, listComment])
@@ -41,8 +40,6 @@ const PostScreen = ({ route, navigation }: any) => {
       </View>
     );
   }
-
-  console.log("listComment", post.listComment);
 
   return (
     <View style={styles.screen}>

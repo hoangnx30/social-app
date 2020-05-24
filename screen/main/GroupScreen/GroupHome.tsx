@@ -71,10 +71,10 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
               }
             />
           ) : (
-              <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                <Text style={{ fontSize: 18 }}>No Post is available</Text>
-              </View>
-            )}
+            <View style={{ alignSelf: 'center', marginTop: 20 }}>
+              <Text style={{ fontSize: 18 }}>No Post is available</Text>
+            </View>
+          )}
         </View>
       </View>
       <ButtonCircle

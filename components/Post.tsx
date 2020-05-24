@@ -47,7 +47,7 @@ const Post: React.FC<Props> = ({
   isVisible,
   uidGroup,
   urlImage,
-  isLike
+  isLike,
 }) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const [onFocus, setOnFocus] = useState<boolean>(false);
@@ -68,26 +68,19 @@ const Post: React.FC<Props> = ({
           onPress={() => {
             if (uidGroup) {
               if (isLike) {
-                const index = listLike?.indexOf(userUid);
-                listLike?.splice(index, 1);
-                const updateListLike = listLike?.filter((item) => item !== userUid);
+                
+                const updateListLike = listLike?.filter((id) => id !== userUid);
+                likePost(uidPost, updateListLike);
                 likePost(uidPost, updateListLike, uidGroup);
               } else {
-                listLike?.push(userUid);
-                if (listLike?.indexOf(userUid) >= 0) {
-                  const updateListLike = listLike;
-                  likePost(uidPost, updateListLike, uidGroup);
-                  return;
-                }
-                const updateListLike = listLike?.concat(userUid);
+                const updateListLike = [...listLike, userUid];
                 likePost(uidPost, updateListLike, uidGroup);
               }
               return;
             }
-            console.log(isLike);
 
             if (isLike) {
-              const updateListLike = listLike?.filter(id => id !== userUid);
+              const updateListLike = listLike?.filter((id) => id !== userUid);
               likePost(uidPost, updateListLike);
             } else {
               const updateListLike = [...listLike, userUid];
@@ -95,7 +88,7 @@ const Post: React.FC<Props> = ({
             }
           }}
         ></Item>
-      </HeaderButtons >
+      </HeaderButtons>
     );
   }, [isLike]);
 
@@ -114,7 +107,7 @@ const Post: React.FC<Props> = ({
           uidPost: uidPost,
           uidGroup: uidGroup,
           urlImage: urlImage,
-          isLike: isLike
+          isLike: isLike,
         });
       }}
       style={{ backgroundColor: onFocus ? '#F5F5F5' : 'white' }}
@@ -184,7 +177,7 @@ const Post: React.FC<Props> = ({
                         uidPost: uidPost,
                         uidGroup: uidGroup,
                         urlImage: urlImage,
-                        isLike: isLike
+                        isLike: isLike,
                       });
                     }}
                   ></Item>

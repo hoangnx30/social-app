@@ -21,8 +21,6 @@ export const likeComment = (uidPost: string, uidComment: string, listLike: Array
       .database()
       .ref(`group/${uidGroup}/ListPost/${uidPost}/listComment/${uidComment}`)
       .update({ listLike: listLike });
-    fetchGroup();
-
     return;
   }
   firebase.database().ref(`postData/${uidPost}/listComment/${uidComment}`).update({ listLike: listLike });
@@ -56,7 +54,7 @@ export const uploadPost = async (
   listLike: Array<string>,
   timeUpload: string,
   urlImage?: string,
-  uidGroup?: string,
+  uidGroup?: string
 ) => {
   let urlFirebase = '';
   if (urlImage) {
@@ -90,16 +88,12 @@ export const uploadPost = async (
       timeUpload: timeUpload,
       urlImage: urlFirebase,
     };
-    console.log('here2')
+    console.log('here2');
     firebase.database().ref(`group/${uidGroup}/ListPost`).push(newPost);
   }
 };
 
-export const editPost = async (
-  content: string,
-  uidPost?: string,
-  urlImage?: string,
-) => {
+export const editPost = async (content: string, uidPost?: string, urlImage?: string) => {
   let urlFirebase;
   if (urlImage) {
     const nameFile = urlImage.slice(urlImage.lastIndexOf('/') + 1);
@@ -108,7 +102,7 @@ export const editPost = async (
     const refFirebase = await firebase.storage().ref(`imagePost/${nameFile}`).put(dataBlob);
     urlFirebase = await refFirebase.ref.getDownloadURL();
   }
-  firebase.database().ref(`postData/${uidPost}`).update({ content: content, urlImamge: urlFirebase })
+  firebase.database().ref(`postData/${uidPost}`).update({ content: content, urlImamge: urlFirebase });
 };
 
 export const deleteStatus = (uidPost?: string) => {

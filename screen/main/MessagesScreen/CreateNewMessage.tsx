@@ -28,8 +28,8 @@ const CreateNewMessageScreen = ({ route, navigation }) => {
     const user = {
       name: item.fullName,
       _id: item.userId,
-      avartar: item.avatar
-    }
+      avartar: item.avatar,
+    };
     return (
       <TouchableNativeFeedback
         onPress={async () => {
@@ -75,26 +75,34 @@ const CreateNewMessageScreen = ({ route, navigation }) => {
     );
   }, []);
 
-  const handleFilterUser = useCallback((text) => {
-    if (text.length === 0) {
-      const result = allUser.filter((user) => user.MSSV !== currentUser.MSSV);
-      setFetchUser(result);
-      return;
-    }
-    const data = fetchUser.filter(item => {
-      return item.fullName.toLowerCase().includes(text.toLowerCase());
-    })
-    setDisplayUser(data);
-  }, [value])
+  const handleFilterUser = useCallback(
+    (text) => {
+      if (text.length === 0) {
+        const result = allUser.filter((user) => user.MSSV !== currentUser.MSSV);
+        setDisplayUser(result);
+        return;
+      }
+      const data = fetchUser.filter((item) => {
+        return item.fullName.toLowerCase().includes(text.toLowerCase());
+      });
+      setDisplayUser(data);
+    },
+    [value]
+  );
 
   return (
     <View style={styles.screen}>
       <View style={styles.wrapSearch}>
         <Text style={styles.text}>To: </Text>
-        <TextInput style={styles.textInput} placeholder="Type a name" value={value} onChangeText={(text) => {
-          handleFilterUser(text);
-          setValue(text);
-        }} />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Type a name"
+          value={value}
+          onChangeText={(text) => {
+            handleFilterUser(text);
+            setValue(text);
+          }}
+        />
       </View>
       <FlatList
         style={{ marginTop: 20 }}
