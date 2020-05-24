@@ -44,6 +44,7 @@ const HomeScreen = ({ navigation }: HomeNavigatorProps<'Home'>) => {
         isVisible={isVisible}
         urlImage={item.urlImage}
         showModal={handleShowModal}
+        isLike={item.isLike}
       />
     );
   };

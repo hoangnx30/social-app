@@ -12,6 +12,7 @@ import { HomeParamsList } from '../navigation/types';
 import { useSelector, useDispatch } from 'react-redux';
 import { rootReducerType } from '../store/reducer';
 import { likeComment } from '../services/service';
+import { GiftedAvatar } from 'react-native-gifted-chat';
 
 interface Props {
   username?: string;
@@ -24,6 +25,7 @@ interface Props {
   owner?: string;
   uidComment?: string;
   uidPost?: string;
+  user?: any
 }
 
 const Comment: React.FC<Props> = ({
@@ -32,6 +34,7 @@ const Comment: React.FC<Props> = ({
   uidComment,
   content,
   listLike,
+  user,
   navigation,
   isComment,
   owner,
@@ -61,7 +64,11 @@ const Comment: React.FC<Props> = ({
     >
       <View style={styles.container}>
         <View style={styles.leftContainer}>
-          <Avatar.Image source={require('../assets/avatar.png')} />
+          <GiftedAvatar
+            user={{ name: username }}
+            avatarStyle={{ height: 50, width: 50, borderRadius: 25 }}
+            textStyle={{ fontSize: 20 }}
+          />
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.topContent}>
@@ -72,7 +79,7 @@ const Comment: React.FC<Props> = ({
             </View>
             {userUid === owner ? (
               <View style={{ justifyContent: 'flex-end' }}>
-                <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
+                <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => { }} />
               </View>
             ) : null}
           </View>

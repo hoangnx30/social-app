@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableNativeFeedback, Image } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import moment from 'moment';
@@ -22,6 +22,7 @@ interface Props {
   uidGroup?: string;
   inputRef?: any;
   user?: any
+  isLike?: boolean;
   urlImage?: string;
 }
 
@@ -35,9 +36,10 @@ const PostWithComment: React.FC<Props> = ({
   uidPost,
   uidGroup,
   urlImage,
+  isLike
 }) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
-  const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
+  // const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
   const dispatch = useDispatch();
   const theme = useTheme();
   return (
@@ -113,21 +115,10 @@ const PostWithComment: React.FC<Props> = ({
                 }
 
                 if (isLike) {
-                  const index = listLike?.indexOf(userUid);
-                  listLike?.splice(index, 1);
-                  const updateListLike = listLike?.filter((item) => item !== userUid);
-                  // setIsLike(!isLike);
+                  const updateListLike = listLike?.filter(id => id !== userUid);
                   likePost(uidPost, updateListLike);
                 } else {
-                  listLike?.push(userUid);
-                  // setIsLike(!isLike);
-                  if (listLike?.indexOf(userUid) >= 0) {
-                    const updateListLike = listLike;
-                    likePost(uidPost, updateListLike);
-
-                    return;
-                  }
-                  const updateListLike = listLike?.concat(userUid);
+                  const updateListLike = [...listLike, userUid];
                   likePost(uidPost, updateListLike);
                 }
               }}

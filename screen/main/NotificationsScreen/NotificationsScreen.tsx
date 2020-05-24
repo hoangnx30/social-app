@@ -21,7 +21,9 @@ const NotificationsScreen = () => {
   const registerForPushNotificationAsync = async () => {
     if (Constant.isDevice) {
       const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
       let finalStatus = existingStatus;
+
       if (existingStatus !== 'granted') {
         const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
         finalStatus = status;
@@ -30,8 +32,13 @@ const NotificationsScreen = () => {
         Alert.alert('Failed to get push token for push notification');
         return;
       }
-      let token = await Notifications.getExpoPushTokenAsync();
-      console.log(token);
+      let token;
+      try {
+        token = await Notifications.getExpoPushTokenAsync();
+      } catch (error) {
+        console.log(error)
+      }
+
       setToken(token);
     } else {
       Alert.alert('Must use physical device for Push Notification');
@@ -81,18 +88,18 @@ const NotificationsScreen = () => {
   };
 
   return (
-<View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'space-around',
-        }}>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text>Origin: {notification.origin}</Text>
-          <Text>Data: {JSON.stringify(notification.data)}</Text>
-        </View>
-        <Button title={'Press to Send Notification'} onPress={() => sendPushNotification()} />
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+      }}>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Origin: {notification.origin}</Text>
+        <Text>Data: {JSON.stringify(notification.data)}</Text>
       </View>
+      <Button title={'Press to Send Notification'} onPress={() => sendPushNotification()} />
+    </View>
   );
 };
 

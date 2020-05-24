@@ -43,7 +43,6 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
 
     if (!uidGroup) {
       navigation.navigate('Home');
-      console.log('here');
       uploadPost(content, owner, [], [], Date.now(), urlImage);
     } else {
       uploadPost(content, owner, [], [], Date.now(), urlImage, uidGroup);

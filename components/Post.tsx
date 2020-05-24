@@ -30,6 +30,7 @@ interface Props {
   isVisible?: boolean;
   showModal?: any;
   urlImage?: string;
+  isLike?: boolean;
 }
 
 const Post: React.FC<Props> = ({
@@ -46,10 +47,11 @@ const Post: React.FC<Props> = ({
   isVisible,
   uidGroup,
   urlImage,
+  isLike
 }) => {
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
   const [onFocus, setOnFocus] = useState<boolean>(false);
-  const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
+  // const [isLike, setIsLike] = useState<boolean>(listLike?.indexOf(userUid) < 0 ? false : true);
   const dispatch = useDispatch();
   const theme = useTheme();
   let timeOfPost;
@@ -69,11 +71,9 @@ const Post: React.FC<Props> = ({
                 const index = listLike?.indexOf(userUid);
                 listLike?.splice(index, 1);
                 const updateListLike = listLike?.filter((item) => item !== userUid);
-                setIsLike(!isLike);
                 likePost(uidPost, updateListLike, uidGroup);
               } else {
                 listLike?.push(userUid);
-                setIsLike(!isLike);
                 if (listLike?.indexOf(userUid) >= 0) {
                   const updateListLike = listLike;
                   likePost(uidPost, updateListLike, uidGroup);
@@ -84,27 +84,18 @@ const Post: React.FC<Props> = ({
               }
               return;
             }
+            console.log(isLike);
 
             if (isLike) {
-              const index = listLike?.indexOf(userUid);
-              listLike?.splice(index, 1);
-              const updateListLike = listLike?.filter((item) => item !== userUid);
-              setIsLike(!isLike);
+              const updateListLike = listLike?.filter(id => id !== userUid);
               likePost(uidPost, updateListLike);
             } else {
-              listLike?.push(userUid);
-              setIsLike(!isLike);
-              if (listLike?.indexOf(userUid) >= 0) {
-                const updateListLike = listLike;
-                likePost(uidPost, updateListLike);
-                return;
-              }
-              const updateListLike = listLike?.concat(userUid);
+              const updateListLike = [...listLike, userUid];
               likePost(uidPost, updateListLike);
             }
           }}
         ></Item>
-      </HeaderButtons>
+      </HeaderButtons >
     );
   }, [isLike]);
 
@@ -123,6 +114,7 @@ const Post: React.FC<Props> = ({
           uidPost: uidPost,
           uidGroup: uidGroup,
           urlImage: urlImage,
+          isLike: isLike
         });
       }}
       style={{ backgroundColor: onFocus ? '#F5F5F5' : 'white' }}
@@ -172,53 +164,6 @@ const Post: React.FC<Props> = ({
           <View>
             <View style={styles.bottomContent}>
               <View style={styles.action}>
-                {/* <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
-                  <Item
-                    title="heart"
-                    color={Color.primary}
-                    iconName={isLike ? 'heart' : 'heart-outline'}
-                    onPress={() => {
-                      if (uidGroup) {
-                        if (isLike) {
-                          const index = listLike?.indexOf(userUid);
-                          listLike?.splice(index, 1);
-                          const updateListLike = listLike?.filter((item) => item !== userUid);
-                          setIsLike(!isLike);
-                          likePost(uidPost, updateListLike, uidGroup);
-                        } else {
-                          listLike?.push(userUid);
-                          setIsLike(!isLike);
-                          if (listLike?.indexOf(userUid) >= 0) {
-                            const updateListLike = listLike;
-                            likePost(uidPost, updateListLike, uidGroup);
-                            return;
-                          }
-                          const updateListLike = listLike?.concat(userUid);
-                          likePost(uidPost, updateListLike, uidGroup);
-                        }
-                        return;
-                      }
-
-                      if (isLike) {
-                        const index = listLike?.indexOf(userUid);
-                        listLike?.splice(index, 1);
-                        const updateListLike = listLike?.filter((item) => item !== userUid);
-                        setIsLike(!isLike);
-                        likePost(uidPost, updateListLike);
-                      } else {
-                        listLike?.push(userUid);
-                        setIsLike(!isLike);
-                        if (listLike?.indexOf(userUid) >= 0) {
-                          const updateListLike = listLike;
-                          likePost(uidPost, updateListLike);
-                          return;
-                        }
-                        const updateListLike = listLike?.concat(userUid);
-                        likePost(uidPost, updateListLike);
-                      }
-                    }}
-                  ></Item>
-                </HeaderButtons> */}
                 {heartIcon}
                 <Text style={styles.numberOfAction}>{listLike?.length}</Text>
               </View>
@@ -232,12 +177,14 @@ const Post: React.FC<Props> = ({
                     onPress={() => {
                       navigation.navigate('Post', {
                         listComment: listComment,
-                        username: username,
+                        user: user,
                         date: date,
                         listLike: listLike,
                         content: content,
                         uidPost: uidPost,
                         uidGroup: uidGroup,
+                        urlImage: urlImage,
+                        isLike: isLike
                       });
                     }}
                   ></Item>
@@ -248,7 +195,6 @@ const Post: React.FC<Props> = ({
           </View>
         </View>
       </View>
-      {/* </Modal> */}
     </TouchableOpacity>
   );
 };

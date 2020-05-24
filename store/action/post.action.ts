@@ -12,8 +12,9 @@ const setPostData = (listPostData: Array<PostItem>) => {
 };
 
 export const setPostDataAsync = () => {
-  return async (dispatch: any) => {
+  return async (dispatch: any, getState: any) => {
     //createRef
+    const user = getState().authState.user;
     const postDataRef = firebase.database().ref('postData');
     //Sync Data
     postDataRef.on('value', (snapshot) => {
@@ -31,6 +32,8 @@ export const setPostDataAsync = () => {
             owner: postData[key].owner,
             urlImage: postData[key].urlImage,
           };
+          const listLike = postData[key].listLike || [];
+          postItem.isLike = listLike.indexOf(user.userId) < 0 ? false : true
           const usersRef = firebase.database().ref(`users/${postData[key].owner}`);
           usersRef.once('value', (userSnapshot) => {
             postItem.user = userSnapshot.val();

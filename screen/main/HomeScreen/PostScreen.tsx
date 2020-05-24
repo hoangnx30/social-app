@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, ActivityIndicator, Keyboard } from 'react-native';
-import { useTheme } from 'react-native-paper';
 
 import Comment from '../../../components/Comment';
 import PostWithComment from '../../../components/PostWithComment';
@@ -19,14 +18,21 @@ const styles = StyleSheet.create({
 });
 
 const PostScreen = ({ route, navigation }: any) => {
-  const theme = useTheme();
   const authState = useSelector<rootReducerType>((state) => state.authState);
   const uidGroup = route && route.params ? route.params.uidGroup : undefined;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [commentValue, setCommentValue] = useState<string>('');
-  const { content, date, listComment, listLike, user, uidPost, urlImage } = route.params;
+  const { content, date, listComment, listLike, user, uidPost, urlImage, isLike } = route.params;
 
-  const inputRef = useRef<HTMLInputElement>();
+  const [post, setPost] = useState({});
+
+  const listPost = useSelector(state => state.postState.postData);
+
+  const currentPost = listPost.find(item => item.id === uidPost)
+  console.log("post", post)
+  useEffect(() => {
+    setPost(currentPost)
+  }, [listPost, uidPost, listComment])
 
   if (isLoading) {
     return (
@@ -35,6 +41,9 @@ const PostScreen = ({ route, navigation }: any) => {
       </View>
     );
   }
+
+  console.log("listComment", post.listComment);
+
   return (
     <View style={styles.screen}>
       <View style={{ flexShrink: 1, marginBottom: 52 }}>
@@ -43,29 +52,32 @@ const PostScreen = ({ route, navigation }: any) => {
             content={content}
             timeUpload={date}
             listComment={listComment}
-            listLike={listLike}
+            listLike={post.listLike}
             user={user}
             uidPost={uidPost}
             uidGroup={uidGroup}
             urlImage={urlImage}
-            inputRef={inputRef}
+            isLike={post.isLike}
           />
-          {Object.keys(listComment).map((key: any, _: number) => {
-            const item = listComment[key];
-            return (
-              <Comment
-                uidPost={uidPost}
-                uidComment={key}
-                key={key}
-                username={item.fullName}
-                timeUpload={item.timeUpload.toString()}
-                listLike={item.listLike ? item.listLike : []}
-                content={item.content}
-                navigation={navigation}
-                isComment={true}
-                owner={item.owner}
-              />
-            );
+          {post.listComment && Object.keys(post.listComment).map((key: any, _: number) => {
+            const item = post.listComment[key];
+
+            if (item) {
+              return (
+                <Comment
+                  uidPost={uidPost}
+                  uidComment={key}
+                  key={key}
+                  username={item.fullName}
+                  timeUpload={item.timeUpload.toString()}
+                  listLike={item.listLike ? item.listLike : []}
+                  content={item.content}
+                  navigation={navigation}
+                  isComment={true}
+                  owner={item.owner}
+                />
+              );
+            }
           })}
         </ScrollView>
       </View>
