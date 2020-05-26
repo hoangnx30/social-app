@@ -25,7 +25,7 @@ interface Props {
   owner?: string;
   uidComment?: string;
   uidPost?: string;
-  user?: any
+  user?: any;
 }
 
 const Comment: React.FC<Props> = ({
@@ -45,16 +45,8 @@ const Comment: React.FC<Props> = ({
   const theme = useTheme();
   const dispatch = useDispatch();
   const userUid = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
-  let timeOfPost = [
-    new Date(+timeUpload).getFullYear(),
-    new Date(+timeUpload).getMonth() + 1 < 10
-      ? '0' + (new Date(+timeUpload).getMonth() + 1)
-      : new Date(+timeUpload).getMonth() + 1,
-    new Date(+timeUpload).getDate(),
-  ].join('');
-  if (isComment) {
-    timeOfPost = moment(timeOfPost, 'YYYYMMDD').fromNow();
-  }
+  let timeOfPost = moment.duration(Date.now() - Number(timeUpload))._data.minutes;
+
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -79,12 +71,14 @@ const Comment: React.FC<Props> = ({
             </View>
             {userUid === owner ? (
               <View style={{ justifyContent: 'flex-end' }}>
-                <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => { }} />
+                <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
               </View>
             ) : null}
           </View>
           <View>
-            <Text style={{ marginTop: -10, marginBottom: 10, color: '#ccc' }}>{timeOfPost}</Text>
+            <Text style={{ marginTop: -10, marginBottom: 10, color: '#ccc' }}>
+              {timeOfPost === 0 ? '1' : timeOfPost} minutes ago
+            </Text>
           </View>
           <View>
             <View>

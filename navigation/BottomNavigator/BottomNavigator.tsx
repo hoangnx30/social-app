@@ -48,7 +48,8 @@ const BottomNavigator = () => {
           let tabBarVisible = true;
           if (route.state) {
             const routes = route.state.routes;
-            tabBarVisible = routes[routes.length - 1].name === 'UpLoadPostGroup' ? false : true;
+            const name = routes[routes.length - 1].name;
+            tabBarVisible = name === 'UpLoadPostGroup' || name === 'Post' ? false : true;
           }
           return {
             tabBarIcon: ({ color }) => <MaterialIcons name="group" size={30} color={color} />,

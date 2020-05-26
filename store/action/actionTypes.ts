@@ -17,6 +17,7 @@ export const UPDATE_LIST_COMMENT = 'UPDATE_LIST_COMMENT';
 export const CREATE_GROUP = 'CREATE_GROUP';
 export const SET_GROUP = 'SET_GROUP';
 export const TRANSFORM_DATA = 'TRANSFORM_DATA';
+export const SET_POST_DATA_GROUP = 'SET_POST_DATA_GROUP';
 
 export const SET_LOADING = 'SET_LOADING';
 
@@ -115,7 +116,14 @@ interface FetchUser {
   };
 }
 
+interface SetPostDataGroup {
+  type: typeof SET_POST_DATA_GROUP;
+  payload: {
+    data: any;
+  };
+}
+
 export type PostActionType = PostStatusAction | EditStatusAction | DeleteStatusAction | SetPostData | UpdateListLike;
 export type AuthActionType = Login | SetLoading | FetchUser;
 export type CommentActionType = SetCommentData | UpdateListLikeComment | UpdateListComment;
-export type GroupActionType = CreateGroup | SetGroup | TransformData;
+export type GroupActionType = CreateGroup | SetGroup | TransformData | SetPostDataGroup;

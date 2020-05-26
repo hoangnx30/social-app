@@ -33,8 +33,7 @@ const GroupScreen = (props: any) => {
   useEffect(() => {
     setStateGroup(group)
   }, [group])
-
-
+  
   return (
     <View style={styles.screen}>
       <View>

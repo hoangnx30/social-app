@@ -1,7 +1,8 @@
-import { GroupActionType, SET_GROUP, TRANSFORM_DATA } from './../action/actionTypes';
+import { GroupActionType, SET_GROUP, TRANSFORM_DATA, SET_POST_DATA_GROUP } from './../action/actionTypes';
 const initialState = {
   group: [],
   transformData: [],
+  postDataGroup: [],
 };
 
 export default (state = initialState, action: GroupActionType) => {
@@ -15,6 +16,11 @@ export default (state = initialState, action: GroupActionType) => {
       return {
         ...state,
         transformData: action.payload.data,
+      };
+    case SET_POST_DATA_GROUP:
+      return {
+        ...state,
+        postDataGroup: action.payload.data,
       };
     default:
       return state;

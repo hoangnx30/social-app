@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import HeaderGroup from '../../../components/group/HeaderGroup';
 import ButtonCircle from '../../../components/ButtonCircle';
 import Post from '../../../components/Post';
-import { transformData, fetchGroup } from '../../../store/action/group.action';
+import { transformData, fetchGroup, fetchDataPostGroup } from '../../../store/action/group.action';
 import Colors from '../../../constants/Color';
 const styles = StyleSheet.create({
   screen: {
@@ -31,13 +31,11 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
     setIsRefresh(false);
   }, [isRefresh, dispatch]);
 
-  let dataGroup = group && group.ListPost ? group.ListPost : {};
-
   useEffect(() => {
-    dispatch(transformData(dataGroup));
-  }, [dispatch, dataGroup]);
+    dispatch(fetchDataPostGroup(uidGroup));
+  }, []);
 
-  const result = useSelector((state) => state.groupState.transformData);
+  const result = useSelector((state) => state.groupState.postDataGroup);
 
   const renderItem = ({ item }: any) => {
     return (
@@ -52,6 +50,7 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
         owner={item.owner}
         uidGroup={uidGroup}
         urlImage={item.urlImage}
+        isLike={item.isLike}
       />
     );
   };

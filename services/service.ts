@@ -38,7 +38,7 @@ export const uploadComment = (
     firebase
       .database()
       .ref(`group/${uidGroup}/ListPost/${uidPost}/listComment`)
-      .push({ owner: userUid, content: content, timeUpload: timeUpload });
+      .push({ owner: userUid, content: content, timeUpload: timeUpload, fullName: fullName });
     return;
   }
   firebase
