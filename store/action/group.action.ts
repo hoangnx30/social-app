@@ -57,3 +57,43 @@ export const transformData = (dataGroup: any) => {
     }
   };
 };
+
+export const fetchDataPostGroup = (uidGroup: string) => {
+  return async (dispatch: any) => {
+    firebase
+      .database()
+      .ref(`group/${uidGroup}`)
+      .on('value', (snapshot) => {
+        const dataGroup = snapshot.val();
+        const listPost = dataGroup.ListPost;
+
+        const listPromise = Object.keys(listPost).map((key) => {
+          return new Promise(async (resolve, reject) => {
+            const listLike = listPost[key].listLike || [];
+            const postItem = {
+              id: key,
+              ...listPost[key],
+              isLike: listLike.indexOf(listPost[key].owner) < 0 ? false : true,
+            };
+            firebase
+              .database()
+              .ref(`users/${listPost[key].owner}`)
+              .once('value', (snapshotUser) => {
+                const user = snapshotUser.val();
+                postItem.user = user;
+                resolve(postItem);
+              });
+          });
+        });
+
+        Promise.all(listPromise).then((result) => {
+          dispatch({
+            type: 'SET_POST_DATA_GROUP',
+            payload: {
+              data: result,
+            },
+          });
+        });
+      });
+  };
+};

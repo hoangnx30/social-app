@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, ActivityIndicator, Keyboard } from 'react-native';
+import firebase from 'firebase';
 
 import Comment from '../../../components/Comment';
 import PostWithComment from '../../../components/PostWithComment';
@@ -26,12 +27,19 @@ const PostScreen = ({ route, navigation }: any) => {
 
   const [post, setPost] = useState({});
 
-  const listPost = useSelector(state => state.postState.postData);
-
-  const currentPost = listPost.find(item => item.id === uidPost)
-  useEffect(() => {
-    setPost(currentPost)
-  }, [listPost, uidPost, listComment])
+  if (!uidGroup) {
+    const listPost = useSelector((state) => state.postState.postData);
+    const currentPost = listPost.find((item) => item.id === uidPost);
+    useEffect(() => {
+      setPost(currentPost);
+    }, [listPost, uidPost, listComment]);
+  } else {
+    const listPost = useSelector((state) => state.groupState.postDataGroup);
+    const currentPost = listPost.find((item) => item.id === uidPost);
+    useEffect(() => {
+      setPost(currentPost);
+    }, [listPost, uidPost, listComment, uidGroup]);
+  }
 
   if (isLoading) {
     return (
@@ -49,33 +57,34 @@ const PostScreen = ({ route, navigation }: any) => {
             content={content}
             timeUpload={date}
             listComment={listComment}
-            listLike={post.listLike}
+            listLike={post && post.listLike ? post.listLike : []}
             user={user}
             uidPost={uidPost}
             uidGroup={uidGroup}
             urlImage={urlImage}
             isLike={post.isLike}
           />
-          {post.listComment && Object.keys(post.listComment).map((key: any, _: number) => {
-            const item = post.listComment[key];
+          {post.listComment &&
+            Object.keys(post.listComment).map((key: any, _: number) => {
+              const item = post.listComment[key];
 
-            if (item) {
-              return (
-                <Comment
-                  uidPost={uidPost}
-                  uidComment={key}
-                  key={key}
-                  username={item.fullName}
-                  timeUpload={item.timeUpload.toString()}
-                  listLike={item.listLike ? item.listLike : []}
-                  content={item.content}
-                  navigation={navigation}
-                  isComment={true}
-                  owner={item.owner}
-                />
-              );
-            }
-          })}
+              if (item) {
+                return (
+                  <Comment
+                    uidPost={uidPost}
+                    uidComment={key}
+                    key={key}
+                    username={item.fullName}
+                    timeUpload={item.timeUpload.toString()}
+                    listLike={item.listLike ? item.listLike : []}
+                    content={item.content}
+                    navigation={navigation}
+                    isComment={true}
+                    owner={item.owner}
+                  />
+                );
+              }
+            })}
         </ScrollView>
       </View>
       <CustomTextInput
