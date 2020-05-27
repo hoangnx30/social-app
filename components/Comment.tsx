@@ -26,12 +26,14 @@ interface Props {
   uidComment?: string;
   uidPost?: string;
   user?: any;
+  uidGroup?: string;
 }
 
 const Comment: React.FC<Props> = ({
   username,
   timeUpload,
   uidComment,
+  uidGroup,
   content,
   listLike,
   user,
@@ -100,17 +102,17 @@ const Comment: React.FC<Props> = ({
                         listLike?.splice(index, 1);
                         const updateListLike = listLike?.filter((item) => item !== userUid);
                         setIsLike(!isLike);
-                        likeComment(uidPost, uidComment, updateListLike);
+                        likeComment(uidPost, uidComment, updateListLike, uidGroup);
                       } else {
                         listLike?.push(userUid);
                         setIsLike(!isLike);
                         if (listLike?.indexOf(userUid) >= 0) {
                           const updateListLike = listLike;
-                          likeComment(uidPost, uidComment, updateListLike);
+                          likeComment(uidPost, uidComment, updateListLike, uidGroup);
                           return;
                         }
                         const updateListLike = listLike?.concat(userUid);
-                        likeComment(uidPost, uidComment, updateListLike);
+                        likeComment(uidPost, uidComment, updateListLike, uidGroup);
                       }
                     }}
                   ></Item>

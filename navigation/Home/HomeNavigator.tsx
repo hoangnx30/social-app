@@ -25,11 +25,11 @@ const HomeNavigator = () => {
               <Item title="avatar" iconName="account-circle" color={Color.primary} />
             </HeaderButtons>
           ),
-          headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMI}>
-              <Item title="search" iconName="search" onPress={() => {}} />
-            </HeaderButtons>
-          ),
+          // headerRight: () => (
+          //   <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMI}>
+          //     <Item title="search" iconName="search" onPress={() => {}} />
+          //   </HeaderButtons>
+          // ),
         }}
       />
       <HomeStackNavigator.Screen name="Post" component={PostScreen} options={{ headerTitle: 'Post' }} />

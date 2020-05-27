@@ -84,6 +84,7 @@ export type DrawerParamsList = {
   BottomTab: undefined;
   InfoUser: undefined;
   Setting: undefined;
+  LogOut: undefined;
 };
 
 export type DrawerNavigatorProps<T extends keyof DrawerParamsList> = {
