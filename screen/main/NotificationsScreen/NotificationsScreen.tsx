@@ -17,7 +17,6 @@ const NotificationsScreen = () => {
   const [token, setToken] = useState<string>('');
   const [notification, setNotification] = useState({});
 
-
   const registerForPushNotificationAsync = async () => {
     if (Constant.isDevice) {
       const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
@@ -36,7 +35,7 @@ const NotificationsScreen = () => {
       try {
         token = await Notifications.getExpoPushTokenAsync();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
 
       setToken(token);
@@ -50,6 +49,7 @@ const NotificationsScreen = () => {
         sound: true,
         priority: 'max',
         vibrate: [0, 250, 250, 250],
+        badge: true,
       });
     }
   };
@@ -93,7 +93,8 @@ const NotificationsScreen = () => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-around',
-      }}>
+      }}
+    >
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text>Origin: {notification.origin}</Text>
         <Text>Data: {JSON.stringify(notification.data)}</Text>

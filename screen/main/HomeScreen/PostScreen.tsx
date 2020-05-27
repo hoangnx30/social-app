@@ -30,12 +30,14 @@ const PostScreen = ({ route, navigation }: any) => {
   if (!uidGroup) {
     const listPost = useSelector((state) => state.postState.postData);
     const currentPost = listPost.find((item) => item.id === uidPost);
+
     useEffect(() => {
       setPost(currentPost);
     }, [listPost, uidPost, listComment]);
   } else {
     const listPost = useSelector((state) => state.groupState.postDataGroup);
     const currentPost = listPost.find((item) => item.id === uidPost);
+
     useEffect(() => {
       setPost(currentPost);
     }, [listPost, uidPost, listComment, uidGroup]);
@@ -81,6 +83,7 @@ const PostScreen = ({ route, navigation }: any) => {
                     navigation={navigation}
                     isComment={true}
                     owner={item.owner}
+                    uidGroup={uidGroup}
                   />
                 );
               }

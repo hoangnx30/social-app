@@ -32,6 +32,16 @@ export default (state: State = initialState, action: AuthActionType) => {
         ...state,
         user: action.payload.data,
       };
+    case 'LOG_OUT':
+      return {
+        ...state,
+        userInfo: {
+          accessToken: undefined,
+          refreshToken: '',
+          expirationTime: '',
+          uid: '',
+        },
+      };
     default:
       return state;
   }

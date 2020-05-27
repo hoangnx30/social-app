@@ -9,17 +9,21 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
-import { Avatar } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import { GiftedAvatar } from 'react-native-gifted-chat';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 import { DrawerParamsList } from '../types';
 import InfoScreen from '../../screen/users/InfoScreen';
 import SettingScreen from '../../screen/setting/SettingScreen';
 import BottomNavigator from '../BottomNavigator/BottomNavigator';
+import LogOutScreen from '../../screen/users/LogoutScreen';
 
 const Drawer = createDrawerNavigator<DrawerParamsList>();
 
 const DrawerNavigator = () => {
+  const user = useSelector((state) => state.authState.user);
+  console.log(user);
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -34,7 +38,7 @@ const DrawerNavigator = () => {
           padding: 5,
         },
         container: {
-          marginTop: '10%',
+          marginTop: '20%',
         },
         icon: {
           marginRight: '5%',
@@ -43,6 +47,7 @@ const DrawerNavigator = () => {
           marginHorizontal: 10,
           flexDirection: 'row',
           alignItems: 'center',
+          marginBottom: 20,
         },
       }),
     []
@@ -58,7 +63,11 @@ const DrawerNavigator = () => {
                 <TouchableOpacity>
                   <View style={styles.profile}>
                     <View style={styles.icon}>
-                      <Avatar.Icon icon="account-circle" size={70} style={{ backgroundColor: 'white' }} />
+                      <GiftedAvatar
+                        user={{ name: user.fullName, avatar: user.avatar }}
+                        avatarStyle={{ height: 50, width: 50, borderRadius: 25 }}
+                        textStyle={{ fontSize: 20 }}
+                      />
                     </View>
                     <View>
                       <Text>Nguyen Xuan Hoang</Text>
@@ -69,14 +78,14 @@ const DrawerNavigator = () => {
 
                 <DrawerItemList {...props} />
 
-                <View style={styles.logoutWapper}>
+                {/* <View style={styles.logoutWapper}>
                   <TouchableNativeFeedback style={{ flex: 1 }}>
                     <View style={styles.logoutContainer}>
                       <MaterialCommunityIcons name="logout" size={32} />
                       <Text>Logout</Text>
                     </View>
                   </TouchableNativeFeedback>
-                </View>
+                </View> */}
               </SafeAreaView>
             </ScrollView>
           </View>
@@ -92,10 +101,18 @@ const DrawerNavigator = () => {
       />
 
       <Drawer.Screen
-        name="Setting"
+        name="Update Avatar"
         component={SettingScreen}
         options={{
-          drawerIcon: () => <MaterialIcons name="settings" size={32} />,
+          drawerIcon: () => <MaterialCommunityIcons name="camera" size={32} />,
+        }}
+      />
+
+      <Drawer.Screen
+        name="LogOut"
+        component={LogOutScreen}
+        options={{
+          drawerIcon: () => <MaterialCommunityIcons name="logout" size={32} />,
         }}
       />
     </Drawer.Navigator>
