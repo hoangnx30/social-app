@@ -58,6 +58,32 @@ const Post: React.FC<Props> = ({
   if (isComment) {
     timeOfPost = moment.duration(Date.now() - date)._data.minutes;
   }
+
+  const styles = useMemo(() => {
+    return StyleSheet.create({
+      container: {
+        width: '100%',
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+      },
+      topContent: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+      mainContent: { marginVertical: 10 },
+      bottomContent: { flexDirection: 'row' },
+      leftContainer: { paddingHorizontal: 5, paddingVertical: 10 },
+      rightContainer: { flexShrink: 1, padding: 5 },
+      action: { flexDirection: 'row', alignItems: 'center', marginRight: 20 },
+      numberOfAction: { fontSize: 18, marginLeft: 4 },
+      username: { fontSize: 18, fontWeight: 'bold', overflow: 'hidden', marginTop: uidGroup ? 10 : 0 },
+      topLeftContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flex: 1,
+      },
+    });
+  }, []);
+
   const heartIcon = useMemo(() => {
     return (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButtonMCI}>
@@ -68,7 +94,6 @@ const Post: React.FC<Props> = ({
           onPress={() => {
             if (uidGroup) {
               if (isLike) {
-                
                 const updateListLike = listLike?.filter((id) => id !== userUid);
                 likePost(uidPost, updateListLike);
                 likePost(uidPost, updateListLike, uidGroup);
@@ -130,7 +155,7 @@ const Post: React.FC<Props> = ({
               </View>
               {!isComment && <Text>{moment(date).calendar()}</Text>}
             </View>
-            {owner === userUid ? (
+            {owner === userUid && !uidGroup ? (
               <View>
                 <IconButton
                   icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />}
@@ -193,26 +218,3 @@ const Post: React.FC<Props> = ({
 };
 
 export default Post;
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  topContent: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  mainContent: { marginVertical: 10 },
-  bottomContent: { flexDirection: 'row' },
-  leftContainer: { paddingHorizontal: 5, paddingVertical: 10 },
-  rightContainer: { flexShrink: 1, padding: 5 },
-  action: { flexDirection: 'row', alignItems: 'center', marginRight: 20 },
-  numberOfAction: { fontSize: 18, marginLeft: 4 },
-  username: { fontSize: 18, fontWeight: 'bold', overflow: 'hidden' },
-  topLeftContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-});

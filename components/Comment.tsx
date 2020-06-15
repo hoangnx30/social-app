@@ -71,16 +71,14 @@ const Comment: React.FC<Props> = ({
                 <Text style={styles.username}>{username}</Text>
               </View>
             </View>
-            {userUid === owner ? (
+            {/* {userUid === owner ? (
               <View style={{ justifyContent: 'flex-end' }}>
                 <IconButton icon={() => <MaterialIcons name="keyboard-arrow-down" size={32} />} onPress={() => {}} />
               </View>
-            ) : null}
+            ) : null} */}
           </View>
           <View>
-            <Text style={{ marginTop: -10, marginBottom: 10, color: '#ccc' }}>
-              {timeOfPost === 0 ? '1' : timeOfPost} minutes ago
-            </Text>
+            <Text style={{ marginBottom: 10, color: '#ccc' }}>{timeOfPost === 0 ? '1' : timeOfPost} minutes ago</Text>
           </View>
           <View>
             <View>
