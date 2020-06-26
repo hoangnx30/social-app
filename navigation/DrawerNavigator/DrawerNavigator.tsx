@@ -18,12 +18,12 @@ import InfoScreen from '../../screen/users/InfoScreen';
 import SettingScreen from '../../screen/setting/SettingScreen';
 import BottomNavigator from '../BottomNavigator/BottomNavigator';
 import LogOutScreen from '../../screen/users/LogoutScreen';
+import ChangePasswordScreen from '../../screen/users/ChangePasswordScreen';
 
 const Drawer = createDrawerNavigator<DrawerParamsList>();
 
 const DrawerNavigator = () => {
   const user = useSelector((state) => state.authState.user);
-  console.log(user);
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -101,13 +101,21 @@ const DrawerNavigator = () => {
       />
 
       <Drawer.Screen
-        name="Update Avatar"
+        name="UpdateAvatar"
         component={SettingScreen}
         options={{
           drawerIcon: () => <MaterialCommunityIcons name="camera" size={32} />,
+          drawerLabel: 'Update Avatar',
         }}
       />
-
+      <Drawer.Screen
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+        options={{
+          drawerIcon: () => <MaterialCommunityIcons name="key-change" size={32} />,
+          drawerLabel: 'Change Password',
+        }}
+      />
       <Drawer.Screen
         name="LogOut"
         component={LogOutScreen}

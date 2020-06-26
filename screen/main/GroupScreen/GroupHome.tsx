@@ -7,6 +7,7 @@ import ButtonCircle from '../../../components/ButtonCircle';
 import Post from '../../../components/Post';
 import { transformData, fetchGroup, fetchDataPostGroup } from '../../../store/action/group.action';
 import Colors from '../../../constants/Color';
+import Modal from '../../../components/Modal';
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -16,6 +17,8 @@ const styles = StyleSheet.create({
 });
 
 const GroupHomeScreen = ({ route, navigation }: any) => {
+  const [isVisible, setIsVisible] = useState(false);
+
   const dispatch = useDispatch();
 
   const params = route.params;
@@ -51,9 +54,19 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
         uidGroup={uidGroup}
         urlImage={item.urlImage}
         isLike={item.isLike}
+        showModal={handleShowModal}
       />
     );
   };
+
+  const handleShowModal = useCallback(() => {
+    setIsVisible(true);
+  }, [setIsVisible]);
+
+  const handleCloseModal = useCallback(() => {
+    setIsVisible(false);
+  }, [setIsVisible]);
+
   return (
     <View style={styles.screen}>
       <View style={{ width: '100%', height: '100%' }}>
@@ -62,13 +75,15 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
         </View>
         <View>
           {result.length > 0 ? (
-            <FlatList
-              data={result}
-              renderItem={renderItem}
-              refreshControl={
-                <RefreshControl refreshing={isRefresh} onRefresh={handleRefresh} colors={[Colors.primary]} />
-              }
-            />
+            <Modal closeModal={handleCloseModal} isVisible={isVisible} navigation={navigation}>
+              <FlatList
+                data={result}
+                renderItem={renderItem}
+                refreshControl={
+                  <RefreshControl refreshing={isRefresh} onRefresh={handleRefresh} colors={[Colors.primary]} />
+                }
+              />
+            </Modal>
           ) : (
             <View style={{ alignSelf: 'center', marginTop: 20 }}>
               <Text style={{ fontSize: 18 }}>No Post is available</Text>

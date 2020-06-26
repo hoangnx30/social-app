@@ -85,6 +85,8 @@ export type DrawerParamsList = {
   InfoUser: undefined;
   Setting: undefined;
   LogOut: undefined;
+  ChangePassword: undefined;
+  UpdateAvatar: undefined;
 };
 
 export type DrawerNavigatorProps<T extends keyof DrawerParamsList> = {

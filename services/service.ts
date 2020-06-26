@@ -88,7 +88,6 @@ export const uploadPost = async (
       timeUpload: timeUpload,
       urlImage: urlFirebase,
     };
-    console.log('here2');
     firebase.database().ref(`group/${uidGroup}/ListPost`).push(newPost);
   }
 };

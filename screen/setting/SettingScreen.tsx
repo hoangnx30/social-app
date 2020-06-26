@@ -25,16 +25,18 @@ const SettingScreen = ({ navigation }: any) => {
     return true;
   };
   const user = useSelector((state) => state.authState.user);
-  console.log(user);
   useEffect(() => {
     verifyPermission().then(async (hasPermission) => {
-      console.log('RUN');
       if (!hasPermission) {
         navigation.navigate('Home');
       }
       const res = await ImagePicker.launchImageLibraryAsync({ quality: 1 });
       const imageUri = res.uri;
 
+      console.log(imageUri);
+      if (!imageUri) {
+        return;
+      }
       const fetchData = await fetch(imageUri);
       const dataBlob = await fetchData.blob();
 
