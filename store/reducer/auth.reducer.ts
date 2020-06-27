@@ -17,6 +17,7 @@ const initialState = {
   },
   user: {},
   isLoading: false,
+  error: false,
 };
 
 export default (state: State = initialState, action: AuthActionType) => {
@@ -41,6 +42,11 @@ export default (state: State = initialState, action: AuthActionType) => {
           expirationTime: '',
           uid: '',
         },
+      };
+    case 'SET_ERROR_AUTH':
+      return {
+        ...state,
+        error: action.payload.data,
       };
     default:
       return state;

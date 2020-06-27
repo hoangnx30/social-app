@@ -1,5 +1,5 @@
-import React, { useCallback, useState, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, { useCallback, useState, useMemo } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme, ActivityIndicator } from 'react-native-paper';
 
@@ -7,6 +7,7 @@ import { AuthNavigatorProps } from '../../navigation/types';
 import { LoginAsync } from '../../store/action/auth.action';
 import { rootReducerType } from '../../store/reducer';
 import { UserInfo } from '../../store/action/types';
+import { SET_ERROR_AUTH, SET_LOADING } from '../../store/action/actionTypes';
 import Color from '../../constants/Color';
 
 const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
@@ -61,7 +62,47 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
   const dispatch = useDispatch();
 
   const isLoading = useSelector((state) => state.authState.isLoading);
+  const errorLogin = useSelector((state) => state.authState.error);
+
+  if (errorLogin) {
+    Alert.alert(
+      'Sorry',
+      'Email or password is wrong. Please do again.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            dispatch({
+              type: SET_ERROR_AUTH,
+              payload: {
+                data: false,
+              },
+            });
+          },
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            dispatch({
+              type: SET_ERROR_AUTH,
+              payload: {
+                data: false,
+              },
+            });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  }
+
   const handleLogIn = useCallback(() => {
+    dispatch({
+      type: SET_LOADING,
+      payload: {
+        isLoading: true,
+      },
+    });
     dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));
     // dispatch(LoginAsync(email, password));
   }, [email, password]);

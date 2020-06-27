@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, TextInput } from 'react-native';
+import React, { useMemo, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableHighlight, TextInput, Alert } from 'react-native';
 import { useTheme } from 'react-native-paper';
-
+import firebase from 'firebase';
 import { AuthNavigatorProps } from '../../navigation/types';
 
 const ForgotPasswordScreen = ({ navigation }: AuthNavigatorProps<'ForgotPassword'>) => {
@@ -43,13 +43,47 @@ const ForgotPasswordScreen = ({ navigation }: AuthNavigatorProps<'ForgotPassword
     });
   }, []);
   const [email, setEmail] = useState('');
+
+  const handleResetPassword = useCallback(() => {
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        Alert.alert(
+          'Success',
+          'Please check your email. We have sent to you a link for resetting password',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => {
+                console.log(firebase.auth().currentUser);
+              },
+              style: 'cancel',
+            },
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ],
+          { cancelable: false }
+        );
+      })
+      .catch(() => {
+        Alert.alert(
+          'Failed',
+          'Something went wrong. Please do it again',
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+          {
+            cancelable: false,
+          }
+        );
+      });
+  }, [email]);
+
   return (
     <View style={styles.screen}>
       <Text style={styles.textmain}>
         You forgot your password? Please enter your email here. We will sent new password to you.
       </Text>
-      <TextInput style={styles.inputmail} onChangeText={(email) => setEmail(email)} placeholder="Email" />
-      <TouchableHighlight style={styles.submit} underlayColor="#fff">
+      <TextInput style={styles.inputmail} onChangeText={(email) => setEmail(email)} placeholder="Email" value={email} />
+      <TouchableHighlight style={styles.submit} underlayColor="#fff" onPress={handleResetPassword}>
         <Text style={styles.submitText}>Sent Request</Text>
       </TouchableHighlight>
       <Text style={{ fontSize: 14 }}>

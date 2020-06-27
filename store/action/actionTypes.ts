@@ -20,6 +20,7 @@ export const TRANSFORM_DATA = 'TRANSFORM_DATA';
 export const SET_POST_DATA_GROUP = 'SET_POST_DATA_GROUP';
 
 export const SET_LOADING = 'SET_LOADING';
+export const SET_ERROR_AUTH = 'SET_ERROR_AUTH';
 
 interface PostStatusAction {
   type: typeof POST_STATUS;
@@ -123,7 +124,14 @@ interface SetPostDataGroup {
   };
 }
 
+interface SetErrorAuth {
+  type: typeof SET_ERROR_AUTH;
+  payload: {
+    data: boolean;
+  };
+}
+
 export type PostActionType = PostStatusAction | EditStatusAction | DeleteStatusAction | SetPostData | UpdateListLike;
-export type AuthActionType = Login | SetLoading | FetchUser;
+export type AuthActionType = Login | SetLoading | FetchUser | SetErrorAuth;
 export type CommentActionType = SetCommentData | UpdateListLikeComment | UpdateListComment;
 export type GroupActionType = CreateGroup | SetGroup | TransformData | SetPostDataGroup;
