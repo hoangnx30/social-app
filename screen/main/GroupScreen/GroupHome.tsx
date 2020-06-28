@@ -94,7 +94,7 @@ const GroupHomeScreen = ({ route, navigation }: any) => {
       <ButtonCircle
         iconName="edit"
         typeIcon="MI"
-        navigate={() => navigation.navigate('UpLoadPostGroup', { uidGroup: params.uid })}
+        navigate={() => navigation.navigate('UpLoadPostGroup', { uidGroup: params.id })}
       />
     </View>
   );

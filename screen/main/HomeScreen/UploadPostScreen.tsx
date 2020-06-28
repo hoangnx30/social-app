@@ -19,6 +19,7 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const uidGroup = route.params ? route.params.uidGroup : null;
+
   const owner = useSelector<rootReducerType>((state) => state.authState.userInfo.uid);
 
   useEffect(() => {
@@ -26,14 +27,14 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
       if (route.params.edit) {
         const params = route.params;
         setContent(params.content);
-        setUrlImage(params.urlImage)
+        setUrlImage(params.urlImage);
         Image.getSize(params.urlImage, (width, height) => {
           setWidth(width / 14);
           setHeight(height / 14);
-        })
+        });
       }
     }
-  }, [route.params])
+  }, [route.params]);
 
   const handleUploadStatus = useCallback(() => {
     if (route.params && route.params.edit) {
@@ -79,12 +80,16 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
 
       if (imageUri) {
         setUrlImage(imageUri);
-        Image.getSize(imageUri, (width, height) => {
-          setWidth(width / 12);
-          setHeight(height / 12);
-        }, (error) => {
-          console.log(error);
-        })
+        Image.getSize(
+          imageUri,
+          (width, height) => {
+            setWidth(width / 12);
+            setHeight(height / 12);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       }
     },
     [setUrlImage]
@@ -126,7 +131,9 @@ const UploadPostScreen = ({ route, navigation }: HomeNavigatorProps<'UpLoadPost'
           />
         </View>
       </View>
-      {urlImage ? <ImagePost urlImage={urlImage} handleClose={() => setUrlImage('')} width={width} height={height} /> : null}
+      {urlImage ? (
+        <ImagePost urlImage={urlImage} handleClose={() => setUrlImage('')} width={width} height={height} />
+      ) : null}
       <View
         style={{
           flexDirection: 'row',

@@ -67,6 +67,16 @@ export const fetchDataPostGroup = (uidGroup: string) => {
         const dataGroup = snapshot.val();
         const listPost = dataGroup.ListPost;
 
+        if (!listPost) {
+          dispatch({
+            type: 'SET_POST_DATA_GROUP',
+            payload: {
+              data: [],
+            },
+          });
+          return;
+        }
+
         const listPromise = Object.keys(listPost).map((key) => {
           return new Promise(async (resolve, reject) => {
             const listLike = listPost[key].listLike || [];

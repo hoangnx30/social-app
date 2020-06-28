@@ -33,7 +33,6 @@ const SettingScreen = ({ navigation }: any) => {
       const res = await ImagePicker.launchImageLibraryAsync({ quality: 1 });
       const imageUri = res.uri;
 
-      console.log(imageUri);
       if (!imageUri) {
         return;
       }
