@@ -24,6 +24,7 @@ const Drawer = createDrawerNavigator<DrawerParamsList>();
 
 const DrawerNavigator = () => {
   const user = useSelector((state) => state.authState.user);
+  console.log(user);
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -70,8 +71,8 @@ const DrawerNavigator = () => {
                       />
                     </View>
                     <View>
-                      <Text>Nguyen Xuan Hoang</Text>
-                      <Text>17020772</Text>
+                      <Text>{user.fullName}</Text>
+                      <Text>{user.MSSV}</Text>
                     </View>
                   </View>
                 </TouchableOpacity>

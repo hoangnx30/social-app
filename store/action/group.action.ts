@@ -16,8 +16,8 @@ export const fetchGroup = () => {
     firebase
       .database()
       .ref('group')
-      .on('value', (snapshoot) => {
-        const groups = snapshoot.val();
+      .on('value', (snapShoot) => {
+        const groups = snapShoot.val();
 
         for (const group in groups) {
           groupData.push({ ...groups[group], id: group });
@@ -43,8 +43,8 @@ export const transformData = (dataGroup: any) => {
       firebase
         .database()
         .ref(`users/${dataGroup[key]['owner']}`)
-        .once('value', (snapshoot) => {
-          const value = snapshoot.val();
+        .once('value', (snapShoot) => {
+          const value = snapShoot.val();
           builder.user = value;
           result.push(builder);
           dispatch({

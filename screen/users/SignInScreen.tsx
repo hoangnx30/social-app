@@ -103,7 +103,7 @@ const SignInScreen = ({ navigation }: AuthNavigatorProps<'SignIn'>) => {
         isLoading: true,
       },
     });
-    dispatch(LoginAsync('xuanhoang30071999@gmail.com', 'Thangbandeu30@'));
+    dispatch(LoginAsync('test@test.com', 'asdfghjkl'));
     // dispatch(LoginAsync(email, password));
   }, [email, password]);
 
